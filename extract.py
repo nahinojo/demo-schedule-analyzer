@@ -12,5 +12,8 @@ for event in calendar.walk('VEVENT'):
         course_code = summary[:2]
         instructor = summary[3:]
         description = str(event.get("DESCRIPTION"))
+        print("ORIGINAL DESCRIPTION:")
         print(description)
+        print("DISSECTED INFORMATION")
+        utils.dissect_description(description)
         print(100 * '*')
