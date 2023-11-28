@@ -1,3 +1,5 @@
+import datetime
+
 import icalendar
 import requests
 
@@ -11,7 +13,9 @@ calendar_path = f"./{calendar_name}"
 with open(calendar_path) as f:
     calendar = icalendar.Calendar.from_ical(f.read())
 for event in calendar.walk('VEVENT'):
-    print(event.get("SUMMARY"))
-    date_start = event.get("DTSTART").dt
+    summary = event.get("SUMMARY")
+    course_code = summary[:2]
+    instructor = summary[3:]
+    date_start = event.get("DTSTART").dt.timestamp()
     print(date_start)
     break
