@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "demo-schedule-analyzer"
+version = "0.1.0"
+description = ""
+authors = ["Noah Hinojos <noah.hinojos@gmail.com>"]
+readme = "README.md"
+packages = [{include = "demo_schedule_analyzer"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+icalendar = "^5.0.11"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
