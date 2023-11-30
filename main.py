@@ -1,8 +1,9 @@
 from utils import get_calendar, dissect_description, get_quarter
 from icalendar import Calendar
 from openpyxl import Workbook
+from copy import deepcopy
 
-MAX_YEAR = 2023
+MIN_YEAR = 2023
 CALENDAR_FILE_NAME = "demo-calendar.ics"
 SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
 SHEET_DETAILS = {
@@ -21,11 +22,9 @@ with open(f"./{CALENDAR_FILE_NAME}") as f:
     calendar = Calendar.from_ical(f.read())
 sheet_details_list = []
 for i, event in enumerate(calendar.walk("VEVENT")):
-    print('******')
     date_start = event.get("DTSTART").dt
     year = date_start.year
-    if year >= MAX_YEAR:
-        print("[NEW DEMO EVENT]")
+    if year >= MIN_YEAR:
         summary = str(event.get("SUMMARY"))
 
         # Only analyze course-specific events, which contain a numeric course code.
@@ -35,13 +34,12 @@ for i, event in enumerate(calendar.walk("VEVENT")):
                 is_course = True
                 break
         if not is_course:
-            break
+            continue
 
         instructor = summary[summary.find(" ") + 1:]
-        print('instructor (new):', instructor)
         course_code = summary[: summary.find(" ")]
         description = str(event.get("DESCRIPTION"))
-        demos, additional_info= dissect_description(description)
+        demos, additional_info = dissect_description(description)
         month = date_start.month
         day = date_start.day
         quarter = get_quarter(
@@ -54,14 +52,9 @@ for i, event in enumerate(calendar.walk("VEVENT")):
             "demos": demos,
             # "additional_info": additional_info,
         }
-        print("demo_event:", demo_event)
 
         is_course_match = False
         for idx, sheet_details in enumerate(sheet_details_list):
-            print("instructor (exs):", sheet_details["instructor"])
-            # print("\nsheet_details:", sheet_details)
-            # print("")
-            # print("demo_event quarter:", quarter)
             is_course_match = (
                     instructor == sheet_details["instructor"]
                     and course_code == sheet_details["course_code"]
@@ -69,24 +62,16 @@ for i, event in enumerate(calendar.walk("VEVENT")):
                     and quarter == sheet_details["quarter"]
             )
             if is_course_match:
-                print("appending to CURRENT sheet_details - instructor (exs):", sheet_details["instructor"])
-                print("Current appendation index:", idx)
-                print("sheet_details_list[idx]['demo_events']:", sheet_details_list[idx]["demo_events"])
                 sheet_details_list[idx]["demo_events"].append(demo_event)
                 break
         if not is_course_match:
-            print("appending to NEW sheet_details")
-            sheet_details = SHEET_DETAILS.copy()
+            sheet_details = deepcopy(SHEET_DETAILS)
             sheet_details["instructor"] = instructor
             sheet_details["course_code"] = course_code
             sheet_details["year"] = year
             sheet_details["quarter"] = quarter
             sheet_details["demo_events"].append(demo_event)
             sheet_details_list.append(sheet_details)
-        try:
-            print("Feng's demo sheet_details:", sheet_details_list[1]["demo_events"])
-        except:
-            pass
-print(sheet_details_list)
-print(sheet_details_list[0]["demo_events"] == sheet_details_list[1]["demo_events"])
+print(sheet_details_list[0])
+
 wb.save(SCHEDULE_FILE_NAME)
