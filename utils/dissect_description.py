@@ -13,8 +13,8 @@ def dissect_description(description: str):
         idx_demo_start, idx_demo_end = 0, 0
         for i, char in enumerate(description):
             if not idx_demo_start:
-                if char == '>':
-                    next_five_characters = description[i + 1:i + 6]
+                if char == ">":
+                    next_five_characters = description[i + 1 : i + 6]
                     is_demo_start = True
                     for c5 in next_five_characters:
                         if c5 in {"<", ">", "/"}:
@@ -25,8 +25,8 @@ def dissect_description(description: str):
                             if c5.isdigit():
                                 idx_demo_start = i + 1
             elif not idx_demo_end:
-                if char == '<':
-                    prev_five_characters = description[i - 6:i - 1]
+                if char == "<":
+                    prev_five_characters = description[i - 6 : i - 1]
                     is_demo_end = True
                     for c5 in prev_five_characters:
                         if c5 in {"<", ">", "/"}:
@@ -37,17 +37,19 @@ def dissect_description(description: str):
                 demo_indices.append((idx_demo_start, idx_demo_end))
                 idx_demo_start, idx_demo_end = 0, 0
         for indices in demo_indices:
-            demos.append(description[indices[0]:indices[1]])
+            demos.append(description[indices[0] : indices[1]])
             idx_additional_info_start = demo_indices[len(demo_indices) - 1][1]
             idx_additional_info_end = len(description) - 1
-            additional_info = description[idx_additional_info_start:idx_additional_info_end]
+            additional_info = description[
+                idx_additional_info_start:idx_additional_info_end
+            ]
             additional_info = remove_html(additional_info)
             additional_info = additional_info.strip()
-            info_start = additional_info.find('ation') + 5
-            if additional_info.find('ation:') != -1:
+            info_start = additional_info.find("ation") + 5
+            if additional_info.find("ation:") != -1:
                 info_start += 1
             additional_info = additional_info[info_start:]
-            if len(additional_info) < 5 or '&nbsp;' == additional_info.strip():
+            if len(additional_info) < 5 or "&nbsp;" == additional_info.strip():
                 additional_info = None
 
     else:
@@ -55,7 +57,9 @@ def dissect_description(description: str):
         has_demos = False
         for i, line in enumerate(description_lines):
             if i > 0:
-                line_is_addtional_info = is_similar_strings(line, "Additional Information:")
+                line_is_addtional_info = is_similar_strings(
+                    line, "Additional Information:"
+                )
                 if len(line) > 5 and not line_is_addtional_info:
                     has_demos = True
                 elif line_is_addtional_info:
@@ -70,14 +74,22 @@ def dissect_description(description: str):
                 description_lines.pop(idx_description_line_current)
                 idx_description_line_current = 0
                 continue
-            elif is_similar_strings(line[:len("Additional Informaiton:")], "Additional Information:", threshold=.6):
-                idx_description_line_additional_info_title = idx_description_line_current
+            elif is_similar_strings(
+                line[: len("Additional Informaiton:")],
+                "Additional Information:",
+                threshold=0.6,
+            ):
+                idx_description_line_additional_info_title = (
+                    idx_description_line_current
+                )
                 additional_info = description_lines[idx_description_line_current]
-                if len(additional_info) > len('Additional Information:') + 5:
+                if len(additional_info) > len("Additional Information:") + 5:
                     # Case 1: Additional information is on the same line as "Additional Information" Title
-                    idx_additional_info_title_end = additional_info.find(':') + 1
+                    idx_additional_info_title_end = additional_info.find(":") + 1
                     if not idx_additional_info_title_end:
-                        idx_additional_info_title_end = additional_info[18:].find('on') + 2
+                        idx_additional_info_title_end = (
+                            additional_info[18:].find("on") + 2
+                        )
                     additional_info = additional_info[idx_additional_info_title_end:]
                     break
                 elif idx_description_line_current < len(description_lines) - 1:
@@ -91,7 +103,7 @@ def dissect_description(description: str):
                         else:
                             additional_info = None
                     break
-                elif additional_info.find('formation') != -1:
+                elif additional_info.find("formation") != -1:
                     # Case 3: Additional Information is empty
                     additional_info = None
                     break
@@ -112,8 +124,8 @@ def dissect_description(description: str):
         elif is_similar_strings(demo, "Additional Information"):
             demos.pop(i)
             i = 0
-        elif '&' in demo:
-            idx_extra_ampersand = demo.index('&')
+        elif "&" in demo:
+            idx_extra_ampersand = demo.index("&")
             demos[i] = demo[:idx_extra_ampersand]
             i = 0
         else:

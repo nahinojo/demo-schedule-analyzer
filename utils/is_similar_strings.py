@@ -1,4 +1,4 @@
-def is_similar_strings(string_1, string_2, threshold=.6):
+def is_similar_strings(string_1, string_2, threshold=0.6):
     string_1 = string_1.lower()
     string_2 = string_2.lower()
     number_characters_matching = 0

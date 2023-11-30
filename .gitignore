@@ -1,2 +1,6 @@
-demo-calendar.ics
+# File Extensions
+*.ics
+*.xlsx
+
+# Sanbox Development Paths
 *sandbox*
