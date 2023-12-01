@@ -1,6 +1,12 @@
+# Config
+.idea/
+venv
+
 # File Extensions
 *.ics
-*.xlsx
+
+# Build
+demo-schedule.xlsx
 
 # Sanbox Development Paths
 *sandbox*
