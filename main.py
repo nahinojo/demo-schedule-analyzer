@@ -6,6 +6,7 @@ from copy import deepcopy
 MIN_YEAR = 2023
 CALENDAR_FILE_NAME = "demo-calendar.ics"
 SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
+BUILD_PATH = "./build"
 SHEET_DETAILS = {
     "instructor": str,
     "course_code": str,
@@ -16,9 +17,12 @@ SHEET_DETAILS = {
 
 wb = Workbook()
 ws = wb.active
-get_calendar()
+get_calendar(
+    build_path=BUILD_PATH,
+    calendar_file_name=CALENDAR_FILE_NAME
+)
 
-with open(f"./{CALENDAR_FILE_NAME}") as f:
+with open(f"{BUILD_PATH}/{CALENDAR_FILE_NAME}") as f:
     calendar = Calendar.from_ical(f.read())
 sheet_details_list = []
 for i, event in enumerate(calendar.walk("VEVENT")):
@@ -74,4 +78,4 @@ for i, event in enumerate(calendar.walk("VEVENT")):
             sheet_details_list.append(sheet_details)
 print(sheet_details_list[0])
 
-wb.save(SCHEDULE_FILE_NAME)
+wb.save(f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}")
