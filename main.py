@@ -2,29 +2,28 @@ from utils import get_calendar, dissect_description, get_quarter
 from icalendar import Calendar
 from openpyxl import Workbook
 from copy import deepcopy
+from datetime import datetime
 
 MIN_YEAR = 2023
+BUILD_PATH = "./build"
 CALENDAR_FILE_NAME = "demo-calendar.ics"
 SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
-BUILD_PATH = "./build"
-SHEET_DETAILS = {
+CALENDAR_PATH = f"{BUILD_PATH}/{CALENDAR_FILE_NAME}"
+SCHEDULE_PATH = f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}"
+COURSE_DETAILS = {
     "instructor": str,
     "course_code": str,
     "year": int,
     "quarter": str,
     "demo_events": [],
 }
-
-wb = Workbook()
-ws = wb.active
 get_calendar(
-    build_path=BUILD_PATH,
-    calendar_file_name=CALENDAR_FILE_NAME
+    calendar_path=CALENDAR_PATH
 )
 
 with open(f"{BUILD_PATH}/{CALENDAR_FILE_NAME}") as f:
     calendar = Calendar.from_ical(f.read())
-sheet_details_list = []
+course_details_list = []
 for i, event in enumerate(calendar.walk("VEVENT")):
     date_start = event.get("DTSTART").dt
     year = date_start.year
@@ -58,24 +57,59 @@ for i, event in enumerate(calendar.walk("VEVENT")):
         }
 
         is_course_match = False
-        for idx, sheet_details in enumerate(sheet_details_list):
+        for idx, course_details in enumerate(course_details_list):
             is_course_match = (
-                    instructor == sheet_details["instructor"]
-                    and course_code == sheet_details["course_code"]
-                    and year == sheet_details["year"]
-                    and quarter == sheet_details["quarter"]
+                    instructor == course_details["instructor"]
+                    and course_code == course_details["course_code"]
+                    and year == course_details["year"]
+                    and quarter == course_details["quarter"]
             )
             if is_course_match:
-                sheet_details_list[idx]["demo_events"].append(demo_event)
+                course_details_list[idx]["demo_events"].append(demo_event)
                 break
         if not is_course_match:
-            sheet_details = deepcopy(SHEET_DETAILS)
-            sheet_details["instructor"] = instructor
-            sheet_details["course_code"] = course_code
-            sheet_details["year"] = year
-            sheet_details["quarter"] = quarter
-            sheet_details["demo_events"].append(demo_event)
-            sheet_details_list.append(sheet_details)
-print(sheet_details_list[0])
+            course_details = deepcopy(COURSE_DETAILS)
+            course_details["instructor"] = instructor
+            course_details["course_code"] = course_code
+            course_details["year"] = year
+            course_details["quarter"] = quarter
+            course_details["demo_events"].append(demo_event)
+            course_details_list.append(course_details)
 
-wb.save(f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}")
+wb = Workbook()
+for course_details in course_details_list:
+    ws_title = (
+        f"{course_details['instructor']}"
+        f" {course_details['course_code']}"
+        f" {course_details['quarter']}"
+        f" {course_details['year']}"
+    )
+    ws = wb.create_sheet(title=ws_title)
+    schedule_span_weeks = 1
+    prev_date = None
+    for demo_event in course_details["demo_events"]:
+        year = course_details["year"]
+        month = course_details["month"]
+        day = course_details["day"]
+        curr_date = datetime(
+            year=year,
+            month=month,
+            day=day
+        )
+        if prev_date is not None:
+            date_difference_days = curr_date.day - prev_date.day
+            if date_difference > 2:
+                prev_date_weekday = prev_date.weekday()
+                date_weekday = curr_date.weekday()
+
+        prev_date = curr_date
+
+
+    weeks_in_quarter = 10
+    if course_details["quarter"] == "fall":
+        weeks_in_quarter = 11
+    schedule_start_delay_weeks = 0
+
+
+print(course_details_list)
+wb.save(SCHEDULE_PATH)

@@ -2,9 +2,6 @@
 .idea/
 venv/
 
-# File Extensions
-*.ics
-
 # Build
 build/
 
