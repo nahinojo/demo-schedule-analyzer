@@ -1,8 +1,13 @@
-from utils import get_calendar, dissect_description, get_quarter
+from utils import (
+    get_calendar,
+    dissect_description,
+    get_term,
+    date_difference_school_weeks,
+)
 from icalendar import Calendar
 from openpyxl import Workbook
 from copy import deepcopy
-from datetime import datetime
+from datetime import date
 
 MIN_YEAR = 2023
 BUILD_PATH = "./build"
@@ -14,19 +19,19 @@ COURSE_DETAILS = {
     "instructor": str,
     "course_code": str,
     "year": int,
-    "quarter": str,
+    "term": str,
     "demo_events": [],
 }
-get_calendar(
-    calendar_path=CALENDAR_PATH
-)
-
+get_calendar(calendar_path=CALENDAR_PATH)
 with open(f"{BUILD_PATH}/{CALENDAR_FILE_NAME}") as f:
     calendar = Calendar.from_ical(f.read())
 course_details_list = []
 for i, event in enumerate(calendar.walk("VEVENT")):
-    date_start = event.get("DTSTART").dt
-    year = date_start.year
+    demo_datetime = event.get("DTSTART").dt
+    demo_date = date(
+        year=demo_datetime.year, month=demo_datetime.month, day=demo_datetime.day
+    )
+    year = demo_date.year
     if year >= MIN_YEAR:
         summary = str(event.get("SUMMARY"))
 
@@ -39,77 +44,76 @@ for i, event in enumerate(calendar.walk("VEVENT")):
         if not is_course:
             continue
 
-        instructor = summary[summary.find(" ") + 1:]
+        instructor = summary[summary.find(" ") + 1 :]
         course_code = summary[: summary.find(" ")]
         description = str(event.get("DESCRIPTION"))
         demos, additional_info = dissect_description(description)
-        month = date_start.month
-        day = date_start.day
-        quarter = get_quarter(
-            month=month,
-            day=day
-        )
-        demo_event = {
-            "month": month,
-            "day": day,
+        term = get_term(demo_date)
+        new_demo_event = {
+            "date": demo_date,
             "demos": demos,
-            # "additional_info": additional_info,
+            "additional_info": additional_info,
         }
+        is_in_existing_course = False
+        for course_details in course_details_list:
 
-        is_course_match = False
-        for idx, course_details in enumerate(course_details_list):
-            is_course_match = (
-                    instructor == course_details["instructor"]
-                    and course_code == course_details["course_code"]
-                    and year == course_details["year"]
-                    and quarter == course_details["quarter"]
+            is_in_existing_course = (
+                instructor == course_details["instructor"]
+                and course_code == course_details["course_code"]
+                and year == course_details["year"]
+                and term == course_details["term"]
             )
-            if is_course_match:
-                course_details_list[idx]["demo_events"].append(demo_event)
-                break
-        if not is_course_match:
+            if is_in_existing_course:
+                demo_events = course_details["demo_events"]
+                latest_demo_event_date = course_details["demo_events"][-1]["date"]
+                new_demo_event_date = new_demo_event["date"]
+                if new_demo_event_date > latest_demo_event_date:
+                    demo_events.append(new_demo_event)
+                    break
+                else:
+                    for curr_demo_idx, curr_demo_event in enumerate(demo_events):
+                        curr_demo_event_date = curr_demo_event["date"]
+                        if new_demo_event_date < curr_demo_event_date:
+                            demo_events.insert(curr_demo_idx, new_demo_event)
+                            break
+                    break
+
+            print(20 * " - ")
+        if not is_in_existing_course:
             course_details = deepcopy(COURSE_DETAILS)
             course_details["instructor"] = instructor
             course_details["course_code"] = course_code
             course_details["year"] = year
-            course_details["quarter"] = quarter
-            course_details["demo_events"].append(demo_event)
+            course_details["term"] = term
+            course_details["demo_events"].append(new_demo_event)
             course_details_list.append(course_details)
+
 
 wb = Workbook()
 for course_details in course_details_list:
-    ws_title = (
-        f"{course_details['instructor']}"
-        f" {course_details['course_code']}"
-        f" {course_details['quarter']}"
-        f" {course_details['year']}"
-    )
-    ws = wb.create_sheet(title=ws_title)
-    schedule_span_weeks = 1
-    prev_date = None
-    for demo_event in course_details["demo_events"]:
-        year = course_details["year"]
-        month = course_details["month"]
-        day = course_details["day"]
-        curr_date = datetime(
-            year=year,
-            month=month,
-            day=day
+    print(20 * ' - ')
+    print("course_details:", course_details)
+    ws = wb.create_sheet(
+        title=(
+            f"{course_details['course_code']}"
+            f" {course_details['instructor']}"
+            f" - {course_details['term']}"
+            f" {course_details['year']}"
         )
-        if prev_date is not None:
-            date_difference_days = curr_date.day - prev_date.day
-            if date_difference > 2:
-                prev_date_weekday = prev_date.weekday()
-                date_weekday = curr_date.weekday()
+    )
+    earliest_demo_event_date = course_details["demo_events"][0]["date"]
+    latest_demo_event_date = course_details["demo_events"][-1]["date"]
+    print("earliest_date:", earliest_demo_event_date)
+    print("latest_date:", latest_demo_event_date)
+    schedule_span_school_weeks = date_difference_school_weeks(latest_demo_event_date, earliest_demo_event_date)
+    print("schedule_span_school_weeks:", schedule_span_school_weeks)
 
-        prev_date = curr_date
-
-
-    weeks_in_quarter = 10
-    if course_details["quarter"] == "fall":
-        weeks_in_quarter = 11
-    schedule_start_delay_weeks = 0
-
-
-print(course_details_list)
+    term = course_details["term"]
+    school_weeks_in_term = 11
+    school_week_start = 1
+    if term == "fall":
+        school_weeks_in_term = 12
+        school_week_start = 0
+    elif (term == "summer_1") or (term == "summer_2"):
+        school_weeks_in_term = 6
 wb.save(SCHEDULE_PATH)
