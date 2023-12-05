@@ -2,7 +2,7 @@ import requests
 import os
 
 
-def get_calendar(calendar_path):
+def request_calendar(calendar_path):
     url = (
         "https://calendar.google.com/calendar/ical/7k8ivkgvm0pgtta67pfafecqmg%40group.calendar.google.com/public/basic"
         ".ics"

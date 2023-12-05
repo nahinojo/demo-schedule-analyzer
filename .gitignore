@@ -1,9 +1,9 @@
 # Configuration
 .idea/
-venv/
 
-# Build
+# Automatic file generation and retrieval
 build/
+downloads/
 
-# Sanbox Development Paths
+# Playground Development
 *sandbox*
