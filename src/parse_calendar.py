@@ -52,14 +52,14 @@ def parse_calendar(
         if target_instructor not in {None, instructor}:
             continue
         description = str(calendar_event.get("DESCRIPTION"))
-        demos, additional_info = dissect_description(description)
+        demos, additional_information = dissect_description(description)
         term = get_course_term(demo_date)
         if target_term not in {term, None}:
             continue
         new_demo_event = {
             "date": demo_date,
             "demos": demos,
-            "additional_info": additional_info,
+            "additional_information": additional_information,
         }
         is_in_existing_course = False
         for course_details in course_details_list:
