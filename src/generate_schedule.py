@@ -3,6 +3,7 @@ from utils import date_difference_school_weeks
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.cell.cell import MergedCell
 from parse_calendar import parse_calendar
 
 BUILD_PATH = "./build"
@@ -37,10 +38,15 @@ def generate_schedule(course_details_list: list):
 
         course_demos_list = []
         row_idx = 2
-        demo_event_week = int(course_details["demo_event_list"][0]["date"] != 9)  # Fall quarter begins at Week 0
+        first_demo_date = course_details["demo_event_list"][0]["date"]
+        print()
+        demo_event_week = int(
+            first_demo_date.month != 9
+            or first_demo_date.weekday() < 3
+        )  # Fall quarter begins at Week 0
         demo_count = 0
         for demo_event_idx, demo_event in enumerate(course_details["demo_event_list"]):
-            if demo_event_idx > 1:
+            if demo_event_idx > 0:
                 demo_event_week += date_difference_school_weeks(
                     prev_date=course_details["demo_event_list"][demo_event_idx - 1]["date"],
                     next_date=demo_event["date"]
@@ -159,7 +165,10 @@ def generate_schedule(course_details_list: list):
             row_idx = row_idx_0 + 1  # 1-index conversion for Sheet.
             if row_idx > 1:
                 sheet.row_dimensions[row_idx].height = 40
-            is_new_date = row[0].value is not None
+            weekday_cell = row[0]
+            is_empty_weekday_cell = weekday_cell.value is None
+            is_new_date = not is_empty_weekday_cell
+            is_leave_demo_events_empty = is_empty_weekday_cell and type(weekday_cell) != MergedCell
             for col_idx_0, cell in enumerate(row):
                 col_idx = col_idx_0 + 1  # 1-index conversion for Sheet.
                 is_title = row_idx == 1
@@ -178,7 +187,7 @@ def generate_schedule(course_details_list: list):
                     else:
                         cell.fill = demo_event_title_fill
                 else:
-                    if is_demo_events:
+                    if is_demo_events and not is_leave_demo_events_empty:
                         cell.fill = demo_event_data_fill
                         if is_weekday:
                             cell.alignment = absolute_center_alignment
@@ -204,14 +213,13 @@ def generate_schedule(course_details_list: list):
                         else:
                             cell.alignment = default_alignment
                             cell.font = default_font
-
     wb.save(SCHEDULE_PATH)
 
 
 if __name__ == "__main__":
     test_course_details_list = parse_calendar(
-        target_year=2023,
-        is_target_year_as_minium=True,
-        target_course_code="7C"
+        target_year=2022,
+        target_instructor="Krivorotov",
+        target_course_code="7E"
     )
     generate_schedule(test_course_details_list)

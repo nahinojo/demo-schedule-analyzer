@@ -4,25 +4,26 @@ from .is_similar_strings import is_similar_strings
 
 def dissect_description(description: str):
     description = description.strip()
-    has_html_linebreaks = "<" in description
+    has_html = "<" in description
     demo_indices = []
     demos = []
     additional_info = None
-
-    if has_html_linebreaks:
+    if has_html:
         idx_demo_start, idx_demo_end = 0, 0
         for i, char in enumerate(description):
             if not idx_demo_start:
                 if char == ">":
                     next_five_characters = description[i + 1 : i + 6]
                     is_demo_start = True
+                    if next_five_characters in "Additional Information:":
+                        break
                     for c5 in next_five_characters:
                         if c5 in {"<", ">", "/"}:
                             is_demo_start = False
                             break
                     if is_demo_start:
                         for c5 in next_five_characters:
-                            if c5.isdigit():
+                            if c5.isdigit() or c5.isupper():
                                 idx_demo_start = i + 1
             elif not idx_demo_end:
                 if char == "<":
@@ -51,7 +52,6 @@ def dissect_description(description: str):
             additional_info = additional_info[info_start:]
             if len(additional_info) < 5 or "&nbsp;" == additional_info.strip():
                 additional_info = None
-
     else:
         description_lines = description.splitlines()
         has_demos = False
@@ -130,7 +130,7 @@ def dissect_description(description: str):
         if len(demo) <= 5:
             demos.pop(i)
             i = 0
-        elif is_similar_strings(demo, "Additional Information"):
+        elif is_similar_strings(demo, "Additional Information") or is_similar_strings(demo, "DEMONSTRATIONS:"):
             demos.pop(i)
             i = 0
         elif "&" in demo:
@@ -140,7 +140,10 @@ def dissect_description(description: str):
         else:
             i += 1
     if additional_info is not None:
-        additional_info.strip(".")
-        if additional_info[-1] != ".":  # .strip(".") may have failed to remove "."
+        additional_info = additional_info.replace("&nbsp;", "")
+        additional_info.strip(". ")
+        if additional_info[-1] not in {".", "\""}:  # .strip(".") may have failed to remove "."
             additional_info += "."
+        while additional_info[0] == " ":  # .strip(" ") may have failed to remove " "
+            additional_info = additional_info[1:]
     return demos, additional_info

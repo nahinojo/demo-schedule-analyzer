@@ -4,6 +4,7 @@ from utils import (
     request_calendar,
     dissect_description,
     get_course_term,
+    is_broken_event
 )
 
 DOWNLOAD_PATH = "./downloads"
@@ -38,6 +39,11 @@ def parse_calendar(
             month=demo_datetime.month,
             day=demo_datetime.day
         )
+        instructor = summary[summary.find(" ") + 1:]
+        if is_broken_event(demo_date, instructor):
+            continue
+        if target_instructor not in {None, instructor}:
+            continue
         year = demo_date.year
         if is_target_year_as_minium:
             is_course_in_year = year >= target_year
@@ -47,9 +53,6 @@ def parse_calendar(
             continue
         course_code = summary[: summary.find(" ")]
         if target_course_code not in {None, course_code}:
-            continue
-        instructor = summary[summary.find(" ") + 1:]
-        if target_instructor not in {None, instructor}:
             continue
         description = str(calendar_event.get("DESCRIPTION"))
         demos, additional_information = dissect_description(description)
@@ -98,7 +101,7 @@ def parse_calendar(
 
 if __name__ == '__main__':
     print(parse_calendar(
-        target_instructor="Ochoa",
-        target_year=2023,
-        target_term="Winter"
+        target_instructor="Krivorotov",
+        target_year=2022,
+        target_course_code="7E"
     )[0])
