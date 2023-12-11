@@ -17,11 +17,7 @@ def new_schedule():
             is_target_year_as_minimum = True
         elif is_target_year_as_minimum.lower() == "false":
             is_target_year_as_minimum = False
-    print("target_course_code:", target_course_code)
-    print("target_instructor:", target_instructor)
-    print("target_term:", target_term)
-    print("target_year:", target_year)
-    print("is_target_year_as_minimum:", is_target_year_as_minimum)
+
     generate_schedule(
         target_course_code=target_course_code,
         target_instructor=target_instructor,

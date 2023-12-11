@@ -167,8 +167,6 @@ def generate_schedule(
         sheet.column_dimensions["D"].width = 15
         sheet.column_dimensions["E"].width = 15
         is_new_date = True
-        print("demo_count_list:", demo_count_list)
-        print("sheet_idx:", sheet_idx)
         max_row = demo_count_list[sheet_idx] + 1
         if max_row < 5:
             max_row = 5
