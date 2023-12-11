@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 from utils.generate_schedule import generate_schedule, SCHEDULE_FILE_NAME
 
 app = Flask(__name__)
@@ -17,7 +17,6 @@ def new_schedule():
             is_target_year_as_minimum = True
         elif is_target_year_as_minimum.lower() == "false":
             is_target_year_as_minimum = False
-
     generate_schedule(
         target_course_code=target_course_code,
         target_instructor=target_instructor,
@@ -25,8 +24,12 @@ def new_schedule():
         target_year=target_year,
         is_target_year_as_minium=is_target_year_as_minimum
     )
-
     return send_file(f"./build/{SCHEDULE_FILE_NAME}", as_attachment=True)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
