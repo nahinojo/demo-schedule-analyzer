@@ -1,17 +1,30 @@
-from utils import date_difference_school_weeks
+from .date_difference_school_weeks import date_difference_school_weeks
+from .parse_calendar import parse_calendar
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.cell.cell import MergedCell
-from parse_calendar import parse_calendar
 
 BUILD_PATH = "./build"
 SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
 SCHEDULE_PATH = f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}"
 
 
-def generate_schedule(course_details_list: list):
+def generate_schedule(
+        target_course_code: str = None,
+        target_instructor: str = None,
+        target_term: str = None,
+        target_year: int = 2023,
+        is_target_year_as_minium: bool = True,
+):
+    course_details_list = parse_calendar(
+        target_course_code=target_course_code,
+        target_instructor=target_instructor,
+        target_term=target_term,
+        target_year=target_year,
+        is_target_year_as_minium=is_target_year_as_minium
+    )
     wb = Workbook()
     ws = wb.active  # type: Worksheet
     demo_count_list = []
@@ -154,6 +167,8 @@ def generate_schedule(course_details_list: list):
         sheet.column_dimensions["D"].width = 15
         sheet.column_dimensions["E"].width = 15
         is_new_date = True
+        print("demo_count_list:", demo_count_list)
+        print("sheet_idx:", sheet_idx)
         max_row = demo_count_list[sheet_idx] + 1
         if max_row < 5:
             max_row = 5
@@ -217,9 +232,9 @@ def generate_schedule(course_details_list: list):
 
 
 if __name__ == "__main__":
-    test_course_details_list = parse_calendar(
+    generate_schedule(
         target_year=2022,
         target_instructor="Krivorotov",
         target_course_code="7E"
     )
-    generate_schedule(test_course_details_list)
+

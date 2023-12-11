@@ -1,13 +1,11 @@
-from icalendar import Calendar
 from datetime import date
-from utils import (
-    request_calendar,
-    dissect_description,
-    get_course_term,
-    is_broken_event
-)
+from icalendar import Calendar
+from .dissect_description import dissect_description
+from .get_course_term import get_course_term
+from .is_broken_event import is_broken_event
+from .request_calendar import request_calendar
 
-DOWNLOAD_PATH = "./downloads"
+DOWNLOAD_PATH = "../downloads"
 CALENDAR_FILE_NAME = "demo-calendar.ics"
 CALENDAR_PATH = f"{DOWNLOAD_PATH}/{CALENDAR_FILE_NAME}"
 
