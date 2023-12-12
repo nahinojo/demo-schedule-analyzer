@@ -2,11 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <title>Lecture Demonstrations Schedule Generator</title>
 </head>
 <body>
-    <h1>
-        Lecture Demonstrations Schedule Generator
-    </h1>
+    <header>
+        <h1
+            id="title"
+        >Lecture Demonstration Schedule</h1>
+        <p
+            id="subtitle"
+        >(Select all that apply)</p>
+    </header>
+    <h1
+        class="category-header"
+        id="instructor-header"
+    >Instructor</h1>
+    <h1
+        class="category-header"
+        id="course-code-header"
+    >Course Code</h1>
+    <h1
+        class="category-header"
+        id="term-header"
+    >Term</h1>
+    <h1
+        class="category-header"
+        id="year-header"
+    >Year</h1>
 </body>
 </html>
