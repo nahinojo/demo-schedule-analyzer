@@ -10,7 +10,7 @@ CALENDAR_FILE_NAME = "demo-calendar.ics"
 CALENDAR_PATH = f"{DOWNLOAD_PATH}/{CALENDAR_FILE_NAME}"
 
 
-def parse_calendar(
+def extract_course_details_from_calendar(
         target_course_code: str = None,
         target_instructor: str = None,
         target_term: str = None,
@@ -98,7 +98,7 @@ def parse_calendar(
 
 
 if __name__ == '__main__':
-    print(parse_calendar(
+    print(extract_course_details_from_calendar(
         target_instructor="Krivorotov",
         target_year=2022,
         target_course_code="7E"

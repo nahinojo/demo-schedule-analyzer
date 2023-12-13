@@ -28,7 +28,7 @@ def new_schedule():
 
 
 @app.route('/')
-def index():
+def homepage():
     return render_template('index.html')
 
 

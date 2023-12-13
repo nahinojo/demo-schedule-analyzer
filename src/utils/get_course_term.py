@@ -1,7 +1,7 @@
 from datetime import date
 
 
-def get_course_term(demo_date, return_end_date=False):
+def get_course_term(demo_date):
     year = demo_date.year
     winter_end = date(year, 3, 28)
     spring_end = date(year, 6, 14)

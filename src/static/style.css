@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Montserrat;
+  src: url('Montserrat.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,14 +15,38 @@ body {
 }
 
 h1 {
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 500;
 }
+
 
 #title {
   font-size: 40px;
-  margin: auto;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 15%;
 }
 
 #subtitle {
   font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 80px;
+}
+
+#categories-grid-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  display: grid;
+  grid-template-columns: 300px 300px;
+
+}
+
+.category-item-wrapper {
+  margin-bottom: 100px;
+}
+
+.category-header {
+  text-align: center;
 }

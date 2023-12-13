@@ -1,5 +1,5 @@
 from .date_difference_school_weeks import date_difference_school_weeks
-from .parse_calendar import parse_calendar
+from .extract_course_details_from_calendar import extract_course_details_from_calendar
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -18,7 +18,7 @@ def generate_schedule(
         target_year: int = 2023,
         is_target_year_as_minium: bool = True,
 ):
-    course_details_list = parse_calendar(
+    course_details_list = extract_course_details_from_calendar(
         target_course_code=target_course_code,
         target_instructor=target_instructor,
         target_term=target_term,
