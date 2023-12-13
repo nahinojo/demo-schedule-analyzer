@@ -1,0 +1,39 @@
+{
+  "name": "demo-schedule-analyzer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --stats-children",
+    "dev": "webpack serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.55.0",
+    "eslint-config-standard-with-typescript": "^42.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "html-webpack-plugin": "^5.5.4",
+    "postcss": "^8.4.32",
+    "postcss-loader": "^7.3.3",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.6",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//nahinojo/demo-schedule-analyzer.git"
+  }
+}

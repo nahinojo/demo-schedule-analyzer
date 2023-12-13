@@ -1,9 +1,15 @@
-# Configuration
+# IDE Configuration
 .idea/
 
 # Automatic file generation and retrieval
 build/
 downloads/
+
+# Cache
+*/__pycache__
+
+# Packages
+/node_modules
 
 # Playground Development
 *sandbox*
