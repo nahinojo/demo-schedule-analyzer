@@ -1,5 +1,6 @@
 from flask import Flask, request, send_file, render_template
 from utils.generate_schedule import generate_schedule, SCHEDULE_FILE_NAME
+from utils.extract_course_details_from_calendar import extract_course_details_from_calendar
 
 app = Flask(__name__)
 
@@ -30,6 +31,16 @@ def new_schedule():
 @app.route('/')
 def homepage():
     return render_template('index.html')
+
+
+@app.route('/extract_all_course_details')
+def extract_all_course_details():
+    # Setup as get method with params
+    course_details_list = extract_course_details_from_calendar(
+        target_year=2020,
+        is_target_year_as_minium=True,
+        is_request_new_calendar=True
+    )
 
 
 if __name__ == '__main__':

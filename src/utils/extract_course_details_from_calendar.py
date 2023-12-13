@@ -16,8 +16,10 @@ def extract_course_details_from_calendar(
         target_term: str = None,
         target_year: int = 2023,
         is_target_year_as_minium: bool = True,
+        is_request_new_calendar: bool = True,
 ):
-    request_calendar(calendar_path=CALENDAR_PATH)
+    if is_request_new_calendar:
+        request_calendar(calendar_path=CALENDAR_PATH)
     with open(CALENDAR_PATH) as f:
         calendar = Calendar.from_ical(f.read())
     course_details_list = []
