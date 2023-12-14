@@ -6,7 +6,7 @@ build/
 downloads/
 
 # Cache
-*/__pycache__
+*__pycache__*
 
 # Packages
 /node_modules

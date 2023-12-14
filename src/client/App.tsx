@@ -2,9 +2,7 @@ import React from 'react'
 
 import type { FC } from 'react'
 
-console.log('Executing App file')
 const App: FC = () => {
-  console.log('Executing app element FC!')
   return (
     <>
       <header>
