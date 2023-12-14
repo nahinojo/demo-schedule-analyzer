@@ -11,7 +11,7 @@
 }
 
 body {
-  background-color: #2A2A2A;
+  background-color: #282828;
 }
 
 h1 {
@@ -34,7 +34,7 @@ h1 {
   margin-bottom: 80px;
 }
 
-#categories-grid-wrapper {
+#fields-grid-wrapper {
   margin-left: auto;
   margin-right: auto;
   width: 600px;
@@ -43,10 +43,10 @@ h1 {
 
 }
 
-.category-item-wrapper {
+.field-item-wrapper {
   margin-bottom: 100px;
 }
 
-.category-header {
+.field-header {
   text-align: center;
 }

@@ -33,6 +33,11 @@ def homepage():
     return render_template('index.html')
 
 
+@app.route('/test')
+def test():
+    return "This is my test text"
+
+
 @app.route('/extract_all_course_details')
 def extract_all_course_details():
     # Setup as get method with params
