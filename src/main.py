@@ -1,11 +1,12 @@
-from flask import Flask, request, send_file, render_template
+import os
 from utils.generate_schedule import generate_schedule, SCHEDULE_FILE_NAME
 from utils.extract_course_details_from_calendar import extract_course_details_from_calendar
+from flask import Flask, request, send_file, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/new_schedule', methods=['GET'])
+@app.route('/generate_schedule', methods=['GET'])
 def new_schedule():
     target_course_code = request.args.get('target_course_code', None)
     target_instructor = request.args.get('target_instructor', None)
@@ -25,27 +26,13 @@ def new_schedule():
         target_year=target_year,
         is_target_year_as_minium=is_target_year_as_minimum
     )
-    return send_file(f"./build/{SCHEDULE_FILE_NAME}", as_attachment=True)
+    parent_path = os.getcwd() + '/src'
+    return send_file(f"{parent_path}/build/{SCHEDULE_FILE_NAME}", as_attachment=True)
 
 
 @app.route('/')
 def homepage():
     return render_template('index.html')
-
-
-@app.route('/test')
-def test():
-    return "This is my test text"
-
-
-@app.route('/extract_all_course_details')
-def extract_all_course_details():
-    # Setup as get method with params
-    course_details_list = extract_course_details_from_calendar(
-        target_year=2020,
-        is_target_year_as_minium=True,
-        is_request_new_calendar=True
-    )
 
 
 if __name__ == '__main__':

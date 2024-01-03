@@ -1,12 +1,12 @@
+import os
 from .date_difference_school_weeks import date_difference_school_weeks
 from .extract_course_details_from_calendar import extract_course_details_from_calendar
-
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.cell.cell import MergedCell
 
-BUILD_PATH = "./build"
+BUILD_PATH = f"{os.getcwd()}/src/build"
 SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
 SCHEDULE_PATH = f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}"
 
