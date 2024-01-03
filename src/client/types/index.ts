@@ -1,5 +1,0 @@
-export * from './CategoriesSelections'
-export * from './CategoryName'
-export * from './StringSelections'
-export * from './TermSelections'
-export * from './YearSelections'
