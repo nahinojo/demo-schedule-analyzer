@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route('/generate_schedule', methods=['GET'])
-def new_schedule():
+def generate_schedule():
     target_course_code = request.args.get('target_course_code', None)
     target_instructor = request.args.get('target_instructor', None)
     target_term = request.args.get('target_term', None)

@@ -1,64 +1,36 @@
 import React from 'react'
 import { CategoryMenu } from './components/CategoryMenu'
-import './tailwind.css'
+import './style.css'
 import type { FC } from 'react'
+import Header from './components/Header'
 
 // import type { CategoriesSelections, CategoryName } from './types'
 
 const App: FC = () => {
   // const [categoriesSelections, setCategoriesSelections] = useState<CategoriesSelections>({
   //   courseCode: null,
-  //   instructors: null,
+  //   instructor: null,
   //   term: null,
   //   year: null
   // })
   return (
     <>
-      <header>
-        <h1
-          className='text-red-500'
-          id="title"
-        >Lecture Demonstration Schedule Generator1
-        </h1>
-        <p
-          id="subtitle"
-        >(Select all that apply)
-        </p>
-      </header>
+      <Header />
       <div
-        id="fields-grid-wrapper"
+        className='mx-[25%] grid grid-cols-2'
       >
-        <div
-          className="field-item-wrapper"
-        >
-          <CategoryMenu
-            title='Instructor'
-          />
-        </div>
-        <div
-          className="field-item-wrapper"
-        >
-          <h1
-            className="field-header" id="course-code-header"
-          >Course Code
-          </h1>
-        </div>
-        <div
-          className="field-item-wrapper"
-        >
-          <h1
-            className="field-header" id="term-header"
-          >Term
-          </h1>
-        </div>
-        <div
-          className="field-item-wrapper"
-        >
-          <h1
-            className="field-header" id="year-header"
-          >Year
-          </h1>
-        </div>
+        <CategoryMenu
+          name='instructor'
+        />
+        <CategoryMenu
+          name='courseCode'
+        />
+        <CategoryMenu
+          name='term'
+        />
+        <CategoryMenu
+          name='year'
+        />
       </div>
     </>
   )

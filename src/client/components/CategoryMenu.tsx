@@ -1,29 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { camelToTitleCase } from '../utils'
 
+import type { IndexableRecord } from '../types'
 import type { FC } from 'react'
 
 interface CategoryMenuProps {
-  title: 'Instructor' | 'Course Code' | 'Term' | 'Year'
-  selections?: Record<number, string>
+  name: 'instructor' | 'courseCode' | 'term' | 'year'
+  selections?: IndexableRecord
 }
 
-export const CategoryMenu: FC<CategoryMenuProps> = ({ title, selections }) => {
+export const CategoryMenu: FC<CategoryMenuProps> = ({ name, selections }) => {
+  const title = camelToTitleCase(name)
+  const [options, setOptions] = useState<IndexableRecord | null>(null)
+  useEffect(() => {
+    console.log('useEffect Activated')
+  })
   return (
     <div
-      className='fields-selection-menu-wrapper'
+      className='mx-auto mb-24 w-1/2 grid-cols-2'
+      id="field-grid-wrapper"
     >
       <h1
-        className="field-header text-blue"
+        className="font-medium text-2xl text-center mb-2"
         id="instructor-header"
       >{title}
       </h1>
       <menu
-        className=''
+        className='bg-night rounded-md'
       >
-        <li
-          className='text-yellow-500'
-        >words
-        </li>
+        <li>Ochoa</li>
+        <li>Tucker</li>
       </menu>
     </div>
   )
