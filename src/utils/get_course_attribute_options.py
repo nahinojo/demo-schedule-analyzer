@@ -1,9 +1,9 @@
-def get_possible_course_attributes(course_details_list):
-    instructors = {}
-    course_codes = {}
-    terms = {}
+def get_course_attribute_options(course_details_list):
+    instructors = set()
+    course_codes = set()
+    terms = set()
     for course_details in course_details_list:
-        instructor = course_details["instructors"]
+        instructor = course_details["instructor"]
         course_code = course_details["course_code"]
         term = course_details["term"]
         if instructor not in instructors:
@@ -12,10 +12,9 @@ def get_possible_course_attributes(course_details_list):
             course_codes.add(course_code)
         if term not in terms:
             terms.add(term)
-    possible_course_attributes = {
+    course_attribute_options = {
         "instructors": list(instructors),
         "course_codes": list(course_codes),
         "terms": list(terms)
     }
-    return possible_course_attributes
-
+    return course_attribute_options

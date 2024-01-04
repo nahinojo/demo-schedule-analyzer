@@ -235,4 +235,3 @@ if __name__ == "__main__":
         target_instructor="Krivorotov",
         target_course_code="7E"
     )
-
