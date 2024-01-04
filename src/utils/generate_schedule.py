@@ -227,11 +227,3 @@ def generate_schedule(
                             cell.alignment = default_alignment
                             cell.font = default_font
     wb.save(SCHEDULE_PATH)
-
-
-if __name__ == "__main__":
-    generate_schedule(
-        target_year=2022,
-        target_instructor="Krivorotov",
-        target_course_code="7E"
-    )
