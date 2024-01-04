@@ -11,6 +11,15 @@ interface CategoryMenuProps {
 
 export const CategoryMenu: FC<CategoryMenuProps> = ({ name, selections }) => {
   const title = camelToTitleCase(name)
+  console.log(`Rendering <CategoryMenu /> ${title}...`)
+  useEffect(() => {
+    const apiUrl = 'http://localhost:5000'
+    fetch(`${apiUrl}/course_attribute_options?target_year=2023&target_instructor=Ochoa`)
+      .then(response => {
+        console.log(response.json())
+      })
+      .catch(error => { console.log(error) })
+  })
   const [options, setOptions] = useState<IndexableRecord | null>(null)
   useEffect(() => {
     console.log('useEffect Activated')
