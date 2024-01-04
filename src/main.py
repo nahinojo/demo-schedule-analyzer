@@ -7,8 +7,8 @@ from flask import Flask, request, send_file, render_template
 app = Flask(__name__)
 
 
-@app.route('/generate_schedule', methods=['GET'])
-def generate_schedule():
+@app.route('/create_schedule', methods=['GET'])
+def create_schedule():
     target_course_code = request.args.get('target_course_code', None)
     target_instructor = request.args.get('target_instructor', None)
     target_term = request.args.get('target_term', None)
