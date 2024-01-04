@@ -1,7 +1,8 @@
 import React from 'react'
-
-import type { FC } from 'react'
 import { CategoryMenu } from './components/CategoryMenu'
+import './tailwind.css'
+import type { FC } from 'react'
+
 // import type { CategoriesSelections, CategoryName } from './types'
 
 const App: FC = () => {
@@ -15,8 +16,9 @@ const App: FC = () => {
     <>
       <header>
         <h1
+          className='text-red-500'
           id="title"
-        >Lecture Demonstration Schedule Generator
+        >Lecture Demonstration Schedule Generator1
         </h1>
         <p
           id="subtitle"
