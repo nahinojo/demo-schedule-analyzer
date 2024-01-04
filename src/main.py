@@ -51,7 +51,6 @@ def course_attribute_options():
         target_year=target_year,
         is_target_year_as_minium=is_target_year_as_minimum
     )
-    print("course_details:", course_details)
     return get_course_attribute_options(course_details)
 
 
