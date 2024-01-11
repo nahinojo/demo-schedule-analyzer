@@ -4,7 +4,7 @@
 # Automatic file generation and retrieval
 build/
 downloads/
-**/**/*bundle*
+bundle
 
 # Cache
 *__pycache__*
