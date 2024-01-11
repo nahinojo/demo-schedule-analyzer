@@ -3,8 +3,9 @@ from utils.generate_schedule import generate_schedule, SCHEDULE_FILE_NAME
 from utils.get_course_attribute_options import get_course_attribute_options
 from utils.extract_course_details_from_calendar import extract_course_details_from_calendar
 from flask import Flask, request, send_file, render_template
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/create_schedule', methods=['GET'])
@@ -37,7 +38,11 @@ def course_attribute_options():
     target_instructor = request.args.get('target_instructor', None)
     target_term = request.args.get('target_term', None)
     target_year = request.args.get('target_year', None)
-    target_year = int(target_year)
+    if target_year is None:
+        target_year = 2018
+    else:
+        target_year = int(target_year)
+
     is_target_year_as_minimum = request.args.get('is_target_year_as_minimum', True)
     if type(is_target_year_as_minimum) == str:
         if is_target_year_as_minimum.lower() == "true":
