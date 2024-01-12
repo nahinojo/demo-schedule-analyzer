@@ -1,5 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
+import { Checkbox, FormGroup, FormControlLabel } from '@mui/material'
+import { orange, grey } from '@mui/material/colors'
 
 interface CategoryMenuProps {
   title: 'Instructor' | 'Course Code' | 'Term' | 'Year'
@@ -14,28 +16,64 @@ export const CategoryMenu: FC<CategoryMenuProps> = ({ title, options }) => {
       id="field-grid-wrapper"
     >
       <h1
-        className="font-medium text-2xl text-center mb-2"
+        className="font-medium text-2xl text-center mb-2 text-white"
         id="instructor-header"
       >{title}
       </h1>
-      <menu
+      <div
         className='bg-night rounded-md'
+        id='field-options-background'
       >{
-          !!isNullOptions && <li>Loading...</li>
+          !!isNullOptions && (
+            <p
+              className='text-white'
+            >Loading...
+            </p>
+          )
         }
         {
-          !isNullOptions && options?.map((
-            option, index
-          ) => {
-            return (
-              <li
-                key={index}
-              >{option}
-              </li>
-            )
-          })
+          !isNullOptions && (
+            <FormGroup>
+              {
+                options?.map((
+                  option, index
+                ) => {
+                  const label = { inputProps: { 'aria-label': `checkbox ${index}-${option}` } }
+                  return (
+                    <FormControlLabel
+                      control={
+                        (
+                          <Checkbox
+                            {...label}
+                            sx={
+                              {
+                                color: grey[700],
+                                // eslint-disable-next-line sort-keys
+                                '&.Mui-checked': {
+                                  color: orange[600]
+                                }
+                              }
+                            }
+                            defaultChecked={false}
+                          />
+                        )
+                      }
+                      sx={
+                        {
+                          color: 'white',
+                          marginLeft: 0.25
+                        }
+                      }
+                      key={index}
+                      label={option}
+                    />
+                  )
+                })
+              }
+            </FormGroup>
+          )
         }
-      </menu>
+      </div>
     </div>
   )
 }

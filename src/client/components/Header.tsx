@@ -5,12 +5,12 @@ const Header: FC = () => {
   return (
     <header>
       <h1
-        className='font-bold text-4xl text-center mt-[15%]'
+        className='font-bold text-4xl text-center mt-[15%] text-white'
         id="title"
       >Lecture Demonstration Schedule Generator
       </h1>
       <p
-        className='text-2xl text-center mt-5 mb-20'
+        className='text-2xl text-center text-white mt-5 mb-20'
         id="subtitle"
       >(Select all that apply)
       </p>

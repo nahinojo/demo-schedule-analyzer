@@ -45,7 +45,7 @@ const App: FC = () => {
     <>
       <Header />
       <div
-        className='mx-[25%] grid grid-cols-2'
+        className='mx-[20%] grid grid-cols-2'
       >
         <CategoryMenu
           options={categoriesOptions.instructors}
