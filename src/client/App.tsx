@@ -19,23 +19,28 @@ const App: FC = () => {
     terms: null,
     years: null
   })
-  useEffect(() => {
-    const apiUrl = 'http://localhost:5000'
-    fetch(`${apiUrl}/course_attribute_options`)
-      .then(async response => { return await (response.json() as Promise<Response>) })
-      .then(response => {
-        response.course_codes = Array.from(new Set(response.course_codes))
-        response.instructors = Array.from(new Set(response.instructors))
-        response.terms = Array.from(new Set(response.terms))
-        setCategoriesOptions({
-          courseCodes: response.course_codes,
-          instructors: response.instructors,
-          terms: response.terms,
-          years: null
+  useEffect(
+    () => {
+      console.log('Fetching course attribute options...')
+      const apiUrl = 'http://localhost:5000'
+      fetch(`${apiUrl}/course_attribute_options`)
+        .then(async response => { return await (response.json() as Promise<Response>) })
+        .then(response => {
+          response.course_codes = Array.from(new Set(response.course_codes))
+          response.instructors = Array.from(new Set(response.instructors))
+          response.terms = Array.from(new Set(response.terms))
+          setCategoriesOptions(categoriesOptions => {
+            return {
+              courseCodes: response.course_codes,
+              instructors: response.instructors,
+              terms: response.terms,
+              years: null
+            }
+          })
         })
-      })
-      .catch(error => { console.log(error) })
-  })
+        .catch(error => { console.log(error) })
+    }, []
+  )
   return (
     <>
       <Header />

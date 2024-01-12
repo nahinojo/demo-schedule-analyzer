@@ -1,6 +1,5 @@
 # TODO
 ### Issues
-- The API is being continuously called every 10 seconds, for some reason. I believe it has to pertain with how useEffect is being called. 
 ### Features
 ##### Set up an .env to be read by both front end and back end
 - Useful when determining what port the application is being run on.
