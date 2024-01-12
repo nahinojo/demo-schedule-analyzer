@@ -40,6 +40,11 @@ def extract_course_details_from_calendar(
             day=demo_datetime.day
         )
         instructor = summary[summary.find(" ") + 1:]
+        instructor = instructor.strip()
+        if any(char.isdigit() for char in instructor):
+            continue
+        if "discussion" in instructor.lower():
+            continue
         if is_broken_event(demo_date, instructor):
             continue
         if target_instructor not in {None, instructor}:
