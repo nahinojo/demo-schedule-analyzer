@@ -12,6 +12,7 @@ interface CategoryMenuProps {
 }
 
 const CategoryMenu: FC<CategoryMenuProps> = ({ title, options, isOptionsCategory }) => {
+  const isUndefinedData = options === undefined
   const isNullData = options === null
   if (!isNullData) {
     const isInvalidCategoryDataType = isOptionsCategory !== (typeof options === 'object')
@@ -23,6 +24,8 @@ const CategoryMenu: FC<CategoryMenuProps> = ({ title, options, isOptionsCategory
       return null
     }
   }
+  const isDisplayOptions = !isNullData && !isUndefinedData && isOptionsCategory
+  const isDisplayYear = isUndefinedData && !isOptionsCategory
   return (
     <div
       className='mx-auto mb-24 w-1/2 grid-cols-2'
@@ -45,14 +48,14 @@ const CategoryMenu: FC<CategoryMenuProps> = ({ title, options, isOptionsCategory
           )
         }
         {
-          !isNullData && !!isOptionsCategory && (
+          !!isDisplayOptions && (
             <OptionSelector
-              options={options as string[]}
+              options={options}
             />
           )
         }
         {
-          !isNullData && !isOptionsCategory && (
+          !!isDisplayYear && (
             <YearSelector />
           )
         }
