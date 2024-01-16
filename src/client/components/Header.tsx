@@ -5,7 +5,7 @@ const Header: FC = () => {
   return (
     <header>
       <h1
-        className='font-bold text-4xl text-center mt-[15%] text-white'
+        className='font-bold text-4xl text-center mt-16 text-white'
         id="title"
       >Lecture Demonstration Schedule Generator
       </h1>

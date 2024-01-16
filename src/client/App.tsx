@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 import React, { useEffect, useState } from 'react'
-import { CategoryMenu } from './components/CategoryMenu'
+import CategoryMenu from './components/CategoryMenu'
 import './style.css'
 import type { FC } from 'react'
 import Header from './components/Header'
@@ -28,7 +28,6 @@ const App: FC = () => {
   }
   useEffect(
     () => {
-      console.log('Fetching course attribute options...')
       const apiUrl = 'http://localhost:5000'
       fetch(`${apiUrl}/course_attribute_options`)
         .then(async response => { return await (response.json() as Promise<Response>) })
@@ -60,18 +59,18 @@ const App: FC = () => {
         className='mx-[20%] grid grid-cols-2'
       >
         <CategoryMenu
-          categoryData={categoriesOptions.instructors}
           isOptionsCategory={true}
+          options={categoriesOptions.instructors}
           title='Instructor'
         />
         <CategoryMenu
-          categoryData={categoriesOptions.courseCodes}
           isOptionsCategory={true}
+          options={categoriesOptions.courseCodes}
           title='Course Code'
         />
         <CategoryMenu
-          categoryData={categoriesOptions.terms}
           isOptionsCategory={true}
+          options={categoriesOptions.terms}
           title='Term'
         />
         <CategoryMenu

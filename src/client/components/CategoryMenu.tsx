@@ -1,8 +1,6 @@
 import React from 'react'
 import { OptionSelector } from './OptionSelector'
 import { YearSelector } from './YearSelector'
-import { Checkbox, FormGroup, FormControlLabel } from '@mui/material'
-import { orange, grey } from '@mui/material/colors'
 
 import type { FC } from 'react'
 import type { Options } from '../types'
@@ -10,17 +8,17 @@ import type { Options } from '../types'
 interface CategoryMenuProps {
   title: 'Instructor' | 'Course Code' | 'Term' | 'Year'
   isOptionsCategory: boolean
-  categoryData?: Options | number
+  options?: Options
 }
 
-export const CategoryMenu: FC<CategoryMenuProps> = ({ title, categoryData, isOptionsCategory }) => {
-  const isNullData = categoryData === null
+const CategoryMenu: FC<CategoryMenuProps> = ({ title, options, isOptionsCategory }) => {
+  const isNullData = options === null
   if (!isNullData) {
-    const isInvalidCategoryDataType = isOptionsCategory !== (typeof categoryData === 'string')
+    const isInvalidCategoryDataType = isOptionsCategory !== (typeof options === 'object')
     if (isInvalidCategoryDataType) {
       console.error('Invalid data type for categoryData.')
       console.error(
-        'categoryData:', categoryData, '\nisOptionsCategory:', isOptionsCategory
+        'categoryData:', options, '\nisOptionsCategory:', isOptionsCategory
       )
       return null
     }
@@ -49,11 +47,18 @@ export const CategoryMenu: FC<CategoryMenuProps> = ({ title, categoryData, isOpt
         {
           !isNullData && !!isOptionsCategory && (
             <OptionSelector
-              options={categoryData as Exclude<Options, null>}
+              options={options as string[]}
             />
+          )
+        }
+        {
+          !isNullData && !isOptionsCategory && (
+            <YearSelector />
           )
         }
       </div>
     </div>
   )
 }
+
+export default CategoryMenu
