@@ -1,15 +1,30 @@
 import React from 'react'
-import type { FC } from 'react'
+import { OptionSelector } from './OptionSelector'
+import { YearSelector } from './YearSelector'
 import { Checkbox, FormGroup, FormControlLabel } from '@mui/material'
 import { orange, grey } from '@mui/material/colors'
 
+import type { FC } from 'react'
+import type { Options } from '../types'
+
 interface CategoryMenuProps {
   title: 'Instructor' | 'Course Code' | 'Term' | 'Year'
-  options?: string[] | null
+  isOptionsCategory: boolean
+  categoryData?: Options | number
 }
 
-export const CategoryMenu: FC<CategoryMenuProps> = ({ title, options }) => {
-  const isNullOptions = options === null
+export const CategoryMenu: FC<CategoryMenuProps> = ({ title, categoryData, isOptionsCategory }) => {
+  const isNullData = categoryData === null
+  if (!isNullData) {
+    const isInvalidCategoryDataType = isOptionsCategory !== (typeof categoryData === 'string')
+    if (isInvalidCategoryDataType) {
+      console.error('Invalid data type for categoryData.')
+      console.error(
+        'categoryData:', categoryData, '\nisOptionsCategory:', isOptionsCategory
+      )
+      return null
+    }
+  }
   return (
     <div
       className='mx-auto mb-24 w-1/2 grid-cols-2'
@@ -21,56 +36,21 @@ export const CategoryMenu: FC<CategoryMenuProps> = ({ title, options }) => {
       >{title}
       </h1>
       <div
-        className='bg-night rounded-md'
+        className='bg-night rounded-md max-h-80 overflow-y-auto py-1'
         id='field-options-background'
       >{
-          !!isNullOptions && (
+          !!isNullData && (
             <p
-              className='text-white'
+              className='text-white ml-1'
             >Loading...
             </p>
           )
         }
         {
-          !isNullOptions && (
-            <FormGroup>
-              {
-                options?.map((
-                  option, index
-                ) => {
-                  const label = { inputProps: { 'aria-label': `checkbox ${index}-${option}` } }
-                  return (
-                    <FormControlLabel
-                      control={
-                        (
-                          <Checkbox
-                            {...label}
-                            sx={
-                              {
-                                color: grey[700],
-                                // eslint-disable-next-line sort-keys
-                                '&.Mui-checked': {
-                                  color: orange[600]
-                                }
-                              }
-                            }
-                            defaultChecked={false}
-                          />
-                        )
-                      }
-                      sx={
-                        {
-                          color: 'white',
-                          marginLeft: 0.25
-                        }
-                      }
-                      key={index}
-                      label={option}
-                    />
-                  )
-                })
-              }
-            </FormGroup>
+          !isNullData && !!isOptionsCategory && (
+            <OptionSelector
+              options={categoryData as Exclude<Options, null>}
+            />
           )
         }
       </div>

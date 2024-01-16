@@ -1,10 +1,11 @@
+/* eslint-disable sort-keys */
 import React, { useEffect, useState } from 'react'
 import { CategoryMenu } from './components/CategoryMenu'
 import './style.css'
 import type { FC } from 'react'
 import Header from './components/Header'
 
-import type { CategoriesOptions } from './types'
+import type { CategoriesOptions, Term } from './types'
 
 interface Response {
   course_codes: string[]
@@ -19,6 +20,12 @@ const App: FC = () => {
     terms: null,
     years: null
   })
+  const termsOrder = {
+    Winter: 0,
+    Spring: 1,
+    Summer: 2,
+    Fall: 3
+  }
   useEffect(
     () => {
       console.log('Fetching course attribute options...')
@@ -27,8 +34,13 @@ const App: FC = () => {
         .then(async response => { return await (response.json() as Promise<Response>) })
         .then(response => {
           response.course_codes = Array.from(new Set(response.course_codes))
+            .sort()
           response.instructors = Array.from(new Set(response.instructors))
+            .sort()
           response.terms = Array.from(new Set(response.terms))
+            .sort((
+              a: Term, b: Term
+            ) => { return termsOrder[a] - termsOrder[b] })
           setCategoriesOptions(categoriesOptions => {
             return {
               courseCodes: response.course_codes,
@@ -48,18 +60,22 @@ const App: FC = () => {
         className='mx-[20%] grid grid-cols-2'
       >
         <CategoryMenu
-          options={categoriesOptions.instructors}
+          categoryData={categoriesOptions.instructors}
+          isOptionsCategory={true}
           title='Instructor'
         />
         <CategoryMenu
-          options={categoriesOptions.courseCodes}
+          categoryData={categoriesOptions.courseCodes}
+          isOptionsCategory={true}
           title='Course Code'
         />
         <CategoryMenu
-          options={categoriesOptions.terms}
+          categoryData={categoriesOptions.terms}
+          isOptionsCategory={true}
           title='Term'
         />
         <CategoryMenu
+          isOptionsCategory={false}
           title='Year'
         />
       </div>
