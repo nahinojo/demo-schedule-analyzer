@@ -1,5 +1,5 @@
 from flask import jsonify
-from ..models import Course
+from ..models.Course import Course
 
 x = Course.query.all()
 
