@@ -18,3 +18,6 @@ class Course(db.Model):
             "year": self.year,
             "demo_events": [demo_event.serialize() for demo_event in self.demo_events]
         }
+
+
+x = Course.query.all()

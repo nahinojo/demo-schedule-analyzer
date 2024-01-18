@@ -26,6 +26,7 @@ def index():
     users = User.query.all()
     return '\n'.join([user.username for user in users])
 
+
 @app.route('/add_user', methods=['POST'])
 def add_user():
     data = request.args
@@ -36,6 +37,7 @@ def add_user():
     db.session.commit()
 
     return f'User {username} added successfully'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
