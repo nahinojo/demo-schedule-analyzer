@@ -1,5 +1,6 @@
-from flask import Flask, request
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from routes import add_test_course, get_courses
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -22,21 +23,15 @@ def create_tables():
 
 @app.route('/')
 def index():
-    # Example: query all users from the 'User' table
-    users = User.query.all()
-    return '\n'.join([user.username for user in users])
+    all_courses = get_courses()
+    print("all_courses:", all_courses)
+    return all_courses
 
 
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    data = request.args
-    username = data.get('username')
-
-    new_user = User(username=username)
-    db.session.add(new_user)
-    db.session.commit()
-
-    return f'User {username} added successfully'
+@app.route('/add_a_test_course', methods=['POST'])
+def add_a_test_course():
+    add_test_course()
+    return f'test course added successfully'
 
 
 if __name__ == '__main__':

@@ -1,6 +1,5 @@
 # NOTES
 
-### Do Not Delete
-In order for the webapp to be able to make API requests to the localhost, Firefox settings must be changed to allow self-signed certificates. 
+### Importing beyond the parentmost package
 
-Why does this issue occur?
+Python heavily dislikes importing beyond the parent level package. What is the solution here?

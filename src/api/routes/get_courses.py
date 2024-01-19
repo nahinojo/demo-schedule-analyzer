@@ -1,7 +1,5 @@
 from flask import jsonify
-from ..models.Course import Course
-
-x = Course.query.all()
+from models import Course
 
 
 def get_courses():
