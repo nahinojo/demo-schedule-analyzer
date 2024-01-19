@@ -3,5 +3,10 @@ from models import Course
 
 
 def get_courses():
+    print("Extracting courses...")
     courses = Course.query.all()
-    return jsonify([course.serialize() for course in courses])
+    courses = jsonify([course.serialize() for course in courses])
+    if not courses:
+        return jsonify({"message": "No courses found"}), 404
+    else:
+        return courses

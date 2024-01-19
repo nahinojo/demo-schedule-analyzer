@@ -3,6 +3,7 @@ from datetime import date
 
 
 def add_test_course():
+    print("Adding test course...")
     demo_1 = Demo(name="TEST_DEMO_1_NAME")
     demo_2 = Demo(name="TEST_DEMO_2_NAME")
     demo_event = DemoEvent(
@@ -19,3 +20,6 @@ def add_test_course():
     )
     db.session.add(course)
     db.session.commit()
+    print("Test course added successfully!")
+    result = {"status": "success", "message": "Test course added successfully"}, 200
+    return result
