@@ -13,7 +13,7 @@ app.register_blueprint(api, url_prefix='/api')
 
 @app.route('/test')
 def test():
-    return "This is my test text"
+    return {"status": "success", "message": "Test of Flask Application successfully performed!"}, 200
 
 
 if __name__ == '__main__':

@@ -21,5 +21,5 @@ def add_test_course():
     db.session.add(course)
     db.session.commit()
     print("Test course added successfully!")
-    result = {"status": "success", "message": "Test course added successfully"}, 200
+    result = {"status": "success", "message": "Test course added successfully"}, 204
     return result

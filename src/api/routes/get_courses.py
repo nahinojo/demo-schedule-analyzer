@@ -1,12 +1,11 @@
-from flask import jsonify
+from flask import jsonify, request
 from models import Course
 
 
 def get_courses():
-    print("Extracting courses...")
+    request.args.get()
     courses = Course.query.all()
-    courses = jsonify([course.serialize() for course in courses])
     if not courses:
         return jsonify({"message": "No courses found"}), 404
-    else:
-        return courses
+    courses = jsonify([course.serialize() for course in courses])
+    return courses
