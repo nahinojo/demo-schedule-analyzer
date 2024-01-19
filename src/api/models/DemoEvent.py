@@ -6,6 +6,7 @@ class DemoEvent(db.Model):
     date = db.Column(db.Date, nullable=False)
     demo = db.relationship("Demo", backref="demo_event", lazy=True)
     additional_info = db.Column(db.Text)
+    course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
 
     def serialize(self):
         return {

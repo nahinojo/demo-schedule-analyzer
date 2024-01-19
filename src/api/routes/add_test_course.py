@@ -1,11 +1,12 @@
 from models import Course, Demo, DemoEvent, db
+from datetime import date
 
 
 def add_test_course():
     demo_1 = Demo(name="TEST_DEMO_1_NAME")
     demo_2 = Demo(name="TEST_DEMO_2_NAME")
     demo_event = DemoEvent(
-        date="2023-01-01",
+        date=date(2005, 1, 1),
         additional_info="TEST_ADDITIONAL_INFO",
         demo=[demo_1, demo_2]
     )
