@@ -3,7 +3,7 @@ from . import db
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    course_code = db.Column(db.String(10), unique=True, nullable=False)
+    course_code = db.Column(db.String(10), nullable=False)
     instructor = db.Column(db.String(80), nullable=False)
     term = db.Column(db.String(80), nullable=False)
     year = db.Column(db.Integer, nullable=False)
