@@ -34,5 +34,10 @@ def add_a_test_course():
     return f'test course added successfully'
 
 
+@app.route('/test')
+def test():
+    return "This is my test text"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
