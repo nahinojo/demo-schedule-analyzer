@@ -2,4 +2,4 @@
 
 ### Importing beyond the parentmost package
 
-Python heavily dislikes importing beyond the parent level package. What is the solution here?
+Python heavily dislikes importing beyond the parent level package.

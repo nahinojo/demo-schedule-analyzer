@@ -1,9 +1,7 @@
-from flask import jsonify, request
+from flask import jsonify
 from models import Course
 
-
 def get_courses():
-    request.args.get()
     courses = Course.query.all()
     if not courses:
         return jsonify({"message": "No courses found"}), 404
