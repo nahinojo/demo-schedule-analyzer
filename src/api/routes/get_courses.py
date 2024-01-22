@@ -1,9 +1,13 @@
+from models import Course, db
 from flask import jsonify
-from models import Course
+from sqlalchemy import select
+
 
 def get_courses():
-    courses = Course.query.all()
+    print("Getting courses...")
+    result = db.session.execute(db.select(Course))
+    courses = result.fetchall()
+    print("courses:", courses)
     if not courses:
         return jsonify({"message": "No courses found"}), 404
-    courses = jsonify([course.serialize() for course in courses])
-    return courses
+    return jsonify([courses[0].serialize() for courses in courses]), 200
