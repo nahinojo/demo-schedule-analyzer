@@ -1,13 +1,14 @@
 from models import Course, db
 from flask import jsonify
-from sqlalchemy import select
 
+# Gets all courses, using the complicated execute-select format
+# See TODO.md
 
-def get_courses():
-    print("Getting courses...")
-    result = db.session.execute(db.select(Course))
-    courses = result.fetchall()
-    print("courses:", courses)
-    if not courses:
-        return jsonify({"message": "No courses found"}), 404
-    return jsonify([courses[0].serialize() for courses in courses]), 200
+def get_course():
+    print("get_courses()...")
+    result = db.session.get(Course, 1)
+    if not result:
+        return {"message": "No result found"}, 404
+    course_code = result.course_code
+    print("course_code:", course_code)
+    return {"message": "success"}, 200
