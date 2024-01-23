@@ -6,5 +6,3 @@
 # from .remove_html import remove_html
 # from .generate_schedule import generate_schedule
 # from .request_calendar import request_calendar
-
-from .ensure_root_in_path import ensure_root_in_path

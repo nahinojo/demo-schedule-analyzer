@@ -1,4 +1,5 @@
-from models import Course, db
+from database import db
+from models import Course
 from flask import jsonify
 
 

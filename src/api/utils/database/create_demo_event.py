@@ -1,15 +1,17 @@
-from models import Course, db, DemoEvent, Demo
+from database import db
+from models import Course, Demo, DemoEvent
+
 from datetime import date
 from typing import List
 
 
-def add_demo_event(
+def create_demo_event(
         event_date: date,
         additional_info: str,
         demo: List[Demo],
         course_id: int
 ):
-    print("Executing utils.database.add_demo_event()...")
+    print("Executing utils.database.create_demo_event()...")
     course = db.session.get(Course, course_id)
     if course:
         demo_event = DemoEvent(

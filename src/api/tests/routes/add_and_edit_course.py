@@ -1,10 +1,11 @@
-from models import Demo, DemoEvent, db
-from utils.database import add_course, add_demo, add_demo_event
+from database import db
+from models import Demo, DemoEvent
+from utils.database import create_course, create_demo, create_demo_event
 
 
 def add_and_edit_course():
     print("Executing routes.add_and_edit_course()...")
-    course_id = add_course(
+    course_id = create_course(
         course_code="7C",
         instructor="Krivorotov",
         term="Fall",
