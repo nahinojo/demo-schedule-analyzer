@@ -4,6 +4,6 @@ from flask import jsonify
 
 def get_all_courses():
     print("Getting courses...")
-    result = db.session.execute(db.select(Course)).scalars().all()
-    print("result:", result)
-    return jsonify(result[0].serialize())
+    courses = db.session.execute(db.select(Course)).scalars().all()
+    print("courses:", courses)
+    return jsonify([c.serialize() for c in courses])

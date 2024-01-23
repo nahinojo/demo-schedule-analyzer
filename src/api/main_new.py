@@ -1,5 +1,5 @@
 from flask import Flask
-from routes import api
+from routes import test
 from models import db
 
 app = Flask(__name__)
