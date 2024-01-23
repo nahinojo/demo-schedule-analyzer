@@ -17,5 +17,6 @@ app.register_blueprint(api, url_prefix='/api')
 def test():
     return {"status": "success", "message": "Test of Flask Application successfully performed!"}, 200
 
+
 if __name__ == '__main__':
     app.run(debug=True)
