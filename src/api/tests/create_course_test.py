@@ -3,24 +3,22 @@ from models import Course, Demo, DemoEvent
 from datetime import date
 
 
-def add_test_course():
-    print("Adding test course...")
-    demo_1 = Demo(name="TEST_DEMO_1_NAME")
-    demo_2 = Demo(name="TEST_DEMO_2_NAME")
+def create_course_test():
+    demo_1 = Demo(name="DEMO_1_NAME_TEST")
+    demo_2 = Demo(name="DEMO_2_NAME_TEST")
     demo_event = DemoEvent(
         event_date=date(2005, 1, 1),
-        additional_info="TEST_ADDITIONAL_INFO",
+        additional_info="ADDITIONAL_INFO_TEST",
         demo=[demo_1, demo_2]
     )
     course = Course(
-        course_code="TEST_COURSE_CODE",
-        instructor="TEST_INSTRUCTOR",
-        term="TEST_TERM",
-        year=2005,
+        course_code="COURSE_CODE_TEST",
+        instructor="INSTRUCTOR_TEST",
+        term="TERM_TEST",
+        year=2024,
         demo_event=[demo_event]
     )
     db.session.add(course)
     db.session.commit()
-    print("Test course added successfully!")
     result = {"status": "success", "message": "Test course added successfully"}, 204
     return result

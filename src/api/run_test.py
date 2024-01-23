@@ -1,15 +1,9 @@
-from flask import Flask
-from tests.routes import test_blueprint
 from database import db
+from create_app import create_app
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
-db.init_app(app)
-with app.app_context():
-    db.create_all()
+import pytest
 
-app.register_blueprint(test_blueprint, url_prefix='/test')
+app = create_app()
 
 
 @app.route('/test')
