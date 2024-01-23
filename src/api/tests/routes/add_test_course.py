@@ -1,4 +1,5 @@
-from models import Course, Demo, DemoEvent, db
+from database import db
+from models import Course, Demo, DemoEvent
 from datetime import date
 
 

@@ -1,6 +1,5 @@
 from flask import Flask
-from routes import test
-from models import db
+from database import db
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -9,8 +8,8 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# Registers all routes.
-app.register_blueprint(api, url_prefix='/api')
+# Registers all routes. Setup for api, not test.
+# app.register_blueprint(test, url_prefix='/test')
 
 
 @app.route('/test')
