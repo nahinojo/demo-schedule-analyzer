@@ -1,8 +1,11 @@
 from database import db
 from models import Course, Demo, DemoEvent
+
+import pytest
 from datetime import date
 
 
+@pytest.mark.usefixtures("app_context")
 def create_course_test():
     demo_1 = Demo(name="DEMO_1_NAME_TEST")
     demo_2 = Demo(name="DEMO_2_NAME_TEST")
@@ -18,7 +21,7 @@ def create_course_test():
         year=2024,
         demo_event=[demo_event]
     )
+
     db.session.add(course)
     db.session.commit()
-    result = {"status": "success", "message": "Test course added successfully"}, 204
-    return result
+    assert 200
