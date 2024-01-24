@@ -8,6 +8,7 @@ downloads/
 
 # Cache
 *__pycache__*
+*.pytest_cache
 
 # Packages
 /node_modules
