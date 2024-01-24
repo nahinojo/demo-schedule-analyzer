@@ -8,18 +8,15 @@ def create_course(
         instructor: str,
         term: str,
         year: int,
-        demo_event: List[DemoEvent] = None,
+        demo_event: List[DemoEvent],
 ):
-    print("Executing utils.database.create_course()...")
     course = Course(
         course_code=course_code,
         instructor=instructor,
         term=term,
-        year=year
+        year=year,
+        demo_event=demo_event
     )
-    if demo_event:
-        course.demo_event = demo_event
     db.session.add(course)
     db.session.commit()
-    print("Successfully created course:", course.serialize())
-    return course.id
+    return course

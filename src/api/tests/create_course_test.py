@@ -1,5 +1,6 @@
 from database import db
 from models import Course, Demo, DemoEvent
+from utils.database import create_course
 
 import pytest
 from datetime import date
@@ -14,15 +15,13 @@ def create_course_test():
         additional_info="ADDITIONAL_INFO_TEST",
         demo=[demo_1, demo_2]
     )
-    course = Course(
+    create_course(
         course_code="COURSE_CODE_TEST",
         instructor="INSTRUCTOR_TEST",
         term="TERM_TEST",
         year=2024,
         demo_event=[demo_event]
     )
-    db.session.add(course)
-    db.session.commit()
     test_course = db.session.get(Course, 1)
     test_course = test_course.serialize()
     assert test_course == {
@@ -38,4 +37,3 @@ def create_course_test():
              'additional_info': 'ADDITIONAL_INFO_TEST'}
         ]
     }
-
