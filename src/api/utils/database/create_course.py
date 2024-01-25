@@ -1,6 +1,6 @@
 from database import db
 from models import Course
-from types import DemoEvents
+from typings import DemoEvents
 
 
 def create_course(

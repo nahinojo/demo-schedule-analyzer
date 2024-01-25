@@ -5,10 +5,9 @@ import pytest
 
 
 @pytest.mark.usefixtures("app_context")
-def delete_demo_test():
+def delete_demo_test(test_course):
     test_demo = Demo(name="DELETE_DEMO_TEST")
-    test_course = db.session.get(Course, 1)
-    test_course.demo_events = [test_demo]
+    test_course.demo_events.demos = [test_demo]
     db.session.commit()
     db.session.delete(test_demo)
     db.session.commit()

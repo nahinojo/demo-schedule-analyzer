@@ -8,7 +8,8 @@ import pytest
 def create_demo_test():
     test_demo = Demo(name="CREATE_DEMO_TEST")
     test_course = db.session.get(Course, 1)
-    test_course.demo_events = [test_demo]
+    print(test_course.demo_events[0].serialize())
+    test_course.demo_events[0].demos = [test_demo]
     db.session.commit()
-    assert test_course.demo_events[0].name == "CREATE_DEMO_TEST"
+    assert test_course.demo_events[0].demos.name == "CREATE_DEMO_TEST"
     return
