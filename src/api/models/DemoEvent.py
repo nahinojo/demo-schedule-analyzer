@@ -6,7 +6,7 @@ class DemoEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_date = db.Column(db.Date)
     additional_info = db.Column(db.Text)
-    demo = db.relationship("Demo", backref="demo_event")
+    demos = db.relationship("Demo", backref="demo_events")
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
 
     def add_demo(
@@ -25,6 +25,6 @@ class DemoEvent(db.Model):
         return {
             "id": self.id,
             "date": self.event_date,
-            "demos": [demo.serialize() for demo in self.demo],
+            "demos": [demo.serialize() for demo in self.demos],
             "additional_info": self.additional_info
         }
