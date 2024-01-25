@@ -1,6 +1,6 @@
 from database import db
-from models import Course, DemoEvent
-from typing import List, Type
+from models import Course
+from types import DemoEvents
 
 
 def create_course(
@@ -8,7 +8,7 @@ def create_course(
         instructor: str,
         term: str,
         year: int,
-        demo_events: List[Type[DemoEvent]],
+        demo_events: DemoEvents,
 ):
     course = Course(
         course_code=course_code,
