@@ -1,9 +1,8 @@
 from create_app import create_app
-from models import Course, Demo, DemoEvent
 from database import db
+from tests.utils.model_factory import ModelFactory
 
 import pytest
-from datetime import date
 
 
 @pytest.fixture()
@@ -25,20 +24,7 @@ def app_context(app):
 
 @pytest.fixture()
 def test_course():
-    demo_1 = Demo(name="DEMO_1_NAME")
-    demo_2 = Demo(name="DEMO_2_NAME")
-    demo_event = DemoEvent(
-        event_date=date(2005, 1, 1),
-        additional_info="ADDITIONAL_INFO",
-        demos=[demo_1, demo_2]
-    )
-    return Course(
-        course_code="COURSE_CODE",
-        instructor="INSTRUCTOR",
-        term="TERM",
-        year=2024,
-        demo_events=[demo_event]
-    )
+    return ModelFactory.create_course()
 
 
 @pytest.fixture()

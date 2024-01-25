@@ -1,8 +1,8 @@
 from database import db
-from models import DemoEvent, Demo
+from models import DemoEvent
+from types import Demos
 
 from datetime import date
-from typing import List, NewType
 
 
 class Course(db.Model):
@@ -17,7 +17,7 @@ class Course(db.Model):
             self,
             event_date: date,
             additional_info: str,
-            demos: List[NewType('DemoType', Demo)]
+            demos: Demos
     ):
         demo_event = DemoEvent(
             event_date=event_date,
