@@ -11,7 +11,7 @@ class Course(db.Model):
     instructor = db.Column(db.String(80))
     term = db.Column(db.String(80))
     year = db.Column(db.Integer)
-    demo_event = db.relationship("DemoEvent", backref="course")
+    demo_events = db.relationship("DemoEvent", backref="course")
 
     def add_demo_event(
             self,
@@ -36,5 +36,5 @@ class Course(db.Model):
             "instructor": self.instructor,
             "term": self.term,
             "year": self.year,
-            "demo_event": [demo_event.serialize() for demo_event in self.demo_event]
+            "demo_events": [demo_event.serialize() for demo_event in self.demo_events]
         }

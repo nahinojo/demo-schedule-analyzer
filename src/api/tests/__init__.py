@@ -1,1 +1,1 @@
-from .create_course_test import create_course_test
+from .get_course_test import get_course_test
