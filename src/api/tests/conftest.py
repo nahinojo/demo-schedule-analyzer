@@ -28,6 +28,11 @@ def test_course():
 
 
 @pytest.fixture()
+def test_demo_event(test_course):
+    return test_course.demo_events[0]
+
+
+@pytest.fixture()
 def app_context_with_test_course(app_context, test_course):
     db.session.add(test_course)
     db.session.commit()

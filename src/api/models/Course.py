@@ -1,6 +1,6 @@
 from database import db
 from models import DemoEvent
-from types import Demos
+from typings import Demos
 
 from datetime import date
 
