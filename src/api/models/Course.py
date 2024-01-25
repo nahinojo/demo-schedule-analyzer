@@ -2,7 +2,7 @@ from database import db
 from models import DemoEvent, Demo
 
 from datetime import date
-from typing import List
+from typing import List, NewType
 
 
 class Course(db.Model):
@@ -17,12 +17,12 @@ class Course(db.Model):
             self,
             event_date: date,
             additional_info: str,
-            demo: List[Demo]
+            demos: List[NewType('DemoType', Demo)]
     ):
         demo_event = DemoEvent(
             event_date=event_date,
             additional_info=additional_info,
-            demo=demo,
+            demo=demos,
             course_id=self.id
         )
         db.session.add(demo_event)

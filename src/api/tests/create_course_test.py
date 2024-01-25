@@ -20,7 +20,7 @@ def create_course_test():
         instructor="INSTRUCTOR_TEST",
         term="TERM_TEST",
         year=2024,
-        demo_event=[demo_event]
+        demo_events=[demo_event]
     )
     test_course = db.session.get(Course, 1)
     test_course = test_course.serialize()
@@ -32,8 +32,10 @@ def create_course_test():
         'demo_event': [
             {'id': 1,
              'date': date(2005, 1, 1),
-             'demos': [{'id': 1, 'name': 'DEMO_1_NAME_TEST'},
-                       {'id': 2, 'name': 'DEMO_2_NAME_TEST'}],
+             'demos': [
+                 {'id': 1, 'name': 'DEMO_1_NAME_TEST'},
+                 {'id': 2, 'name': 'DEMO_2_NAME_TEST'}
+             ],
              'additional_info': 'ADDITIONAL_INFO_TEST'}
         ]
     }
