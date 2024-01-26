@@ -6,7 +6,7 @@ import pytest
 
 @pytest.mark.usefixtures("app_context")
 def delete_demo_test(test_course):
-    test_demo = Demo(name="DELETE_DEMO_TEST")
+    test_demo = Demo(name="DELETE_DEMO_NAME_TEST")
     test_course.demo_events.demos = [test_demo]
     db.session.add(test_demo)
     db.session.commit()
