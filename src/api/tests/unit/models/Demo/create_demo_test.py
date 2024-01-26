@@ -11,5 +11,5 @@ def create_demo_test():
     print(test_course.demo_events[0].serialize())
     test_course.demo_events[0].demos = [test_demo]
     db.session.commit()
-    assert test_course.demo_events[0].demos.name == "CREATE_DEMO_TEST"
+    assert test_course.demo_events[0].demos[0].name == "CREATE_DEMO_TEST"
     return
