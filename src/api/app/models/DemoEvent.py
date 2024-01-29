@@ -1,4 +1,4 @@
-from app.models import Base, Demo
+from app.models import Base, Course, Demo
 
 from typing import List
 from sqlalchemy import String, Date, ForeignKey
@@ -12,6 +12,7 @@ class DemoEvent(Base):
     additional_info: Mapped[str] = mapped_column(String)
     demos: Mapped[List["Demo"]] = relationship(back_populates="demo_event")
     course_id = mapped_column(ForeignKey("course.id"))
+    course: Mapped["Course"] = relationship(back_populates="demo_event")
 
     def serialize(self):
         return {
