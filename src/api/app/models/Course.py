@@ -11,8 +11,10 @@ class Course(Base):
     course_code: Mapped[str] = mapped_column(String(6))
     instructor: Mapped[str] = mapped_column(String)
     term: Mapped[str] = mapped_column(String(6))
-    year: Mapped[int] = mapped_column(Integer)
-    demo_events: Mapped[List["DemoEvent"]] = relationship(back_populates="course")
+    # year: Mapped[int] = mapped_column(Integer)
+    demo_events: Mapped[List["DemoEvent"]] = relationship(
+        back_populates="course",
+    )
 
     def serialize(self):
         return {
