@@ -1,9 +1,11 @@
-from .calendar_to_excel.date_difference_school_weeks import date_difference_school_weeks
-from .calendar_to_excel.dissect_description import dissect_description
-from .calendar_to_excel.get_course_term import get_course_term
-from .calendar_to_excel.is_broken_event import is_broken_event
-from .calendar_to_excel.extract_course_details_from_calendar import extract_course_details_from_calendar
-from .calendar_to_excel.remove_html import remove_html
-from .calendar_to_excel.generate_schedule import generate_schedule
-from .calendar_to_excel.request_calendar import request_calendar
-
+from app.utils.calendar_to_excel import (
+    date_difference_school_weeks,
+    dissect_description,
+    get_course_term,
+    is_broken_event,
+    is_similar_strings,
+    extract_course_details_from_calendar,
+    remove_html,
+    generate_schedule,
+    request_calendar
+)

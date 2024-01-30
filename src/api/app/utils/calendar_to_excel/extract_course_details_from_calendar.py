@@ -1,11 +1,17 @@
 from datetime import date
-from icalendar import Calendar
 
-from app import PATH_TO_CALENDAR
-from .dissect_description import dissect_description
-from .get_course_term import get_course_term
-from .is_broken_event import is_broken_event
-from .request_calendar import request_calendar
+from app.models import (
+    Course,
+    DemoEvent,
+    Demo
+)
+from app.utils import (
+    dissect_description,
+    get_course_term,
+    is_broken_event,
+    is_similar_strings,
+    request_calendar
+)
 
 
 def extract_course_details_from_calendar(
@@ -13,8 +19,7 @@ def extract_course_details_from_calendar(
         target_instructor: str = None,
         target_term: str = None,
         target_year: int = 2023,
-        is_target_year_as_minium: bool = True,
-        is_request_new_calendar: bool = True,
+        is_target_year_as_minimum: bool = True
 ):
     """
     Extracts course details from the calendar.
@@ -39,22 +44,14 @@ def extract_course_details_from_calendar(
     list
         The list of course details.
     """
-    if is_request_new_calendar:
-        request_calendar()
-    with open(PATH_TO_CALENDAR) as f:
-        calendar = Calendar.from_ical(f.read())
+    calendar = request_calendar()
     course_details_list = []
-    for calendar_event in calendar.walk("VEVENT"):
+    for calendar_event in calendar.walk("VEVENT"):  # Iterates through all demo events in the calendar.
         summary = str(calendar_event.get("SUMMARY"))
-        # Only analyze course-specific calendar events, which contain a numeric course code.
-        is_course = False
-        for char in summary:
-            if char.isdigit():
-                is_course = True
-                break
-        if not is_course:
-            continue
         demo_datetime = calendar_event.get("DTSTART").dt
+        is_not_course = any(c.isdigit() for c in summary)
+        if is_not_course:
+            continue
         demo_date = date(
             year=demo_datetime.year,
             month=demo_datetime.month,
@@ -62,29 +59,33 @@ def extract_course_details_from_calendar(
         )
         instructor = summary[summary.find(" ") + 1:]
         instructor = instructor.strip()
-        if any(char.isdigit() for char in instructor):
-            continue
-        if "discussion" in instructor.lower():
-            continue
-        if is_broken_event(demo_date, instructor):
-            continue
-        if target_instructor not in {None, instructor}:
-            continue
         year = demo_date.year
-        if is_target_year_as_minium:
-            is_course_in_year = year >= target_year
-        else:
-            is_course_in_year = year == target_year
-        if not is_course_in_year:
-            continue
         course_code = summary[: summary.find(" ")]
-        if target_course_code not in {None, course_code}:
-            continue
+        term = get_course_term(demo_date)
         description = str(calendar_event.get("DESCRIPTION"))
         demos, additional_information = dissect_description(description)
-        term = get_course_term(demo_date)
-        if target_term not in {term, None}:
+
+        is_no_instructor = any(char.isdigit() for char in instructor)
+        is_discussion = is_similar_strings("discussion", instructor.lower())
+        is_broken = is_broken_event(demo_date, instructor)
+        is_not_target_instructor = target_instructor not in {None, instructor}
+        is_not_target_year = year >= target_year if is_target_year_as_minimum else year == target_year
+        is_not_target_course_code = target_course_code not in {None, course_code}
+        is_not_target_term = target_term not in {None, term}
+        is_skip_event = all(
+            [
+                is_no_instructor,
+                is_discussion,
+                is_broken,
+                is_not_target_instructor,
+                is_not_target_year,
+                is_not_target_course_code,
+                is_not_target_term
+            ]
+        )
+        if is_skip_event:
             continue
+
         new_demo_event = {
             "date": demo_date,
             "demos": demos,
