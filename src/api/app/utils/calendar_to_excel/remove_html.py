@@ -1,4 +1,17 @@
 def remove_html(string):
+    """
+    Removes HTML tags from a string.
+
+    Parameters
+    ----------
+    string: str
+        The string to remove HTML tags from.
+
+    Returns
+    -------
+    str
+        The string with HTML tags removed.
+    """
     contains_less_than = "<" in string
     contains_greater_than = ">" in string
     if contains_less_than and contains_greater_than:

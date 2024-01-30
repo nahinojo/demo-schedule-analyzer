@@ -1,14 +1,11 @@
-import os
-from .date_difference_school_weeks import date_difference_school_weeks
-from .extract_course_details_from_calendar import extract_course_details_from_calendar
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.cell.cell import MergedCell
 
-BUILD_PATH = f"{os.getcwd()}/src/build"
-SCHEDULE_FILE_NAME = "demo-schedule.xlsx"
-SCHEDULE_PATH = f"{BUILD_PATH}/{SCHEDULE_FILE_NAME}"
+from app import PATH_TO_SCHEDULE
+from .date_difference_school_weeks import date_difference_school_weeks
+from .extract_course_details_from_calendar import extract_course_details_from_calendar
 
 
 def generate_schedule(
@@ -18,6 +15,28 @@ def generate_schedule(
         target_year: int = 2023,
         is_target_year_as_minium: bool = True,
 ):
+    """
+    Generates a schedule.
+
+    Schedule is stored in an .xlsx file at `SCHEDULE_PATH`.
+
+    Parameters
+    ----------
+    target_course_code: str
+        The target course code.
+    target_instructor: str
+        The target instructor.
+    target_term: str
+        The target term.
+    target_year: int
+        The target year.
+    is_target_year_as_minium: bool
+        Whether the target year is the minimum year.
+
+    Returns
+    -------
+    None
+    """
     course_details_list = extract_course_details_from_calendar(
         target_course_code=target_course_code,
         target_instructor=target_instructor,
@@ -226,4 +245,4 @@ def generate_schedule(
                         else:
                             cell.alignment = default_alignment
                             cell.font = default_font
-    wb.save(SCHEDULE_PATH)
+    wb.save(PATH_TO_SCHEDULE)

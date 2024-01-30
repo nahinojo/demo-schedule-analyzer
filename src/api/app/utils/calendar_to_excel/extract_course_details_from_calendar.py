@@ -1,13 +1,11 @@
 from datetime import date
 from icalendar import Calendar
+
+from app import PATH_TO_CALENDAR
 from .dissect_description import dissect_description
 from .get_course_term import get_course_term
 from .is_broken_event import is_broken_event
 from .request_calendar import request_calendar
-
-DOWNLOAD_PATH = "../downloads"
-CALENDAR_FILE_NAME = "demo-calendar.ics"
-CALENDAR_PATH = f"{DOWNLOAD_PATH}/{CALENDAR_FILE_NAME}"
 
 
 def extract_course_details_from_calendar(
@@ -18,9 +16,32 @@ def extract_course_details_from_calendar(
         is_target_year_as_minium: bool = True,
         is_request_new_calendar: bool = True,
 ):
+    """
+    Extracts course details from the calendar.
+
+    Paramaters
+    ----------
+    target_course_code: str
+        The target course code.
+    target_instructor: str
+        The target instructor.
+    target_term: str
+        The target term.
+    target_year: int
+        The target year.
+    is_target_year_as_minium: bool
+        Whether the target year is the minimum year.
+    is_request_new_calendar: bool
+        Whether to request a new calendar.
+
+    Returns
+    -------
+    list
+        The list of course details.
+    """
     if is_request_new_calendar:
-        request_calendar(calendar_path=CALENDAR_PATH)
-    with open(CALENDAR_PATH) as f:
+        request_calendar()
+    with open(PATH_TO_CALENDAR) as f:
         calendar = Calendar.from_ical(f.read())
     course_details_list = []
     for calendar_event in calendar.walk("VEVENT"):

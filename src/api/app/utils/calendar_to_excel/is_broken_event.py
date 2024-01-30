@@ -3,11 +3,22 @@ from datetime import date
 
 def is_broken_event(event_date, instructor):
     """
-    Determines if provided calendar event is 'broken'.
-    Specifically, these events are extraneous but cannot be removed from Google Calendar.
-    :param event_date: datetime.date
-    :param instructor: string
-    :return: bool
+    Checks if the calendar event is broken event.
+
+    Some calendar events are "broken" such that they are extraneous yet cannot be removed. They exist within the .ical
+    file but cannot be located using the Google Calendar App.
+
+    Parameters
+    ----------
+    event_date: datetime.date
+        The date of the event.
+    instructor: str
+        The instructor of the event.
+
+    Returns
+    -------
+    bool
+        True if the event is a broken event, False otherwise.1
     """
     broken_event_list = [
         {

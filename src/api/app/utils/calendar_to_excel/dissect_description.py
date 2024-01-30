@@ -3,6 +3,19 @@ from .is_similar_strings import is_similar_strings
 
 
 def dissect_description(description: str):
+    """
+    Dissects description string into demos and additional information.
+
+    Parameters
+    ----------
+    description: str
+        The description to dissect.
+
+    Returns
+    -------
+    list
+        The list of demos and additional information.
+    """
     description = description.strip()
     has_html = "<" in description
     demo_indices = []
