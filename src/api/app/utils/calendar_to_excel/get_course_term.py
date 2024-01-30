@@ -2,6 +2,19 @@ from datetime import date
 
 
 def get_course_term(demo_date):
+    """
+    Gets the term of the course.
+
+    Parameters
+    ----------
+    demo_date: datetime.date
+        The date of the demonstration.
+
+    Returns
+    -------
+    str
+        The term of the course.
+    """
     year = demo_date.year
     winter_end = date(year, 3, 28)
     spring_end = date(year, 6, 14)
