@@ -1,6 +1,11 @@
-from .remove_html import remove_html
-from .is_similar_strings import is_similar_strings
-
+from app.utils import (
+    is_similar_strings,
+    remove_html
+)
+from app.models import (
+    Demo,
+    DemoEvent,
+)
 
 def dissect_description(description: str):
     """
