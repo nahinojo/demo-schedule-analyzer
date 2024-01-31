@@ -10,7 +10,7 @@ def crud_course_test():
     app_context_with_data fixture.
     """
     from app.database import Session
-    from app.models import Course
+    from app.models import Course, Demo, DemoEvent
     with Session() as session:
         course = session.get(Course, 1)
         course.course_code = "TEST_COURSE_CODE_UPDATE"
@@ -27,6 +27,8 @@ def crud_course_test():
         session.delete(course)
         session.commit()
         assert session.get(Course, 1) is None
+        assert session.get(DemoEvent, 1) is None
+        assert session.get(Demo, 1) is None
 
 
 @pytest.mark.usefixtures("app_context_with_data")
@@ -35,27 +37,36 @@ def crud_demo_event_test():
     Tests CRUD operations for DemoEvent model.
     """
     import datetime
+    from sqlalchemy import select
     from app.database import Session
     from app.models import Course, DemoEvent, Demo
-    new_demo = Demo(name="TEST_DEMO_NAME_NEW")
+    new_demo = Demo(name="DEMO_NAME_CRUD_DEMO_EVENT")
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     new_demo_event = DemoEvent(
         event_date=yesterday,
-        additional_info="TEST_ADDITIONAL_INFO_NEW",
+        additional_info="ADDITIONAL_INFO_CRUD_DEMO_EVENT",
         demos=[new_demo]
     )
-    with (Session() as session):
+    with Session() as session:
+        session.add(new_demo_event)
         course = session.get(Course, 1)
+        # print("Course pre-append:", course.serialize())
         course.demo_events.append(new_demo_event)
+        # print("Course post-append:", course.serialize())
+        session.add(course)
         session.commit()
-        assert session.get(DemoEvent, 1)
-        db_new_demo_event = session.get(DemoEvent, 1)
+        assert session.get(DemoEvent, 2)
+        db_new_demo_event = session.get(DemoEvent, 2)
         assert db_new_demo_event.event_date == yesterday
-        assert db_new_demo_event.additional_info == "TEST_ADDITIONAL_INFO_NEW"
-        assert db_new_demo_event.demos[0].name == "TEST_DEMO_NAME_NEW"
+        assert db_new_demo_event.additional_info == "ADDITIONAL_INFO_CRUD_DEMO_EVENT"
+        assert db_new_demo_event.demos[0].name == "DEMO_NAME_CRUD_DEMO_EVENT"
         session.delete(new_demo_event)
+        session.delete(new_demo)
         session.commit()
-        assert session.get(DemoEvent, 1) is None
+        stmt = select(Demo)
+        items = session.scalars(stmt).all()
+        serialized_items = [item.serialize() for item in items]
+        assert session.get(DemoEvent, 2) is None
 
 
 @pytest.mark.usefixtures("app_context_with_data")
@@ -65,14 +76,22 @@ def crud_demo_test():
     """
     from app.database import Session
     from app.models import Course, Demo
-    new_demo = Demo(name="TEST_DEMO_NAME_NEW")
+    from sqlalchemy import select
+    new_demo = Demo(name="DEMO_NAME_CRUD_DEMO")
     with Session() as session:
+        stmt = select(Demo)
+        items = session.scalars(stmt).all()
+        serialized_items = [item.serialize() for item in items]
+        stmt = select(Course)
+        items = session.scalars(stmt).all()
+        serialized_items = [item.serialize() for item in items]
+        session.add(new_demo)
         course = session.get(Course, 1)
         course.demo_events[0].demos.append(new_demo)
         session.commit()
         assert session.get(Demo, 1)
-        db_new_demo = session.get(Demo, 1)
-        assert db_new_demo.name == "TEST_DEMO_NAME_NEW"
+        db_new_demo = session.get(Demo, 2)
+        assert db_new_demo.name == "DEMO_NAME_CRUD_DEMO"
         session.delete(new_demo)
         session.commit()
-        assert session.get(Demo, 1) is None
+        assert session.get(Demo, 2) is None
