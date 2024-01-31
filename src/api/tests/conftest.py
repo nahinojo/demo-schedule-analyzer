@@ -21,6 +21,7 @@ def app_context_with_data(app_context):
     from app.database import Session
     from app.models import Course, DemoEvent, Demo
     from datetime import date
+    from sqlalchemy import select
     today = date.today()
     new_course = Course(
         course_code="TEST_COURSE_CODE",
@@ -36,6 +37,10 @@ def app_context_with_data(app_context):
         ]
     )
     with Session() as session:
+        stmt = select(Course).filter_by(id=1)
+        items = session.scalars(stmt).first()
+        if items:
+            assert False
         session.add(new_course)
         session.commit()
         assert session.get(Course, 1).course_code == "TEST_COURSE_CODE"
@@ -45,3 +50,15 @@ def app_context_with_data(app_context):
         assert session.get(Course, 1).demo_events[0].event_date == today
         assert session.get(Course, 1).demo_events[0].additional_info == "TEST_ADDITIONAL_INFO"
         assert session.get(Course, 1).demo_events[0].demos[0].name == "TEST_DEMO_NAME"
+        yield
+        only_course = session.get(Course, 1)
+        print("only_course from get:", only_course.serialize())
+        only_course = session.scalars(select(Course).filter_by(id=1)).first()
+        print("only course:", only_course)
+        session.delete(only_course)
+        session.commit()
+    # counter = 2
+    # session.
+    # while session.get(Course, counter):
+    #     session.delete(session.get(Course, counter))
+    #     session.get()
