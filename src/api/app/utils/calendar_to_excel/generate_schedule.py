@@ -42,7 +42,6 @@ def generate_schedule(
         target_instructor=target_instructor,
         target_term=target_term,
         target_year=target_year,
-        is_target_year_as_minium=is_target_year_as_minium
     )
     wb = Workbook()
     ws = wb.active  # type: Worksheet

@@ -12,7 +12,7 @@ def request_calendar():
     Returns
     -------
     calendar: icalendar.Calendar
-        The calendar file.
+        The requested calendar file.
     """
     url = (
         "https://calendar.google.com/calendar/ical/7k8ivkgvm0pgtta67pfafecqmg%40group.calendar.google.com/public/basic"

@@ -14,19 +14,7 @@ class Course(Base):
     instructor: Mapped[str] = mapped_column(String)
     term: Mapped[str] = mapped_column(String(6))
     year: Mapped[int] = mapped_column(Integer)
-    demo_events: Mapped[List["DemoEvent"]] = relationship(
-        back_populates="course",
-    )
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "course_code": self.course_code,
-            "instructor": self.instructor,
-            "term": self.term,
-            "year": self.year,
-            "demo_events": [demo_event.serialize() for demo_event in self.demo_events]
-        }
+    demo_events: Mapped[List["DemoEvent"]] = relationship(back_populates="course")
 
 
 class DemoEvent(Base):
@@ -38,15 +26,6 @@ class DemoEvent(Base):
     course_id = mapped_column(ForeignKey("course.id"))
     course: Mapped["Course"] = relationship(back_populates="demo_events")
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "event_date": self.event_date,
-            "additional_info": self.additional_info,
-            "demos": [demo.serialize() for demo in self.demos],
-            "course_id": self.course_id
-        }
-
 
 class Demo(Base):
     __tablename__ = "demo"
@@ -54,11 +33,3 @@ class Demo(Base):
     name: Mapped[str] = mapped_column(String)
     demo_event_id = mapped_column(ForeignKey("demo_event.id"))
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "demo_event_id": self.demo_event_id,
-            "demo_event": self.demo_event.serialize()
-        }

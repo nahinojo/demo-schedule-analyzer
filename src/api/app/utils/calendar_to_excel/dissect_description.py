@@ -4,8 +4,8 @@ from app.utils import (
 )
 from app.models import (
     Demo,
-    DemoEvent,
 )
+
 
 def dissect_description(description: str):
     """
@@ -18,20 +18,22 @@ def dissect_description(description: str):
 
     Returns
     -------
-    list
-        The list of demos and additional information.
+    demos: list
+        The list of Demo objects.
+    additional_info: str
+        The additional information.
     """
     description = description.strip()
     has_html = "<" in description
     demo_indices = []
-    demos = []
+    demo_names = []
     additional_info = None
     if has_html:
         idx_demo_start, idx_demo_end = 0, 0
         for i, char in enumerate(description):
             if not idx_demo_start:
                 if char == ">":
-                    next_five_characters = description[i + 1 : i + 6]
+                    next_five_characters = description[i + 1: i + 6]
                     is_demo_start = True
                     if next_five_characters in "Additional Information:":
                         break
@@ -45,7 +47,7 @@ def dissect_description(description: str):
                                 idx_demo_start = i + 1
             elif not idx_demo_end:
                 if char == "<":
-                    prev_five_characters = description[i - 6 : i - 1]
+                    prev_five_characters = description[i - 6: i - 1]
                     is_demo_end = True
                     for c5 in prev_five_characters:
                         if c5 in {"<", ">", "/"}:
@@ -56,12 +58,12 @@ def dissect_description(description: str):
                 demo_indices.append((idx_demo_start, idx_demo_end))
                 idx_demo_start, idx_demo_end = 0, 0
         for indices in demo_indices:
-            demos.append(description[indices[0] : indices[1]])
+            demo_names.append(description[indices[0]: indices[1]])
             idx_additional_info_start = demo_indices[len(demo_indices) - 1][1]
             idx_additional_info_end = len(description) - 1
             additional_info = description[
-                idx_additional_info_start:idx_additional_info_end
-            ]
+                              idx_additional_info_start:idx_additional_info_end
+                              ]
             additional_info = remove_html(additional_info)
             additional_info = additional_info.strip()
             info_start = additional_info.find("ation") + 5
@@ -93,9 +95,9 @@ def dissect_description(description: str):
                 idx_description_line = 0
                 continue
             elif is_similar_strings(
-                line[: len("Additional Informaiton:")],
-                "Additional Information:",
-                threshold=0.6,
+                    line[: len("Additional Informaiton:")],
+                    "Additional Information:",
+                    threshold=0.6,
             ):
                 idx_description_line_additional_info_title = idx_description_line
                 additional_info = description_lines[idx_description_line]
@@ -104,7 +106,7 @@ def dissect_description(description: str):
                     idx_additional_info_title_end = additional_info.find(":") + 1
                     if not idx_additional_info_title_end:
                         idx_additional_info_title_end = (
-                            additional_info[18:].find("on") + 2
+                                additional_info[18:].find("on") + 2
                         )
                     additional_info = additional_info[idx_additional_info_title_end:]
                     break
@@ -137,31 +139,37 @@ def dissect_description(description: str):
             idx_description_line += 1
         if has_demos:
             if idx_description_line_additional_info_title == 0:
-                demos = description_lines
+                demo_names = description_lines
             else:
-                demos = description_lines[:idx_description_line_additional_info_title]
+                demo_names = description_lines[:idx_description_line_additional_info_title]
 
     i = 0
-    while i < len(demos):
-        demos[i] = demos[i].strip()
-        demo = demos[i]
-        if len(demo) <= 5:
-            demos.pop(i)
+    while i < len(demo_names):
+        demo_names[i] = demo_names[i].strip()
+        demo_name = demo_names[i]
+        if len(demo_name) <= 5:
+            demo_names.pop(i)
             i = 0
-        elif is_similar_strings(demo, "Additional Information") or is_similar_strings(demo, "DEMONSTRATIONS:"):
-            demos.pop(i)
+        elif (
+                is_similar_strings(demo_name, "Additional Information")
+                or is_similar_strings(demo_name, "DEMONSTRATIONS:")
+        ):
+            demo_names.pop(i)
             i = 0
-        elif "&" in demo:
-            idx_extra_ampersand = demo.index("&")
-            demos[i] = demo[:idx_extra_ampersand]
+        elif "&" in demo_name:
+            idx_extra_ampersand = demo_name.index("&")
+            demo_names[i] = demo_name[:idx_extra_ampersand]
             i = 0
         else:
             i += 1
     if additional_info is not None:
         additional_info = additional_info.replace("&nbsp;", "")
         additional_info.strip(". ")
-        if additional_info[-1] not in {".", "\""}:  # .strip(".") may have failed to remove "."
+        if additional_info[-1] not in {".", "\""}:
             additional_info += "."
-        while additional_info[0] == " ":  # .strip(" ") may have failed to remove " "
+        while additional_info[0] == " ":
             additional_info = additional_info[1:]
+    demos = []
+    for name in demo_names:
+        demos.append(Demo(name=name))
     return demos, additional_info
