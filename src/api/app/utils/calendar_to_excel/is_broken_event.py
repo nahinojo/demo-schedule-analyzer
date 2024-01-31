@@ -29,7 +29,7 @@ def is_broken_event(event_date, instructor):
             "date": date(2022, 9, 22),
             "instructor": "Krivorotov"
         },
-    ]
+    ]  # More may exist. Add as needed.
     for broken_event in broken_event_list:
         if event_date == broken_event["date"] and instructor == broken_event["instructor"]:
             return True
