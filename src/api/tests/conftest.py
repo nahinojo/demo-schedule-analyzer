@@ -37,6 +37,7 @@ def app_context_with_data(app_context):
         ]
     )
     with Session() as session:
+        print("verify no course:", session.get(Course, 1))
         stmt = select(Course).filter_by(id=1)
         items = session.scalars(stmt).first()
         if items:
@@ -51,10 +52,17 @@ def app_context_with_data(app_context):
         assert session.get(Course, 1).demo_events[0].additional_info == "TEST_ADDITIONAL_INFO"
         assert session.get(Course, 1).demo_events[0].demos[0].name == "TEST_DEMO_NAME"
         yield
+        """
+        Solved the issue of session.get vs session.execute. This should be now be implementable through the repo.
+        Unfortunately, time ran out. Complete later.
+        """
         only_course = session.get(Course, 1)
-        print("only_course from get:", only_course.serialize())
-        only_course = session.scalars(select(Course).filter_by(id=1)).first()
-        print("only course:", only_course)
+        print("session.get(Course, 1):", only_course.serialize())
+        stmt = select(Course).where(Course.id == 1)
+        results = session.execute(stmt).scalars()
+        for obj in results:
+            print("session execute: ", obj.serialize())
+        assert False
         session.delete(only_course)
         session.commit()
     # counter = 2
