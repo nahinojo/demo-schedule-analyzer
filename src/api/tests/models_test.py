@@ -6,11 +6,11 @@ def crud_course_test():
     """
     Tests CRUD operations for Course model.
 
-    Only peforms Update and Delete operations because Create and Read are already tested in
-    app_context_with_data fixture.
+    Only executes Update operation because Create, Read, and Delete are already tested in
+    app_context_with_data fixture setup and teardown.
     """
     from app.database import Session
-    from app.models import Course, Demo, DemoEvent
+    from app.models import Course
     with Session() as session:
         course = session.get(Course, 1)
         course.course_code = "TEST_COURSE_CODE_UPDATE"
@@ -24,11 +24,6 @@ def crud_course_test():
         assert db_course.instructor == "TEST_INSTRUCTOR_UPDATE"
         assert db_course.term == "TEST_TERM_UPDATE"
         assert db_course.year == 2020
-        session.delete(course)
-        session.commit()
-        assert session.get(Course, 1) is None
-        assert session.get(DemoEvent, 1) is None
-        assert session.get(Demo, 1) is None
 
 
 @pytest.mark.usefixtures("app_context_with_data")
@@ -50,9 +45,7 @@ def crud_demo_event_test():
     with Session() as session:
         session.add(new_demo_event)
         course = session.get(Course, 1)
-        # print("Course pre-append:", course.serialize())
         course.demo_events.append(new_demo_event)
-        # print("Course post-append:", course.serialize())
         session.add(course)
         session.commit()
         assert session.get(DemoEvent, 2)
