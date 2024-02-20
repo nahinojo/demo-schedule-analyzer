@@ -6,8 +6,8 @@ def crud_course_test():
     """
     Tests CRUD operations for Course model.
 
-    Only executes Update operation because Create, Read, and Delete are already tested in
-    app_context_with_data fixture setup and teardown.
+    Only executes Update operation because Create, Read, and Delete are inherently performed in the setup and teardown
+    of the fixture app_context_with_data.
     """
     from app.database import Session
     from app.models import Course
