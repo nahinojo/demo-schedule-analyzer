@@ -34,7 +34,7 @@ class DemoEvent(Base):
     __tablename__ = "demo_event"
     id: Mapped[int] = mapped_column(primary_key=True)
     event_date: Mapped[Date] = mapped_column(Date)
-    additional_info: Mapped[str] = mapped_column(String)
+    additional_information: Mapped[str] = mapped_column(String)
     demos: Mapped[List["Demo"]] = relationship(
         back_populates="demo_event",
         cascade="all, delete-orphan"
@@ -46,7 +46,7 @@ class DemoEvent(Base):
         return {
             "id": self.id,
             "event_date": self.event_date,
-            "additional_info": self.additional_info,
+            "additional_information": self.additional_information,
             "demos": [demo.serialize() for demo in self.demos]
         }
 

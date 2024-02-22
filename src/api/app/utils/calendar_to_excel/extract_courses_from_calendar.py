@@ -4,16 +4,15 @@ from app.models import (
     Course,
     DemoEvent,
 )
-from app.utils import (
-    dissect_description,
-    get_course_term,
-    is_broken_event,
-    is_similar_strings,
-    request_calendar
-)
+
+from .dissect_description import dissect_description
+from .get_course_term import get_course_term
+from .is_broken_event import is_broken_event
+from .is_similar_strings import is_similar_strings
+from .request_calendar import request_calendar
 
 
-def extract_course_details_from_calendar(
+def extract_courses_from_calendar(
         target_course_code: str = None,
         target_instructor: str = None,
         target_term: str = None,
@@ -41,16 +40,16 @@ def extract_course_details_from_calendar(
 
     Returns
     -------
-    all_courses: list
-        List of all extracted Course objects.
+    all_courses: list of Course
+        List of all extracted courses from the demo calendar.
     """
     calendar = request_calendar()
-    all_courses = []
+    courses = []
     for calendar_event in calendar.walk("VEVENT"):
         summary = str(calendar_event.get("SUMMARY"))
         demo_datetime = calendar_event.get("DTSTART").dt
-        is_not_course = any(c.isdigit() for c in summary)
-        if is_not_course:
+        is_course = any(c.isdigit() for c in summary)
+        if not is_course:
             continue
         demo_date = date(
             year=demo_datetime.year,
@@ -58,17 +57,20 @@ def extract_course_details_from_calendar(
             day=demo_datetime.day
         )
         instructor = summary[summary.find(" ") + 1:].strip()
+        instructor = instructor.strip(":")
         year = demo_date.year
         course_code = summary[: summary.find(" ")]
         term = get_course_term(demo_date)
         description = str(calendar_event.get("DESCRIPTION"))
         demos, additional_information = dissect_description(description)
+        demo = demos or []
+        additional_information = additional_information or ""
 
         is_no_instructor = any(char.isdigit() for char in instructor)
         is_discussion = is_similar_strings("discussion", instructor.lower())
         is_broken = is_broken_event(demo_date, instructor)
         is_not_target_instructor = target_instructor not in {None, instructor}
-        is_not_target_year = year >= target_year if is_target_year_as_minimum else year == target_year
+        is_not_target_year = year < target_year if is_target_year_as_minimum else year == target_year
         is_not_target_course_code = target_course_code not in {None, course_code}
         is_not_target_term = target_term not in {None, term}
         is_skip_event = any(
@@ -84,14 +86,13 @@ def extract_course_details_from_calendar(
         )
         if is_skip_event:
             continue
-
         new_demo_event = DemoEvent(
             event_date=demo_date,
             demos=demos,
             additional_information=additional_information,
         )
         is_demo_event_in_existing_course = False
-        for course in all_courses:
+        for course in courses:
             is_demo_event_in_existing_course = (
                     instructor == course.instructor
                     and course_code == course.course_code
@@ -109,7 +110,7 @@ def extract_course_details_from_calendar(
                     break
                 else:
                     for curr_demo_idx, curr_demo_event in enumerate(demo_event_list):
-                        if new_demo_event_date < curr_demo_event.date:
+                        if new_demo_event_date < curr_demo_event.event_date:
                             demo_event_list.insert(curr_demo_idx, new_demo_event)
                             break
                     break
@@ -121,5 +122,5 @@ def extract_course_details_from_calendar(
                 instructor=instructor,
                 demo_events=[new_demo_event]
             )
-            all_courses.append(new_course)
-    return all_courses
+            courses.append(new_course)
+    return courses

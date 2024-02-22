@@ -4,8 +4,8 @@ from app.utils.calendar_to_excel import (
     get_course_term,
     is_broken_event,
     is_similar_strings,
-    extract_course_details_from_calendar,
     remove_html,
+    extract_courses_from_calendar,
     generate_schedule,
     request_calendar
 )

@@ -39,7 +39,7 @@ def crud_demo_event_test():
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     new_demo_event = DemoEvent(
         event_date=yesterday,
-        additional_info="ADDITIONAL_INFO_CRUD_DEMO_EVENT",
+        additional_information="ADDITIONAL_INFO_CRUD_DEMO_EVENT",
         demos=[new_demo]
     )
     with Session() as session:
@@ -51,7 +51,7 @@ def crud_demo_event_test():
         assert session.get(DemoEvent, 2)
         db_new_demo_event = session.get(DemoEvent, 2)
         assert db_new_demo_event.event_date == yesterday
-        assert db_new_demo_event.additional_info == "ADDITIONAL_INFO_CRUD_DEMO_EVENT"
+        assert db_new_demo_event.additional_information == "ADDITIONAL_INFO_CRUD_DEMO_EVENT"
         assert db_new_demo_event.demos[0].name == "DEMO_NAME_CRUD_DEMO_EVENT"
         session.delete(new_demo_event)
         session.delete(new_demo)

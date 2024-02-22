@@ -1,7 +1,6 @@
-from app.utils import (
-    is_similar_strings,
-    remove_html
-)
+from .is_similar_strings import is_similar_strings
+from .remove_html import remove_html
+
 from app.models import (
     Demo,
 )
@@ -20,7 +19,7 @@ def dissect_description(description: str):
     -------
     demos: list
         The list of Demo objects.
-    additional_info: str
+    additional_information: str
         The additional information.
     """
     description = description.strip()
