@@ -1,7 +1,15 @@
-from flask import Blueprint
-# from . import get_all_courses, add_test_course, add_and_edit_course
+from flask import Blueprint, request
+from app.utils import generate_schedule
 
-test_blueprint = Blueprint('api', __name__)
-# test_blueprint.route('/add_and_edit_course', methods=['POST'])(add_and_edit_course)
-# test_blueprint.route('/add_test_course', methods=['POST'])(add_test_course)
-# test_blueprint.route('/get_all_courses', methods=['GET'])(get_all_courses)
+api_blueprint = Blueprint('api', __name__)
+
+
+@api_blueprint.route('/generate_schedule', methods=['GET'])
+def generate_schedule_route():
+    generate_schedule(
+        target_course_code=request.args.get('target_course_code', None),
+        target_instructor=request.args.get('target_instructor', None),
+        target_term=request.args.get('target_term', None),
+        target_year=int(request.args.get('target_year', 2020)),
+        is_target_year_as_minium=request.args.get('is_target_year_as_minimum', True)
+    )

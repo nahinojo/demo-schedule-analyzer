@@ -31,7 +31,7 @@ def app_context_with_data(app_context):
         demo_events=[
             DemoEvent(
                 event_date=today,
-                additional_info="TEST_ADDITIONAL_INFO",
+                additional_information="TEST_ADDITIONAL_INFO",
                 demos=[
                     Demo(name="TEST_DEMO_NAME")
                 ]
@@ -45,13 +45,16 @@ def app_context_with_data(app_context):
             assert False
         session.add(new_course)
         session.commit()
-        assert session.get(Course, 1).course_code == "TEST_COURSE_CODE"
-        assert session.get(Course, 1).instructor == "TEST_INSTRUCTOR"
-        assert session.get(Course, 1).term == "TEST_TERM"
-        assert session.get(Course, 1).year == today.year
-        assert session.get(Course, 1).demo_events[0].event_date == today
-        assert session.get(Course, 1).demo_events[0].additional_info == "TEST_ADDITIONAL_INFO"
-        assert session.get(Course, 1).demo_events[0].demos[0].name == "TEST_DEMO_NAME"
+        only_course = session.get(Course, 1)
+        assert only_course
+        assert only_course.course_code == "TEST_COURSE_CODE"
+        assert only_course.instructor == "TEST_INSTRUCTOR"
+        assert only_course.term == "TEST_TERM"
+        assert only_course.year == today.year
+        assert only_course.demo_events[0].event_date == today
+        assert only_course.demo_events[0].additional_information == "TEST_ADDITIONAL_INFO"
+        assert only_course.demo_events[0].demos[0].name == "TEST_DEMO_NAME"
+        del only_course
         yield
         only_course = session.get(Course, 1)
         session.delete(only_course)
