@@ -17,7 +17,7 @@ def app_context(app):
 
 
 @pytest.fixture()
-def app_context_with_data(app_context):
+def app_context_with_test_data(app_context):
     from app.database import Session
     from app.models import Course, DemoEvent, Demo
     from datetime import date
@@ -60,3 +60,14 @@ def app_context_with_data(app_context):
         session.delete(only_course)
         session.commit()
         assert session.get(Course, 1) is None
+
+
+@pytest.fixture()
+def setup_db(app_context):
+    """
+    Tests setup_db function.
+    """
+    from app.database.setup_db import setup_db
+    setup_db()
+    yield
+    return

@@ -6,6 +6,6 @@ def setup_db_test():
     """
     Tests setup_db function.
     """
-    from app.database import setup_db
+    from app.database.setup_db import setup_db
     setup_db()
     return
