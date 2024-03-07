@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.mark.usefixtures("app_context")
+@pytest.mark.usefixtures("setup_db")
 def generate_schedule_test():
     """
     Tests generate_schedule function.

@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.mark.usefixtures("app_context_with_data")
+@pytest.mark.usefixtures("app_context_with_test_data")
 def crud_course_test():
     """
     Tests CRUD operations for Course model.
@@ -26,7 +26,7 @@ def crud_course_test():
         assert db_course.year == 2020
 
 
-@pytest.mark.usefixtures("app_context_with_data")
+@pytest.mark.usefixtures("app_context_with_test_data")
 def crud_demo_event_test():
     """
     Tests CRUD operations for DemoEvent model.
@@ -62,7 +62,7 @@ def crud_demo_event_test():
         assert session.get(DemoEvent, 2) is None
 
 
-@pytest.mark.usefixtures("app_context_with_data")
+@pytest.mark.usefixtures("app_context_with_test_data")
 def crud_demo_test():
     """
     Tests CRUD operations for Demo model.
