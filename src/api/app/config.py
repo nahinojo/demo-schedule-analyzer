@@ -1,7 +1,17 @@
+import os
+
 class Config:
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    """
+    For some reason, the api calls can't access the database.
+    
+    Online suggestions mention this is due to using an in-memory database. As a solution, I am setting up a database 
+    to use. It's not fully setup and needs some tinkering.
+    
+    Continue from here.
+    """
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/nahinojo/Projects/Repositories/demo-schedule-analyzer/src/api/app/database/foo.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -13,4 +23,5 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
