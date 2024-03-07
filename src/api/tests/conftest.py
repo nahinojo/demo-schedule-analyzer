@@ -40,8 +40,8 @@ def app_context_with_test_data(app_context):
     )
     with Session() as session:
         stmt = select(Course).filter_by(id=1)
-        items = session.scalars(stmt).first()
-        if items:
+        preexisting_items = session.scalars(stmt).first()
+        if preexisting_items:
             assert False
         session.add(new_course)
         session.commit()
@@ -67,7 +67,16 @@ def setup_db(app_context):
     """
     Tests setup_db function.
     """
+    from sqlalchemy import select
+
     from app.database.setup_db import setup_db
+    from app.database import Session
+    from app.models import Course
     setup_db()
     yield
+    with Session() as session:
+        all_courses = session.scalars(select(Course)).all()
+        for course in all_courses:
+            session.delete(course)
+        session.commit()
     return
