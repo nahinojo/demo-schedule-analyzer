@@ -10,14 +10,12 @@ from app.database import Session
 from app.models import Course
 from .date_difference_school_weeks import date_difference_school_weeks
 
-CURRENT_YEAR = date.today().year
-
 
 def generate_schedule(
         target_course_code: str = None,
         target_instructor: str = None,
         target_term: str = None,
-        target_year: int = CURRENT_YEAR,
+        target_year: int = date.today().year,
         is_target_year_as_minium: bool = True,
 ):
     """
