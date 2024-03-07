@@ -21,7 +21,7 @@ def generate_schedule(
         is_target_year_as_minium: bool = True,
 ):
     """
-    Writes a demo schedule files under `PATH_TO_SCHEDULE`.
+    Writes a demo schedule file under `PATH_TO_SCHEDULE`.
 
     Parameters
     ----------
