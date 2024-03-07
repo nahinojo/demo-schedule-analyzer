@@ -65,7 +65,7 @@ def app_context_with_test_data(app_context):
 @pytest.fixture()
 def setup_db(app_context):
     """
-    Tests setup_db function.
+    Setups the database with data from the demo calendar.
     """
     from sqlalchemy import select
 
