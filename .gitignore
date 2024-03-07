@@ -2,8 +2,7 @@
 .idea/
 
 # Automatic file generation and retrieval
-build/
-downloads/
+temp/
 *bundle*
 
 # Cache

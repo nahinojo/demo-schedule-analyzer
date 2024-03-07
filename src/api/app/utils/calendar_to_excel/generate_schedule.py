@@ -40,13 +40,6 @@ def generate_schedule(
     -------
     None
     """
-    # !!!Should be pulling from the database, not the function.
-    # courses = extract_courses_from_calendar(
-    #     target_course_code=target_course_code,
-    #     target_instructor=target_instructor,
-    #     target_term=target_term,
-    #     target_year=target_year,
-    # )
     wb = Workbook()
     ws = wb.active  # type: Worksheet
     with Session() as session:
