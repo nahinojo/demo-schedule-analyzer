@@ -1,6 +1,15 @@
+from sqlalchemy import select
+
 from app import app
+from app.database import Session
+from app.database.setup_db import setup_db
+from app.models import Course
 from app.routes import api_blueprint
 
-if __name__ == '__main__':
-    app.register_blueprint(api_blueprint)
-    app.run()
+
+setup_db()
+app.register_blueprint(api_blueprint)
+# with Session() as session:
+#     first_course = session.get(Course, 1)
+#     print("first course: ", first_course.course_code)
+app.run()
