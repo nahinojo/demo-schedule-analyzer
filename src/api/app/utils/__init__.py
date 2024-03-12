@@ -1,4 +1,4 @@
-from app.utils.calendar_to_excel import (
+from app.utils.calendar_to_xlsx import (
     date_difference_school_weeks,
     dissect_description,
     get_course_term,
@@ -8,4 +8,8 @@ from app.utils.calendar_to_excel import (
     extract_courses_from_calendar,
     generate_schedule,
     request_calendar
+)
+
+from app.utils.database import (
+    get_filtered_courses
 )

@@ -33,7 +33,7 @@ def extract_courses_from_calendar(
         The target term.
     target_year: int
         The target year.
-    is_target_year_as_minium: bool
+    is_target_year_as_minimum: bool
         Whether the target year is the minimum year.
     is_request_new_calendar: bool
         Whether to request a new calendar.

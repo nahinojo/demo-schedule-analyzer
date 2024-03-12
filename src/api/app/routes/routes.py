@@ -1,8 +1,10 @@
-from flask import Blueprint, request
+from datetime import date
+from flask import Blueprint, request, jsonify
+from sqlalchemy import text
 
 from app.database import Session
-from app.models import Course
-from app.utils import generate_schedule
+
+from app.utils import generate_schedule, get_filtered_courses
 
 api_blueprint = Blueprint('api', __name__)
 
@@ -12,16 +14,18 @@ def generate_schedule_route():
     """
     Generates an demo schedule.
     """
-    print("GENERATING SCHEDULE")
-    print(request.args)
+    is_target_year_as_minium = request.args.get('is_target_year_as_minimum', True)
+    if type(is_target_year_as_minium) == str and is_target_year_as_minium.lower() == "false":
+        is_target_year_as_minium = False
     generate_schedule(
         target_course_code=request.args.get('target_course_code', None),
         target_instructor=request.args.get('target_instructor', None),
         target_term=request.args.get('target_term', None),
-        target_year=int(request.args.get('target_year', 2020)),
-        is_target_year_as_minium=request.args.get('is_target_year_as_minimum', True)
+        target_year=int(request.args.get('target_year', date.today().year)),
+        is_target_year_as_minium=is_target_year_as_minium
     )
     return "SCHEDULE GENERATED"
+
 
 @api_blueprint.route('/course_attribute_options', methods=['GET'])
 def course_attribute_options_route():
@@ -31,24 +35,29 @@ def course_attribute_options_route():
     target_course_code = request.args.get('target_course_code', None)
     target_instructor = request.args.get('target_instructor', None)
     target_term = request.args.get('target_term', None)
-    target_year = int(request.args.get('target_year', 2020))
+    target_year = int(request.args.get('target_year', date.today().year))
     is_target_year_as_minimum = request.args.get('is_target_year_as_minimum', True)
-
-    course_codes = set(target_course_code)
-    instructors = set(target_instructor)
-    terms = set(target_term)
-    years = set(target_year)
-
-    with Session() as session:
-        for course in session.get(Course):
-            course_code = course.course_code
-            instructor = course.instructor
-            term = course.term
-            year = course.year
-
-    return {
-        "course_code": list(course_codes),
-        "instructor": list(instructors),
-        "term": list(terms),
-        "year": list(years)
+    if type(is_target_year_as_minimum) == str and is_target_year_as_minimum.lower() == "false":
+        is_target_year_as_minimum = False
+    courses = get_filtered_courses(
+        target_course_code=target_course_code,
+        target_instructor=target_instructor,
+        target_term=target_term,
+        target_year=target_year,
+        is_target_year_as_minimum=is_target_year_as_minimum
+    )
+    attribute_options = {
+        "course_code": target_course_code if target_course_code is not None else [],
+        "instructor": target_instructor if target_instructor is not None else [],
+        "term": target_term if target_term is not None else [],
+        "year": target_year,
+        "is_target_year_as_minimum": str(is_target_year_as_minimum)
     }
+    for course in courses:
+        if not target_course_code and course.course_code not in attribute_options["course_code"]:
+            attribute_options["course_code"].append(course.course_code)
+        if not target_instructor and course.instructor not in attribute_options["instructor"]:
+            attribute_options["instructor"].append(course.instructor)
+        if not target_term and course.term not in attribute_options["term"]:
+            attribute_options["term"].append(course.term)
+    return jsonify(attribute_options)

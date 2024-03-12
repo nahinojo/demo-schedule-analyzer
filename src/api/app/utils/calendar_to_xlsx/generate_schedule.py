@@ -9,6 +9,7 @@ from app import PATH_TO_SCHEDULE
 from app.database import Session
 from app.models import Course
 from .date_difference_school_weeks import date_difference_school_weeks
+from ..database.get_filtered_courses import get_filtered_courses
 
 
 def generate_schedule(
@@ -43,18 +44,13 @@ def generate_schedule(
     with Session() as session:
         stmt = select(func.count()).select_from(Course)
         num_courses = session.execute(stmt).scalar()
-        stmt = select(Course)
-        if target_course_code:
-            stmt = stmt.filter(Course.course_code == target_course_code)
-        if target_instructor:
-            stmt = stmt.filter(Course.instructor == target_instructor)
-        if target_term:
-            stmt = stmt.filter(Course.term == target_term)
-        if is_target_year_as_minium:
-            stmt = stmt.filter(Course.year >= target_year)
-        else:
-            stmt = stmt.filter(Course.year == target_year)
-        courses = session.scalars(stmt).all()
+        courses = get_filtered_courses(
+            target_course_code=target_course_code,
+            target_instructor=target_instructor,
+            target_term=target_term,
+            target_year=target_year,
+            is_target_year_as_minimum=is_target_year_as_minium
+        )
         demo_count_list = []
         for course_idx, course in enumerate(courses):
             ws.title = (
