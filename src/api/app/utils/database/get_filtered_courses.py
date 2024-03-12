@@ -6,6 +6,7 @@ from app.models import Course
 
 
 def get_filtered_courses(
+        session: Session,
         target_course_code: str = None,
         target_instructor: str = None,
         target_term: str = None,
@@ -18,6 +19,8 @@ def get_filtered_courses(
 
     Parameters
     ----------
+    session: Session
+        The SQLAlchemy session object.
     target_course_code: str
         The target course code.
     target_instructor: str
@@ -34,17 +37,16 @@ def get_filtered_courses(
     list[Course]
         A list of Course objects.
     """
-    with Session() as session:
-        stmt = select(Course)
-        if target_course_code:
-            stmt = stmt.filter(Course.course_code == target_course_code)
-        if target_instructor:
-            stmt = stmt.filter(Course.instructor == target_instructor)
-        if target_term:
-            stmt = stmt.filter(Course.term == target_term)
-        if is_target_year_as_minimum:
-            stmt = stmt.filter(Course.year >= target_year)
-        else:
-            stmt = stmt.filter(Course.year == target_year)
-        courses = session.execute(stmt).scalars().all()
+    stmt = select(Course)
+    if target_course_code:
+        stmt = stmt.filter(Course.course_code == target_course_code)
+    if target_instructor:
+        stmt = stmt.filter(Course.instructor == target_instructor)
+    if target_term:
+        stmt = stmt.filter(Course.term == target_term)
+    if is_target_year_as_minimum:
+        stmt = stmt.filter(Course.year >= target_year)
+    else:
+        stmt = stmt.filter(Course.year == target_year)
+    courses = session.execute(stmt).scalars().all()
     return courses

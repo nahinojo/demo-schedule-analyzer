@@ -45,6 +45,7 @@ def generate_schedule(
         stmt = select(func.count()).select_from(Course)
         num_courses = session.execute(stmt).scalar()
         courses = get_filtered_courses(
+            session=session,
             target_course_code=target_course_code,
             target_instructor=target_instructor,
             target_term=target_term,
