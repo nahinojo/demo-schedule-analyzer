@@ -44,6 +44,16 @@ def generate_schedule(
         stmt = select(func.count()).select_from(Course)
         num_courses = session.execute(stmt).scalar()
         stmt = select(Course)
+        if target_course_code:
+            stmt = stmt.filter(Course.course_code == target_course_code)
+        if target_instructor:
+            stmt = stmt.filter(Course.instructor == target_instructor)
+        if target_term:
+            stmt = stmt.filter(Course.term == target_term)
+        if is_target_year_as_minium:
+            stmt = stmt.filter(Course.year >= target_year)
+        else:
+            stmt = stmt.filter(Course.year == target_year)
         courses = session.scalars(stmt).all()
         demo_count_list = []
         for course_idx, course in enumerate(courses):
@@ -99,6 +109,7 @@ def generate_schedule(
                 wb.create_sheet("next")
                 ws = wb["next"]
 
+    # Styling from here onwards.
     default_font_name = "Ubuntu"
     default_font_size = 12
     default_indent = 1

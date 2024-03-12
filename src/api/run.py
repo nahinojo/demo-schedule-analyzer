@@ -8,5 +8,5 @@ from app.routes import api_blueprint
 
 
 setup_db()
-app.register_blueprint(api_blueprint)
+app.register_blueprint(api_blueprint, url_prefix='/api')
 app.run()
