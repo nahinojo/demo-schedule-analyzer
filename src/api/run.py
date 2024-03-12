@@ -1,4 +1,4 @@
-from sqlalchemy import select
+import sqlalchemy
 
 from app import app
 from app.database import Session

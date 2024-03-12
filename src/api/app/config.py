@@ -1,5 +1,6 @@
 import os
 
+
 class Config:
     DEBUG = False
     TESTING = False
@@ -11,7 +12,8 @@ class Config:
     
     Continue from here.
     """
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/nahinojo/Projects/Repositories/demo-schedule-analyzer/src/api/app/database/foo.db'
+    SQLALCHEMY_DATABASE_URI = f"sqlite:////{os.getcwd()}/src/api/app/database/foo.db"
+    print("SQLALCHEMY_DATABASE_URI: ", SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
