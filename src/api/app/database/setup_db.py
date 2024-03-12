@@ -6,7 +6,6 @@ def setup_db():
     """
     Initializes the database with data from the demo calendar.
     """
-    print("Setting up database...")
     with Session() as session:
         all_courses = extract_courses_from_calendar()
         for course in all_courses:

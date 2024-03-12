@@ -12,8 +12,7 @@ class Config:
     
     Continue from here.
     """
-    SQLALCHEMY_DATABASE_URI = f"sqlite:////{os.getcwd()}/src/api/app/database/foo.db"
-    print("SQLALCHEMY_DATABASE_URI: ", SQLALCHEMY_DATABASE_URI)
+    SQLALCHEMY_DATABASE_URI = f"sqlite:////{os.getcwd()}/src/api/app/database/main.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
