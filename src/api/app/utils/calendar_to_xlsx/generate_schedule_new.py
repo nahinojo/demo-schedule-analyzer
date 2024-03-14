@@ -19,10 +19,6 @@ def generate_schedule(courses: List[Course]):
     ----------
     courses: List[Course]
         The courses to generate a schedule for.
-
-    Returns
-    -------
-    None
     """
     wb = Workbook()
     ws = wb.active  # type: Worksheet
