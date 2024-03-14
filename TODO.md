@@ -9,6 +9,11 @@
 - Filter out too small courses from generated schedule.
 
 ## Chores
+### Refactor Generate Schedule
+Have schedule generation be on a per course/sheet basis. 
+
+The current system of generating some amount of sheets based on the paramters is not very versatile.
+Have that as it's own function.
 ### Update the database, don't remake it (low-priority)
 - The current system recreates the database. Consider just updating it instead.
 
