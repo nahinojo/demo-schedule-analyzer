@@ -1,17 +1,18 @@
-from typing import List
+from typing import List, Type
 
 from openpyxl import Workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 
-from app import PATH_TO_SCHEDULE
 from app.database import Session
+
+from app import PATH_TO_SCHEDULE
 from app.models import Course
 from .date_difference_school_weeks import date_difference_school_weeks
 
 
-def generate_schedule(courses: List[Course]):
+def generate_schedule(courses: List[Type[Course]]):
     """
     Writes a demo schedule file with sheets corresponding to a specific course.
 
@@ -22,60 +23,59 @@ def generate_schedule(courses: List[Course]):
     """
     wb = Workbook()
     ws = wb.active  # type: Worksheet
-    with Session() as session:
-        demo_count_list = []
-        for course_idx, course in enumerate(courses):
-            ws.title = (
-                f"{course.course_code}"
-                f" {course.instructor}"
-                f" - {course.term}"
-                f" {course.year}"
-            )
-            ws["A1"] = "Week - Day"
-            ws["B1"] = "Demonstrations"
-            ws["C1"] = "Additional Information"
-            ws["D1"] = "Course Information"
-            ws.merge_cells("D1:E1")
-            ws["D2"] = "Instructor"
-            ws["E2"] = course.instructor
-            ws["D3"] = "Course Code"
-            ws["E3"] = course.course_code
-            ws["D4"] = "Term"
-            ws["E4"] = course.term
-            ws["D5"] = "Year"
-            ws["E5"] = course.year
+    demo_count_list = []
+    for course_idx, course in enumerate(courses):
+        ws.title = (
+            f"{course.course_code}"
+            f" {course.instructor}"
+            f" - {course.term}"
+            f" {course.year}"
+        )
+        ws["A1"] = "Week - Day"
+        ws["B1"] = "Demonstrations"
+        ws["C1"] = "Additional Information"
+        ws["D1"] = "Course Information"
+        ws.merge_cells("D1:E1")
+        ws["D2"] = "Instructor"
+        ws["E2"] = course.instructor
+        ws["D3"] = "Course Code"
+        ws["E3"] = course.course_code
+        ws["D4"] = "Term"
+        ws["E4"] = course.term
+        ws["D5"] = "Year"
+        ws["E5"] = course.year
 
-            course_demos_list = []
-            row_idx = 2
-            first_demo_event_date = course.demo_events[0].event_date
-            demo_event_week = int(
-                first_demo_event_date.month != 9
-                or first_demo_event_date.weekday() < 3
-            )  # Fall quarter begins at Week 0
-            demo_count = 0
-            for demo_event_idx, demo_event in enumerate(course.demo_events):
-                if demo_event_idx > 0:
-                    demo_event_week += date_difference_school_weeks(
-                        prev_date=course.demo_events[demo_event_idx - 1].event_date,
-                        next_date=demo_event.event_date
-                    )
-                demo_event_date = demo_event.event_date
-                demo_event_weekday = demo_event_date.strftime("%A")
-                ws[f"A{row_idx}"] = f"{demo_event_week} - {demo_event_weekday}"
-                ws[f"C{row_idx}"] = demo_event.additional_information
-                init_row_idx = row_idx
-                for demo_idx, demo in enumerate(demo_event.demos):
-                    ws[f"B{row_idx}"] = demo.name
-                    row_idx += 1
-                    demo_count += 1
-                demo_event_span_rows = row_idx - init_row_idx
-                if demo_event_span_rows > 1:
-                    ws.merge_cells(f"A{init_row_idx}:A{row_idx - 1}")
-                    ws.merge_cells(f"C{init_row_idx}:C{row_idx - 1}")
-            demo_count_list.append(demo_count)
-            if course_idx < len(courses) - 1:
-                wb.create_sheet("next")
-                ws = wb["next"]
+        course_demos_list = []
+        row_idx = 2
+        first_demo_event_date = course.demo_events[0].event_date
+        demo_event_week = int(
+            first_demo_event_date.month != 9
+            or first_demo_event_date.weekday() < 3
+        )  # Fall quarter begins at Week 0
+        demo_count = 0
+        for demo_event_idx, demo_event in enumerate(course.demo_events):
+            if demo_event_idx > 0:
+                demo_event_week += date_difference_school_weeks(
+                    prev_date=course.demo_events[demo_event_idx - 1].event_date,
+                    next_date=demo_event.event_date
+                )
+            demo_event_date = demo_event.event_date
+            demo_event_weekday = demo_event_date.strftime("%A")
+            ws[f"A{row_idx}"] = f"{demo_event_week} - {demo_event_weekday}"
+            ws[f"C{row_idx}"] = demo_event.additional_information
+            init_row_idx = row_idx
+            for demo_idx, demo in enumerate(demo_event.demos):
+                ws[f"B{row_idx}"] = demo.name
+                row_idx += 1
+                demo_count += 1
+            demo_event_span_rows = row_idx - init_row_idx
+            if demo_event_span_rows > 1:
+                ws.merge_cells(f"A{init_row_idx}:A{row_idx - 1}")
+                ws.merge_cells(f"C{init_row_idx}:C{row_idx - 1}")
+        demo_count_list.append(demo_count)
+        if course_idx < len(courses) - 1:
+            wb.create_sheet("next")
+            ws = wb["next"]
 
     # Styling from here onwards.
     default_font_name = "Arial"

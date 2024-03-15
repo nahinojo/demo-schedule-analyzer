@@ -23,6 +23,8 @@ def extract_courses_from_calendar(
     Requests the demo calendar from Google and parses the events. It constructs Course objects from the events,
     and returns them in one large list.
 
+    **REFACTOR** remove all parameters
+
     Paramaters
     ----------
     target_course_code: str
@@ -40,7 +42,7 @@ def extract_courses_from_calendar(
 
     Returns
     -------
-    all_courses: list of Course
+    all_courses: List[Course]
         List of all extracted courses from the demo calendar.
     """
     calendar = request_calendar()

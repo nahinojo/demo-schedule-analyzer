@@ -10,8 +10,7 @@
 ### Parameterizing Schedule
 Permit users to specify instructor(s), course_code(s), etc.
 For every parameter change, update every other parameter to permissible/possible values
- 
-Update
+
 
 ### Generate Schedule
 1. Extract data from DB.
