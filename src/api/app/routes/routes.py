@@ -17,6 +17,11 @@ def generate_schedule_route(course_ids):
     ----------
     course_ids: str
         The list of course ids.
+
+    Returns
+    -------
+    response: dict
+        The HTTP response message.
     """
     try:
         course_ids = [int(course_id) for course_id in course_ids.split(',')]
