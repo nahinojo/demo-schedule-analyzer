@@ -24,7 +24,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(
-      __dirname, 'src/static'
+      __dirname, 'src/api/app/static/'
     )
   },
   performance: {

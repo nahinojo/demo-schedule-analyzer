@@ -1,85 +1,92 @@
-/* eslint-disable sort-keys */
-import React, { useEffect, useState } from 'react'
-import CategoryMenu from './components/CategoryMenu'
-import './style.css'
-import type { FC } from 'react'
-import Header from './components/Header'
+import React, { useMemo } from 'react'
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef
+} from 'material-react-table'
 
-import type { CategoriesOptions, Term } from './types'
-
-interface Response {
-  course_codes: string[]
-  instructors: string[]
-  terms: string[]
+// example data type
+interface Course {
+  instructor: string
+  courseCode: string
+  year: string
+  term: string
 }
 
-const App: FC = () => {
-  const [categoriesOptions, setCategoriesOptions] = useState<CategoriesOptions>({
-    courseCodes: null,
-    instructors: null,
-    terms: null,
-    years: null
-  })
-  const termsOrder = {
-    Winter: 0,
-    Spring: 1,
-    Summer: 2,
-    Fall: 3
+// nested data is ok, see accessorKeys in ColumnDef below
+const exampleData: Course[] = [
+  {
+    courseCode: 'CS 101',
+    instructor: 'Dr. John Doe',
+    term: 'Fall',
+    year: '2023'
+  },
+  {
+    courseCode: 'CS 102',
+    instructor: 'Dr. Jane Doe',
+    term: 'Winter',
+    year: '2023'
+  },
+  {
+    courseCode: 'ENG 110',
+    instructor: 'Dr. Foo Bar',
+    term: 'Summer',
+    year: '2021'
+  },
+  {
+    courseCode: 'ENG 111',
+    instructor: 'Dr. Baz Quux',
+    term: 'Fall',
+    year: '2021'
+  },
+  {
+    courseCode: 'CS 111',
+    instructor: 'Dr. Baz Quux',
+    term: 'Fall',
+    year: '2022'
   }
-  useEffect(
+]
+
+const Example = (): JSX.Element => {
+  // should be memoized or stable
+  const columns = useMemo<Array<MRT_ColumnDef<Course>>>(
     () => {
-      const apiUrl = 'http://localhost:5000'
-      fetch(`${apiUrl}/course_attribute_options`)
-        .then(async response => { return await (response.json() as Promise<Response>) })
-        .then(response => {
-          response.course_codes = Array.from(new Set(response.course_codes))
-            .sort()
-          response.instructors = Array.from(new Set(response.instructors))
-            .sort()
-          response.terms = Array.from(new Set(response.terms))
-            .sort((
-              a: Term, b: Term
-            ) => { return termsOrder[a] - termsOrder[b] })
-          setCategoriesOptions(categoriesOptions => {
-            return {
-              courseCodes: response.course_codes,
-              instructors: response.instructors,
-              terms: response.terms,
-              years: null
-            }
-          })
-        })
-        .catch(error => { console.log(error) })
-    }, []
+      return [
+        {
+          accessorKey: 'instructor', // access nested data with dot notation
+          header: 'Instructor',
+          size: 150
+        },
+        {
+          accessorKey: 'courseCode',
+          header: 'Course Code',
+          size: 50
+        },
+        {
+          accessorKey: 'year', // normal accessorKey
+          header: 'Year',
+          size: 100
+        },
+        {
+          accessorKey: 'term', // normal accessorKey
+          header: 'Term',
+          size: 150
+        }
+      ]
+    },
+    []
   )
+
+  const table = useMaterialReactTable({
+    columns,
+    data: exampleData // data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+  })
+
   return (
-    <>
-      <Header />
-      <div
-        className='mx-[20%] grid grid-cols-2'
-      >
-        <CategoryMenu
-          isOptionsCategory={true}
-          options={categoriesOptions.instructors}
-          title='Instructor'
-        />
-        <CategoryMenu
-          isOptionsCategory={true}
-          options={categoriesOptions.courseCodes}
-          title='Course Code'
-        />
-        <CategoryMenu
-          isOptionsCategory={true}
-          options={categoriesOptions.terms}
-          title='Term'
-        />
-        <CategoryMenu
-          isOptionsCategory={false}
-          title='Year'
-        />
-      </div>
-    </>
+    <MaterialReactTable
+      table={table}
+    />
   )
 }
 
-export default App
+export default Example
