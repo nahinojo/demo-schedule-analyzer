@@ -1,58 +1,33 @@
-from datetime import date
 from openpyxl import Workbook
+from openpyxl.cell.cell import MergedCell
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
-from openpyxl.cell.cell import MergedCell
-from sqlalchemy import func, select
+from sqlalchemy import select
+from typing import List, Type
 
 from app import PATH_TO_SCHEDULE
 from app.database import Session
 from app.models import Course
 from .date_difference_school_weeks import date_difference_school_weeks
-from ..database.get_filtered_courses import get_filtered_courses
 
 
-def generate_schedule(
-        target_course_code: str = None,
-        target_instructor: str = None,
-        target_term: str = None,
-        target_year: int = date.today().year,
-        is_target_year_as_minium: bool = True,
-):
+def generate_schedule(course_ids: List[int]) -> None:
     """
-    Writes a demo schedule file under `PATH_TO_SCHEDULE`.
+    Writes a demo schedule file with sheets corresponding to a specific course.
 
     Parameters
     ----------
-    target_course_code: str
-        The target course code.
-    target_instructor: str
-        The target instructor.
-    target_term: str
-        The target term.
-    target_year: int
-        The target year.
-    is_target_year_as_minium: bool
-        Whether the target year is the minimum year.
-
-    Returns
-    -------
-    None
+    course_ids: List[int]
+        The list of course ids.
     """
     wb = Workbook()
     ws = wb.active  # type: Worksheet
+    demo_count_list = []
     with Session() as session:
-        stmt = select(func.count()).select_from(Course)
-        num_courses = session.execute(stmt).scalar()
-        courses = get_filtered_courses(
-            session=session,
-            target_course_code=target_course_code,
-            target_instructor=target_instructor,
-            target_term=target_term,
-            target_year=target_year,
-            is_target_year_as_minimum=is_target_year_as_minium
-        )
-        demo_count_list = []
+        stmt = select(Course).filter(Course.id.in_(course_ids))
+        courses = session.execute(stmt).scalars().all()
+        if not courses:
+            raise ValueError(f"No courses found with the ids: {course_ids}.")
         for course_idx, course in enumerate(courses):
             ws.title = (
                 f"{course.course_code}"
@@ -107,7 +82,7 @@ def generate_schedule(
                 ws = wb["next"]
 
     # Styling from here onwards.
-    default_font_name = "Ubuntu"
+    default_font_name = "Arial"
     default_font_size = 12
     default_indent = 1
     default_vertical = "center"
@@ -196,9 +171,9 @@ def generate_schedule(
         if max_row < 5:
             max_row = 5
         for row_idx_0, row in enumerate(sheet.iter_rows(
-            min_col=1,
-            max_col=5,
-            max_row=max_row
+                min_col=1,
+                max_col=5,
+                max_row=max_row
         )):
             row_idx = row_idx_0 + 1  # 1-index conversion for Sheet.
             if row_idx > 1:
@@ -206,7 +181,7 @@ def generate_schedule(
             weekday_cell = row[0]
             is_empty_weekday_cell = weekday_cell.value is None
             is_new_date = not is_empty_weekday_cell
-            is_leave_demo_events_empty = is_empty_weekday_cell and type(weekday_cell) != MergedCell
+            is_leave_demo_events_empty = is_empty_weekday_cell and type(weekday_cell) is not MergedCell
             for col_idx_0, cell in enumerate(row):
                 col_idx = col_idx_0 + 1  # 1-index conversion for Sheet.
                 is_title = row_idx == 1
