@@ -27,10 +27,7 @@ def generate_schedule_route(course_ids):
         message = {"status": "error", "message": str(e)}
         response = make_response(message, 500)
     else:
-        message = {
-            "status": "success",
-            "message": "Schedule generated successfully."
-        }
+        message = {"status": "success", "message": "Schedule generated successfully."}
         response = make_response(message, 200)
     return response
 
