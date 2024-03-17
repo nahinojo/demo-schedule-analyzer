@@ -13,7 +13,7 @@ from .date_difference_school_weeks import date_difference_school_weeks
 
 def generate_schedule(course_ids: List[int]) -> None:
     """
-    Writes a demo schedule file with sheets corresponding to a specific course.
+    Writes a demo schedule file with each sheet corresponding to a specific course.
 
     Parameters
     ----------
