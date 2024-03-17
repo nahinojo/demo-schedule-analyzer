@@ -12,6 +12,11 @@ api_blueprint = Blueprint('api', __name__)
 def generate_schedule_route(course_ids):
     """
     Generates a demo schedule.
+
+    Paramaters
+    ----------
+    course_ids: str
+        The list of course ids.
     """
     try:
         course_ids = [int(course_id) for course_id in course_ids.split(',')]
