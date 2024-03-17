@@ -15,7 +15,7 @@ def download_schedule():
 
 @app.route('/test')
 def test():
-    return "This is my test text"
+    return "Test API route successful!"
 
 
 @app.route('/')

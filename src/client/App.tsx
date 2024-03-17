@@ -4,6 +4,7 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef
 } from 'material-react-table'
+import axios from 'axios'
 
 // example data type
 interface Course {
@@ -13,39 +14,23 @@ interface Course {
   term: string
 }
 
-// nested data is ok, see accessorKeys in ColumnDef below
-const exampleData: Course[] = [
-  {
-    courseCode: 'CS 101',
-    instructor: 'Dr. John Doe',
-    term: 'Fall',
-    year: '2023'
-  },
-  {
-    courseCode: 'CS 102',
-    instructor: 'Dr. Jane Doe',
-    term: 'Winter',
-    year: '2023'
-  },
-  {
-    courseCode: 'ENG 110',
-    instructor: 'Dr. Foo Bar',
-    term: 'Summer',
-    year: '2021'
-  },
-  {
-    courseCode: 'ENG 111',
-    instructor: 'Dr. Baz Quux',
-    term: 'Fall',
-    year: '2021'
-  },
-  {
-    courseCode: 'CS 111',
-    instructor: 'Dr. Baz Quux',
-    term: 'Fall',
-    year: '2022'
+interface APIResponse {
+  data: {
+    data: Record<number, Course>
   }
-]
+}
+
+let details: Course[] = []
+axios.get('/api/get_course_table')
+  .then(
+    (response: APIResponse) => {
+      details = Object.values(response.data.data)
+    },
+    error => {
+      console.error('Failed to call get_course_table API')
+      console.error(error)
+    }
+  )
 
 const Example = (): JSX.Element => {
   // should be memoized or stable
@@ -53,7 +38,7 @@ const Example = (): JSX.Element => {
     () => {
       return [
         {
-          accessorKey: 'instructor', // access nested data with dot notation
+          accessorKey: 'instructor',
           header: 'Instructor',
           size: 150
         },
@@ -63,12 +48,12 @@ const Example = (): JSX.Element => {
           size: 50
         },
         {
-          accessorKey: 'year', // normal accessorKey
+          accessorKey: 'year',
           header: 'Year',
           size: 100
         },
         {
-          accessorKey: 'term', // normal accessorKey
+          accessorKey: 'term',
           header: 'Term',
           size: 150
         }
@@ -79,7 +64,7 @@ const Example = (): JSX.Element => {
 
   const table = useMaterialReactTable({
     columns,
-    data: exampleData // data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data: details // data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   })
 
   return (

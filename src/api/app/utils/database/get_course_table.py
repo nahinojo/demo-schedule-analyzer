@@ -12,7 +12,7 @@ def get_course_table():
         print(courses)
         course_table = {
             course.id: {
-                "course_code": course.course_code,
+                "courseCode": course.course_code,
                 "instructor": course.instructor,
                 "term": course.term,
                 "year": course.year,
