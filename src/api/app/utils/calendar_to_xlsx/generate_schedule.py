@@ -3,12 +3,21 @@ from openpyxl.cell.cell import MergedCell
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from sqlalchemy import select
-from typing import List, Type
+from typing import List
 
 from app import PATH_TO_SCHEDULE
 from app.database import Session
 from app.models import Course
 from .date_difference_school_weeks import date_difference_school_weeks
+
+
+def _create_worksheet_title(course_code, instructor, term, year):
+    return (
+        f"{course_code}"
+        f" {instructor}"
+        f" - {term}"
+        f" {year}"
+    )
 
 
 def generate_schedule(course_ids: List[int]) -> None:
@@ -21,7 +30,7 @@ def generate_schedule(course_ids: List[int]) -> None:
         The list of course ids.
     """
     wb = Workbook()
-    ws = wb.active  # type: Worksheet
+    ws: Worksheet = wb.active
     demo_count_list = []
     with Session() as session:
         stmt = select(Course).filter(Course.id.in_(course_ids))
@@ -29,12 +38,27 @@ def generate_schedule(course_ids: List[int]) -> None:
         if not courses:
             raise ValueError(f"No courses found with the ids: {course_ids}.")
         for course_idx, course in enumerate(courses):
-            ws.title = (
-                f"{course.course_code}"
-                f" {course.instructor}"
-                f" - {course.term}"
-                f" {course.year}"
+            worksheet_title = _create_worksheet_title(
+                course.course_code,
+                course.instructor,
+                course.term,
+                course.year
             )
+            # Excel file may break if sheet title exceeds 31 characters.
+            if len(worksheet_title) > 31:
+                instructor = ""
+                for char in course.instructor:
+                    if not char.islower():
+                        instructor += char
+                        if char.isupper():
+                            instructor += "."
+                worksheet_title = _create_worksheet_title(
+                    course.course_code,
+                    instructor,
+                    course.term,
+                    course.year
+                )
+            ws.title = worksheet_title
             ws["A1"] = "Week - Day"
             ws["B1"] = "Demonstrations"
             ws["C1"] = "Additional Information"

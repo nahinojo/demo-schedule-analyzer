@@ -63,7 +63,7 @@ def app_context_with_test_data(app_context):
 
 
 @pytest.fixture()
-def setup_db(app_context):
+def app_context_with_real_data(app_context):
     """
     Setups the database with data from the demo calendar.
     """

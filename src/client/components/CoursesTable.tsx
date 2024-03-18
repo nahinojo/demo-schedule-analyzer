@@ -37,28 +37,37 @@ axios.get('/api/get_course_table')
   )
 
 const CoursesTable = (): JSX.Element => {
+  const stringFilters = [
+    'equals',
+    'contains',
+    'fuzzy'
+  ]
   const columns = useMemo<Array<MRT_ColumnDef<Course>>>(
     () => {
       return [
         {
           accessorKey: 'instructor',
+          columnFilterModeOptions: stringFilters,
           header: 'Instructor',
-          size: 150
+          size: 100
         },
         {
           accessorKey: 'courseCode',
+          columnFilterModeOptions: stringFilters,
           header: 'Course Code',
-          size: 50
+          size: 100
         },
         {
           accessorKey: 'year',
+          columnFilterModeOptions: ['equals', 'greaterThan'],
           header: 'Year',
           size: 100
         },
         {
           accessorKey: 'term',
+          columnFilterModeOptions: stringFilters,
           header: 'Term',
-          size: 150
+          size: 100
         }
       ]
     },
@@ -68,36 +77,16 @@ const CoursesTable = (): JSX.Element => {
   const table = useMaterialReactTable({
     columns,
     data: courses,
+    enableColumnFilterModes: true,
     enableDensityToggle: false,
     enableFullScreenToggle: false,
     enableRowSelection: true,
     initialState: {
+      pagination: { pageIndex: 0, pageSize: 15 },
       showGlobalFilter: true
     },
     muiPaginationProps: {
-      rowsPerPageOptions: [10, 25, 50, 200]
-    },
-    // muiSelectAllCheckboxProps: {
-    //   sx: {
-    //     display: 'flex',
-    //     textAlign: 'center'
-    //   }
-    // },
-    muiTableHeadCellProps: ({ column, table }) => {
-      // Center align checkbox row-selection WIP
-      if (column.id === 'mrt-row-select') {
-        console.log(
-          'column:', column
-        )
-        return {
-          sx: {
-            display: 'flex',
-            textAlign: 'center'
-          }
-        }
-      }
-      return {
-      }
+      rowsPerPageOptions: [5, 15, 50, 200]
     },
     positionToolbarAlertBanner: 'bottom',
     renderTopToolbar: ({ table }) => {
