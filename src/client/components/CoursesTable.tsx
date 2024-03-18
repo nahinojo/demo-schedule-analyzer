@@ -93,18 +93,37 @@ const CoursesTable = (): JSX.Element => {
           'Selected courses: ', selectedCourses
         )
         const apiRoute = `/api/generate_schedule/${selectedCourses.join(',')}`
-        axios.get(apiRoute)
+        axios({
+          method: 'GET',
+          url: apiRoute
+        })
           .then(
             response => {
-              console.log('Schedule generated successfully')
-              console.log(response)
-              axios.get('/download_schedule')
+              axios({
+                method: 'GET',
+                responseType: 'blob',
+                url: '/download_schedule'
+              })
                 .then(
                   response => {
-                    console.log('Schedule downloaded successfully')
+                    const blob = new Blob(
+                      [response.data],
+                      { type: response.headers['content-type'] }
+                    )
+                    const url = window.URL.createObjectURL(blob)
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute(
+                      'download',
+                      'schedule.xlsx'
+                    )
+                    document.body.appendChild(link)
+                    link.click()
+                    window.URL.revokeObjectURL(url)
+                    document.body.removeChild(link)
                   },
                   error => {
-                    console.error('Failed to call download_schedule API')
+                    console.error('Failed to call /download_schedule API')
                     console.error(error)
                   }
                 )
@@ -140,7 +159,7 @@ const CoursesTable = (): JSX.Element => {
               variant='contained'
               onClick={generateSchedule}
             >
-            Generate Schedule
+            Download Schedule
             </Button>
           </Box>
         </Box>
