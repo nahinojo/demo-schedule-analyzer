@@ -5,7 +5,15 @@ from app.database import Session
 from app.models import Course
 
 
-def get_course_table():
+def get_courses():
+    """
+    Retrieves the list of all courses from the database.
+
+    Returns
+    -------
+    course_table: dict
+        The dictionary of all courses.
+    """
     with Session() as session:
         stmt = select(Course)
         courses = session.execute(stmt).scalars().all()

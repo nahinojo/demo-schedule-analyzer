@@ -11,5 +11,5 @@ from app.utils.calendar_to_xlsx import (
 )
 
 from app.utils.database import (
-    get_course_table
+    get_courses
 )

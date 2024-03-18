@@ -1,1 +1,1 @@
-from .get_course_table import get_course_table
+from .get_courses import get_courses
