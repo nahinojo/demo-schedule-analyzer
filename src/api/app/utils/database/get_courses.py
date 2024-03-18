@@ -9,7 +9,6 @@ def get_course_table():
     with Session() as session:
         stmt = select(Course)
         courses = session.execute(stmt).scalars().all()
-        print(courses)
         course_table = {
             course.id: {
                 "courseCode": course.course_code,
