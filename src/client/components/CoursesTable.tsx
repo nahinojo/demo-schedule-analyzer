@@ -29,9 +29,6 @@ axios.get('/api/get_course_table')
   .then(
     (response: APIResponse) => {
       courses = Object.values(response.data.data)
-      console.log(
-        'All courses: ', courses
-      )
     },
     error => {
       console.error('Failed to call get_course_table API')
@@ -89,9 +86,6 @@ const CoursesTable = (): JSX.Element => {
       }
       const generateSchedule = (): void => {
         const selectedCourses = getSelectedCourses()
-        console.log(
-          'Selected courses: ', selectedCourses
-        )
         const apiRoute = `/api/generate_schedule/${selectedCourses.join(',')}`
         axios({
           method: 'GET',

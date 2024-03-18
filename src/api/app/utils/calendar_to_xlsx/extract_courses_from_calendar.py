@@ -1,5 +1,6 @@
 from datetime import date
 
+from app import CURRENT_YEAR
 from app.models import (
     Course,
     DemoEvent,
@@ -13,32 +14,16 @@ from .request_calendar import request_calendar
 
 
 def extract_courses_from_calendar(
-        target_course_code: str = None,
-        target_instructor: str = None,
-        target_term: str = None,
-        target_year: int = 2023,
-        is_target_year_as_minimum: bool = True
-):
+        earliest_year: int = CURRENT_YEAR - 5
+) -> list[Course]:
     """
     Requests the demo calendar from Google and parses the events. It constructs Course objects from the events,
     and returns them in one large list.
 
-    **REFACTOR** remove all parameters
-
-    Paramaters
+    Parameters
     ----------
-    target_course_code: str
-        The target course code.
-    target_instructor: str
-        The target instructor.
-    target_term: str
-        The target term.
-    target_year: int
-        The target year.
-    is_target_year_as_minimum: bool
-        Whether the target year is the minimum year.
-    is_request_new_calendar: bool
-        Whether to request a new calendar.
+    earliest_year: int
+        The earliest year to extract courses from.
 
     Returns
     -------
@@ -71,23 +56,18 @@ def extract_courses_from_calendar(
         is_no_instructor = any(char.isdigit() for char in instructor)
         is_discussion = is_similar_strings("discussion", instructor.lower())
         is_broken = is_broken_event(demo_date, instructor)
-        is_not_target_instructor = target_instructor not in {None, instructor}
-        is_not_target_year = year < target_year if is_target_year_as_minimum else year == target_year
-        is_not_target_course_code = target_course_code not in {None, course_code}
-        is_not_target_term = target_term not in {None, term}
+        is_old = year < earliest_year
         is_skip_event = any(
             [
                 is_no_instructor,
                 is_discussion,
                 is_broken,
-                is_not_target_instructor,
-                is_not_target_year,
-                is_not_target_course_code,
-                is_not_target_term
+                is_old
             ]
         )
         if is_skip_event:
             continue
+
         new_demo_event = DemoEvent(
             event_date=demo_date,
             demos=demos,
@@ -102,7 +82,7 @@ def extract_courses_from_calendar(
                     and term == course.term
             )
             # Calendar events are inherently sorted by creation date, not occurrence date.
-            # This ensures the Courses.demo_events are sorted by occurrence date.
+            # This ensures Courses.demo_events are sorted by occurrence date.
             if is_demo_event_in_existing_course:
                 demo_event_list = course.demo_events
                 latest_demo_event_date = course.demo_events[-1].event_date
