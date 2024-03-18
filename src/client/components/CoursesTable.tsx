@@ -77,6 +77,28 @@ const CoursesTable = (): JSX.Element => {
     muiPaginationProps: {
       rowsPerPageOptions: [10, 25, 50, 200]
     },
+    // muiSelectAllCheckboxProps: {
+    //   sx: {
+    //     display: 'flex',
+    //     textAlign: 'center'
+    //   }
+    // },
+    muiTableHeadCellProps: ({ column, table }) => {
+      // Center align checkbox row-selection WIP
+      if (column.id === 'mrt-row-select') {
+        console.log(
+          'column:', column
+        )
+        return {
+          sx: {
+            display: 'flex',
+            textAlign: 'center'
+          }
+        }
+      }
+      return {
+      }
+    },
     positionToolbarAlertBanner: 'bottom',
     renderTopToolbar: ({ table }) => {
       const getSelectedCourses = (): number[] => {
@@ -109,7 +131,7 @@ const CoursesTable = (): JSX.Element => {
                     link.href = url
                     link.setAttribute(
                       'download',
-                      'schedule.xlsx'
+                      'demo-schedule.xlsx'
                     )
                     document.body.appendChild(link)
                     link.click()

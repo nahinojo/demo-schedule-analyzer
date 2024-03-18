@@ -6,17 +6,12 @@
 - Show the user how many entries in a given course.
 - Filter out too small courses from generated schedule.
 
+### Better Filtering
+- Use advances fitering *only* on the year column. For example, year >= 2019.
+
 ## Chores
 
-### Update the database, don't remake it (low-priority)
-- The current system recreates the database. Consider just updating it instead.
-
 ## Considerations
-### Counting Courses
-- Issue: How would you determine how many times a course, such as Siryaporn 3C, was taught the last few springs?
-  - course_attribute_options only shows valid selectors; it does no _counting_
-- Solutions:
-  1. New API routes that counts the number of times a course occurred, or how many courses are within course_attribute_options
 
 ### Filter out small schedules
 
