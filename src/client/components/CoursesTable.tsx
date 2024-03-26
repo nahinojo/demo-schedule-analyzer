@@ -8,6 +8,7 @@ import {
   type MRT_ColumnDef
 } from 'material-react-table'
 import { Box, Button } from '@mui/material'
+import NumericSlider from './NumericSlider'
 import axios from 'axios'
 
 // example data type
@@ -91,6 +92,9 @@ const CoursesTable = (): JSX.Element => {
           filterFn: (
             row, id: string, filterValue: number
           ) => { return Number(row.getValue(id)) >= filterValue },
+          // Filter: () => {
+          //   <NumericSlider />
+          // },
           header: '# Events',
           // filterVariant: 'range-slider',
           // Consider using a custom slider and custom filter function
