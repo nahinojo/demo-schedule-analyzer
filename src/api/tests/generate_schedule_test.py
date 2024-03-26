@@ -4,7 +4,9 @@ import pytest
 @pytest.mark.usefixtures("app_context_with_real_data")
 def generate_schedule_test():
     """
-    Tests generate_schedule function.
+    Tests generate_schedule function. The following cases are tested:
+    - A schedule sheet can be created for each course.
+    - Every cell has a value and is colored, or, every cell has no value and is not colored.
     """
     from app import PATH_TO_SCHEDULE
     from app.database import Session
@@ -28,7 +30,11 @@ def generate_schedule_test():
         for col in ["A", "B", "C", "D", "E"]:
             row_idx = 1
             cell: Cell = ws[f"{col}{row_idx}"]
+            cell_value = cell.value
             cell_fg_color: Color = cell.fill.fgColor.value
-            if cell.value:
-                assert cell_fg_color != '00000000'
+            is_cell_colored = cell_fg_color != "00000000"
+            is_value_and_color = cell_value and is_cell_colored
+            is_not_value_and_color = not cell_value and not is_cell_colored
+            is_value_xnor_color = is_value_and_color or is_not_value_and_color
+            assert is_value_xnor_color
     assert True
