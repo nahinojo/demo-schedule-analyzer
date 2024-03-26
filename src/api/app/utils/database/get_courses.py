@@ -23,7 +23,7 @@ def get_courses():
                 "instructor": course.instructor,
                 "term": course.term,
                 "year": course.year,
-                # "number_of_demo_events": len(course.demo_events)
+                "numDemoEvents": len(course.demo_events)
             } for course in courses
         }
     return course_table

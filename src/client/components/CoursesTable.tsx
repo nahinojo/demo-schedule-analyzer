@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -42,6 +42,23 @@ const CoursesTable = (): JSX.Element => {
     'contains',
     'fuzzy'
   ]
+  const [numDemoEventsMax, setNumDemoEventsMax] = useState<number>(30)
+  const handleNumDemoEventsMaxChange = (
+    event: Event,
+    newValue: number
+  ): void => {
+    console.log(
+      'numDemoEventsMax: ',
+      newValue,
+      '\n',
+      'event: ',
+      event,
+      '\n',
+      'newValue: ',
+      newValue
+    )
+    setNumDemoEventsMax(newValue)
+  }
   const columns = useMemo<Array<MRT_ColumnDef<Course>>>(
     () => {
       return [
@@ -67,6 +84,22 @@ const CoursesTable = (): JSX.Element => {
           accessorKey: 'term',
           columnFilterModeOptions: stringFilters,
           header: 'Term',
+          size: 100
+        },
+        {
+          accessorKey: 'numDemoEvents',
+          filterFn: (
+            row, id: string, filterValue: number
+          ) => { return Number(row.getValue(id)) >= filterValue },
+          header: '# Events',
+          // filterVariant: 'range-slider',
+          // Consider using a custom slider and custom filter function
+          // muiFilterSliderProps: {
+          //   max: 50,
+          //   min: 1,
+          //   onChange: handleNumDemoEventsMaxChange,
+          //   value: numDemoEventsMax
+          // },
           size: 100
         }
       ]
