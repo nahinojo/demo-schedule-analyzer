@@ -14,17 +14,18 @@ const ColorModeToggle: FC = () => {
       sx={
         {
           alignItems: 'center',
-          bgcolor: 'background.default',
+          backgroundColor: '',
           borderRadius: 1,
           color: 'text.primary',
           display: 'flex',
           justifyContent: 'center',
+          m: 0,
           p: 0
         }
       }
     >
       <IconButton
-        color="inherit" sx={{ mr: 1 }} onClick={handleColorMode.toggleColorMode}
+        color="inherit" onClick={handleColorMode.toggleColorMode}
       >
         {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
       </IconButton>

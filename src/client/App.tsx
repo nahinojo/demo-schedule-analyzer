@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import type { FC } from 'react'
 import './style.css'
+import { CssBaseline } from '@mui/material'
 
 const App: FC = () => {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light')
@@ -33,11 +34,16 @@ const App: FC = () => {
       <ThemeProvider
         theme={theme}
       >
-        <div
-          className='max-w-screen-xl mx-auto mt-4'
-          id='table-wrapper'
-        >
-          <CoursesTable />
+        <CssBaseline
+          enableColorScheme={true}
+        />
+        <div>
+          <div
+            className='max-w-screen-xl mx-auto mt-4'
+            id='table-wrapper'
+          >
+            <CoursesTable />
+          </div>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
