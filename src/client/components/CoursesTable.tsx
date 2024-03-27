@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -8,7 +8,6 @@ import {
   type MRT_ColumnDef
 } from 'material-react-table'
 import { Box, Button } from '@mui/material'
-import NumericSlider from './NumericSlider'
 import axios from 'axios'
 
 // example data type
@@ -43,67 +42,52 @@ const CoursesTable = (): JSX.Element => {
     'contains',
     'fuzzy'
   ]
-  const [numDemoEventsMax, setNumDemoEventsMax] = useState<number>(30)
-  const handleNumDemoEventsMaxChange = (
-    event: Event,
-    newValue: number
-  ): void => {
-    console.log(
-      'numDemoEventsMax: ',
-      newValue,
-      '\n',
-      'event: ',
-      event,
-      '\n',
-      'newValue: ',
-      newValue
-    )
-    setNumDemoEventsMax(newValue)
-  }
+  const defaultStringFilter = 'equals'
+  const numberFilters = [
+    'lessThan',
+    'equals',
+    'greaterThan'
+  ]
+  const defaultNumberFilter = 'greaterThan'
   const columns = useMemo<Array<MRT_ColumnDef<Course>>>(
     () => {
       return [
         {
           accessorKey: 'instructor',
           columnFilterModeOptions: stringFilters,
+          filterFn: defaultStringFilter,
           header: 'Instructor',
           size: 100
         },
         {
           accessorKey: 'courseCode',
           columnFilterModeOptions: stringFilters,
+          filterFn: defaultStringFilter,
           header: 'Course Code',
           size: 100
         },
         {
           accessorKey: 'year',
-          columnFilterModeOptions: ['equals', 'greaterThan'],
+          columnFilterModeOptions: numberFilters,
+          filterFn: defaultNumberFilter,
           header: 'Year',
           size: 100
         },
         {
           accessorKey: 'term',
-          columnFilterModeOptions: stringFilters,
+          columnFilterModeOptions: [
+            ...stringFilters,
+            'notEquals'
+          ],
+          filterFn: defaultStringFilter,
           header: 'Term',
           size: 100
         },
         {
           accessorKey: 'numDemoEvents',
-          filterFn: (
-            row, id: string, filterValue: number
-          ) => { return Number(row.getValue(id)) >= filterValue },
-          // Filter: () => {
-          //   <NumericSlider />
-          // },
+          columnFilterModeOptions: numberFilters,
+          filterFn: defaultNumberFilter,
           header: '# Events',
-          // filterVariant: 'range-slider',
-          // Consider using a custom slider and custom filter function
-          // muiFilterSliderProps: {
-          //   max: 50,
-          //   min: 1,
-          //   onChange: handleNumDemoEventsMaxChange,
-          //   value: numDemoEventsMax
-          // },
           size: 100
         }
       ]
@@ -127,6 +111,7 @@ const CoursesTable = (): JSX.Element => {
     },
     positionToolbarAlertBanner: 'bottom',
     renderTopToolbar: ({ table }) => {
+      const isNoRowSelected = !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
       const getSelectedCourses = (): number[] => {
         // Returns an array of the selected courses
         return Object.keys(table.getState().rowSelection)
@@ -197,7 +182,7 @@ const CoursesTable = (): JSX.Element => {
           </Box>
           <Box>
             <Button
-              disabled={!table.getIsSomeRowsSelected()}
+              disabled={isNoRowSelected}
               variant='contained'
               onClick={generateSchedule}
             >
