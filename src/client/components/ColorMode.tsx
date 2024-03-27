@@ -1,6 +1,7 @@
 import React, { type FC } from 'react'
 import { IconButton, useTheme } from '@mui/material'
-import { Brightness4, Brightness7 } from '@mui/icons-material'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {}
@@ -13,7 +14,7 @@ const ColorModeToggle: FC = () => {
     <IconButton
       color="inherit" onClick={handleColorMode.toggleColorMode}
     >
-      {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+      {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeOutlinedIcon />}
     </IconButton>
   )
 }

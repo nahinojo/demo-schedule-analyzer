@@ -178,6 +178,7 @@ const CoursesTable = (): JSX.Element => {
               table={table}
             />
             <MRT_ToggleFiltersButton
+              sx={{ ml: 1 }}
               table={table}
             />
             <ColorModeToggle />
