@@ -114,9 +114,25 @@ const CoursesTable = (): JSX.Element => {
     renderTopToolbar: ({ table }) => {
       const isNoRowSelected = !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
       const getSelectedCourses = (): number[] => {
+        // Need to match on course data, not just on index.
+        const filteredCourses = Object.keys(table.getPreFilteredRowModel().rows)
+        const selectedCourses = Object.keys(table.getState().rowSelection)
+        let selectedFilteredCourses: number[] | string[] = filteredCourses
+          .filter(v => { return selectedCourses.includes(v) })
         // Returns an array of the selected courses
-        return Object.keys(table.getState().rowSelection)
+        selectedFilteredCourses = Object.keys(selectedFilteredCourses)
           .map((key: string) => { return Number(key) + 1 })
+        console.log(
+          'filteredCourses:',
+          filteredCourses,
+          '\n',
+          'selectedCoursess:',
+          selectedCourses,
+          '\n',
+          'selectedFilteredCourses:',
+          selectedFilteredCourses
+        )
+        return selectedFilteredCourses
       }
       const generateSchedule = (): void => {
         const selectedCourses = getSelectedCourses()
