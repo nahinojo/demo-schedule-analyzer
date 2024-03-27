@@ -6,6 +6,7 @@ temp/
 *bundle*
 
 # Cache
+*.db
 *__pycache__*
 *.pytest_cache
 
