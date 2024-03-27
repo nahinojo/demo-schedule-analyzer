@@ -7,7 +7,7 @@ import './style.css'
 const App: FC = () => {
   return (
     <div
-      className='mx-auto max-w-screen-xl mt-4'
+      className='max-w-screen-xl mx-auto mt-4'
       id='table-wrapper'
     >
       <CoursesTable />

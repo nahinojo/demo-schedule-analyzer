@@ -42,7 +42,7 @@ const CoursesTable = (): JSX.Element => {
     'contains',
     'fuzzy'
   ]
-  const defaultStringFilter = 'equals'
+  const defaultStringFilter = 'contains'
   const numberFilters = [
     'lessThan',
     'equals',
