@@ -8,6 +8,7 @@ import {
   type MRT_ColumnDef
 } from 'material-react-table'
 import { Box, Button } from '@mui/material'
+import { ColorModeToggle } from './ColorMode'
 import axios from 'axios'
 
 // example data type
@@ -179,6 +180,7 @@ const CoursesTable = (): JSX.Element => {
             <MRT_ToggleFiltersButton
               table={table}
             />
+            <ColorModeToggle />
           </Box>
           <Box>
             <Button
