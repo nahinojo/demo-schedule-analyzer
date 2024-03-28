@@ -45,11 +45,11 @@ const CoursesTable = (): JSX.Element => {
   ]
   const defaultStringFilter = 'contains'
   const numberFilters = [
-    'lessThan',
+    'greaterThanOrEqualTo',
     'equals',
-    'greaterThan'
+    'lessThanOrEqualTo'
   ]
-  const defaultNumberFilter = 'greaterThan'
+  const defaultNumberFilter = 'greaterThanOrEqualTo'
   const columns = useMemo<Array<MRT_ColumnDef<Course>>>(
     () => {
       return [
@@ -104,38 +104,23 @@ const CoursesTable = (): JSX.Element => {
     enableFullScreenToggle: false,
     enableRowSelection: true,
     initialState: {
-      pagination: { pageIndex: 0, pageSize: 15 },
+      pagination: { pageIndex: 0, pageSize: 20 },
       showGlobalFilter: true
     },
     muiPaginationProps: {
-      rowsPerPageOptions: [5, 15, 50, 200]
+      rowsPerPageOptions: [5, 20, 50, 200]
     },
     positionToolbarAlertBanner: 'bottom',
     renderTopToolbar: ({ table }) => {
       const isNoRowSelected = !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-      const getSelectedCourses = (): number[] => {
-        // Need to match on course data, not just on index.
-        const filteredCourses = Object.keys(table.getPreFilteredRowModel().rows)
+      const getSelectedCourseIds = (): number[] => {
         const selectedCourses = Object.keys(table.getState().rowSelection)
-        let selectedFilteredCourses: number[] | string[] = filteredCourses
-          .filter(v => { return selectedCourses.includes(v) })
-        // Returns an array of the selected courses
-        selectedFilteredCourses = Object.keys(selectedFilteredCourses)
+        const selectedCourseIds = Object.keys(selectedCourses)
           .map((key: string) => { return Number(key) + 1 })
-        console.log(
-          'filteredCourses:',
-          filteredCourses,
-          '\n',
-          'selectedCoursess:',
-          selectedCourses,
-          '\n',
-          'selectedFilteredCourses:',
-          selectedFilteredCourses
-        )
-        return selectedFilteredCourses
+        return selectedCourseIds
       }
       const generateSchedule = (): void => {
-        const selectedCourses = getSelectedCourses()
+        const selectedCourses = getSelectedCourseIds()
         const apiRoute = `/api/generate_schedule/${selectedCourses.join(',')}`
         axios({
           method: 'GET',
