@@ -115,7 +115,7 @@ const CoursesTable = (): JSX.Element => {
       const isNoRowSelected = !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
       const getSelectedCourseIds = (): number[] => {
         const selectedCourses = Object.keys(table.getState().rowSelection)
-        const selectedCourseIds = Object.keys(selectedCourses)
+        const selectedCourseIds = Object.values(selectedCourses)
           .map((key: string) => { return Number(key) + 1 })
         return selectedCourseIds
       }
