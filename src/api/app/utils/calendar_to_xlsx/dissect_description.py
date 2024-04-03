@@ -24,7 +24,7 @@ def dissect_description(description: str):
     has_html = "<" in description
     demo_indices = []
     demo_names = []
-    additional_info = None
+    additional_info = ''
     if has_html:
         idx_demo_start, idx_demo_end = 0, 0
         for i, char in enumerate(description):
@@ -68,7 +68,7 @@ def dissect_description(description: str):
                 info_start += 1
             additional_info = additional_info[info_start:]
             if len(additional_info) < 5 or "&nbsp;" == additional_info.strip():
-                additional_info = None
+                additional_info = ''
     else:
         description_lines = description.splitlines()
         has_demos = False
@@ -116,7 +116,7 @@ def dissect_description(description: str):
                             idx_additional_info += 1
                             additional_info_first_line = description_lines[idx_additional_info]
                         else:
-                            additional_info = None
+                            additional_info = ''
                     if idx_additional_info == len(description_lines) - 1:
                         additional_info = additional_info_first_line
                     else:
@@ -131,7 +131,7 @@ def dissect_description(description: str):
                     break
                 elif additional_info.find("formation") != -1:
                     # Case 3: Additional Information is empty
-                    additional_info = None
+                    additional_info = ''
                     break
             idx_description_line += 1
         if has_demos:
@@ -159,7 +159,7 @@ def dissect_description(description: str):
             i = 0
         else:
             i += 1
-    if additional_info is not None:
+    if additional_info == '':
         additional_info = additional_info.replace("&nbsp;", "")
         additional_info.strip(". ")
         if additional_info[-1] not in {".", "\""}:
