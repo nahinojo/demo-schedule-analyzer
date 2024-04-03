@@ -114,6 +114,9 @@ def dissect_description(description: str):
                     idx_additional_info = idx_description_line + 1
                     additional_info_first_line = description_lines[idx_additional_info]
                     while len(additional_info_first_line) < 5:
+                        # This while loops runs forever. How to resolve?
+                        print("len(additional_info_first_line):", len(additional_info_first_line))
+                        print("le(description_lines) - 1:", len(description_lines) - 1)
                         if len(description_lines) - 1 > idx_additional_info:
                             idx_additional_info += 1
                             additional_info_first_line = description_lines[idx_additional_info]
