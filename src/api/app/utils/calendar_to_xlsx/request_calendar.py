@@ -1,9 +1,8 @@
 import os
 
 import requests
-from icalendar import Calendar
-
 from app import PATH_TO_CALENDAR
+from icalendar import Calendar
 
 
 def request_calendar():

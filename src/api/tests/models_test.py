@@ -33,10 +33,9 @@ def crud_demo_event_test():
     """
     import datetime
 
-    from sqlalchemy import select
-
     from app.database import Session
     from app.models import Course, Demo, DemoEvent
+    from sqlalchemy import select
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO_EVENT")
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     new_demo_event = DemoEvent(
@@ -69,10 +68,9 @@ def crud_demo_test():
     """
     Tests CRUD operations for Demo model.
     """
-    from sqlalchemy import select
-
     from app.database import Session
     from app.models import Course, Demo
+    from sqlalchemy import select
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO")
     with Session() as session:
         stmt = select(Demo)

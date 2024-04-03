@@ -20,10 +20,9 @@ def app_context(app):
 def app_context_with_test_data(app_context):
     from datetime import date
 
-    from sqlalchemy import select
-
     from app.database import Session
     from app.models import Course, Demo, DemoEvent
+    from sqlalchemy import select
     today = date.today()
     new_course = Course(
         course_code="TEST_COURSE_CODE",
@@ -69,11 +68,10 @@ def app_context_with_real_data(app_context):
     """
     Setups the database with data from the demo calendar.
     """
-    from sqlalchemy import select
-
     from app.database import Session
     from app.database.setup import setup
     from app.models import Course
+    from sqlalchemy import select
     setup()
     yield
     with Session() as session:

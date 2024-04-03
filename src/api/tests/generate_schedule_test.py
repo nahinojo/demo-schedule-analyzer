@@ -8,16 +8,15 @@ def generate_schedule_test():
     - A schedule sheet can be created for each course.
     - Every cell has a value and is colored, or, every cell has no value and is not colored.
     """
+    from app import PATH_TO_SCHEDULE
+    from app.database import Session
+    from app.models import Course
+    from app.utils import generate_schedule
     from openpyxl import Workbook, load_workbook
     from openpyxl.cell.cell import Cell
     from openpyxl.styles.colors import Color
     from openpyxl.worksheet.worksheet import Worksheet
     from sqlalchemy import select
-
-    from app import PATH_TO_SCHEDULE
-    from app.database import Session
-    from app.models import Course
-    from app.utils import generate_schedule
 
     with Session() as session:
         num_courses = len(session.execute(select(Course)).scalars().all())

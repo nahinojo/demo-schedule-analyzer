@@ -1,9 +1,8 @@
 from datetime import date
 
-from sqlalchemy import select
-
 from app.database import Session
 from app.models import Course
+from sqlalchemy import select
 
 
 def get_courses():

@@ -1,14 +1,13 @@
 from typing import List
 
+from app import PATH_TO_SCHEDULE
+from app.database import Session
+from app.models import Course
 from openpyxl import Workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from sqlalchemy import select
-
-from app import PATH_TO_SCHEDULE
-from app.database import Session
-from app.models import Course
 
 from .date_difference_school_weeks import date_difference_school_weeks
 

@@ -1,10 +1,9 @@
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 from app import app
 from app.models import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 database_path = app.config["SQLALCHEMY_DATABASE_PATH"]
 if os.path.isfile(database_path):
