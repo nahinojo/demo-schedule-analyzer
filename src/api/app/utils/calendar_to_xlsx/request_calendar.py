@@ -1,5 +1,6 @@
-import requests
 import os
+
+import requests
 from icalendar import Calendar
 
 from app import PATH_TO_CALENDAR

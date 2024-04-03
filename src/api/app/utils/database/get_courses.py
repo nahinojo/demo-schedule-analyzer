@@ -1,4 +1,5 @@
 from datetime import date
+
 from sqlalchemy import select
 
 from app.database import Session

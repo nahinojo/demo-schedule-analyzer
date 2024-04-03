@@ -1,10 +1,7 @@
 from datetime import date
 
 from app import CURRENT_YEAR
-from app.models import (
-    Course,
-    DemoEvent,
-)
+from app.models import Course, DemoEvent
 
 from .dissect_description import dissect_description
 from .get_course_term import get_course_term

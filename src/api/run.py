@@ -1,6 +1,6 @@
-from flask import send_file, render_template
+from flask import render_template, send_file
 
-from app import app, PATH_TO_SCHEDULE
+from app import PATH_TO_SCHEDULE, app
 from app.database.setup import setup
 from app.routes import api_blueprint
 

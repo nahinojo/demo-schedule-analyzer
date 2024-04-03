@@ -1,6 +1,6 @@
 from flask import Blueprint, make_response
-from app.utils import generate_schedule, get_courses
 
+from app.utils import generate_schedule, get_courses
 
 api_blueprint = Blueprint('api', __name__)
 
