@@ -6,8 +6,9 @@ def crud_course_test():
     """
     Tests CRUD operations for Course model.
 
-    Only executes Update operation because Create, Read, and Delete are inherently performed in the setup and teardown
-    of the fixture app_context_with_data.
+    Only executes Update operation because Create, Read, and Delete are
+    inherently performed in the setup and teardown of the fixture
+    app_context_with_data.
     """
     from app.database import Session
     from app.models import Course
@@ -35,7 +36,6 @@ def crud_demo_event_test():
 
     from app.database import Session
     from app.models import Course, Demo, DemoEvent
-    from sqlalchemy import select
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO_EVENT")
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     new_demo_event = DemoEvent(
@@ -52,14 +52,14 @@ def crud_demo_event_test():
         assert session.get(DemoEvent, 2)
         db_new_demo_event = session.get(DemoEvent, 2)
         assert db_new_demo_event.event_date == yesterday
-        assert db_new_demo_event.additional_information == "ADDITIONAL_INFO_CRUD_DEMO_EVENT"
+        assert (
+                db_new_demo_event.additional_information
+                == "ADDITIONAL_INFO_CRUD_DEMO_EVENT"
+        )
         assert db_new_demo_event.demos[0].name == "DEMO_NAME_CRUD_DEMO_EVENT"
         session.delete(new_demo_event)
         session.delete(new_demo)
         session.commit()
-        stmt = select(Demo)
-        items = session.scalars(stmt).all()
-        serialized_items = [item.serialize() for item in items]
         assert session.get(DemoEvent, 2) is None
 
 
@@ -70,15 +70,8 @@ def crud_demo_test():
     """
     from app.database import Session
     from app.models import Course, Demo
-    from sqlalchemy import select
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO")
     with Session() as session:
-        stmt = select(Demo)
-        items = session.scalars(stmt).all()
-        serialized_items = [item.serialize() for item in items]
-        stmt = select(Course)
-        items = session.scalars(stmt).all()
-        serialized_items = [item.serialize() for item in items]
         session.add(new_demo)
         course = session.get(Course, 1)
         course.demo_events[0].demos.append(new_demo)

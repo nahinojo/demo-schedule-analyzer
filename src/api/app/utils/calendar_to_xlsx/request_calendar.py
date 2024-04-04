@@ -15,8 +15,8 @@ def request_calendar():
         The requested calendar file.
     """
     url = (
-        "https://calendar.google.com/calendar/ical/7k8ivkgvm0pgtta67pfafecqmg%40group.calendar.google.com/public/basic"
-        ".ics"
+        "https://calendar.google.com/calendar/ical/7k8ivkgvm0pgtta67pfafecqmg%"
+        "40group.calendar.google.com/public/basic.ics"
     )
     response = requests.get(url)
     os.makedirs(os.path.dirname(PATH_TO_CALENDAR), exist_ok=True)

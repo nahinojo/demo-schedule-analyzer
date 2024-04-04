@@ -1,6 +1,7 @@
 def get_course_attribute_options(course_details_list):
     """
-    Gets the union set of every course attribute (instructor, course code, and term) in the course details list.
+    Gets the union set of every course attribute (instructor, course code, and
+    term) in the course details list.
 
     Parameters
     ----------

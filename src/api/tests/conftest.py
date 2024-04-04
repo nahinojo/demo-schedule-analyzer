@@ -53,7 +53,10 @@ def app_context_with_test_data(app_context):
         assert only_course.term == "TEST_TERM"
         assert only_course.year == today.year
         assert only_course.demo_events[0].event_date == today
-        assert only_course.demo_events[0].additional_information == "TEST_ADDITIONAL_INFO"
+        assert (
+                only_course.demo_events[0].additional_information
+                == "TEST_ADDITIONAL_INFO"
+        )
         assert only_course.demo_events[0].demos[0].name == "TEST_DEMO_NAME"
         del only_course
         yield

@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from sqlalchemy import Date, ForeignKey, Integer, String
@@ -27,14 +28,16 @@ class Course(Base):
             "instructor": self.instructor,
             "term": self.term,
             "year": self.year,
-            "demo_events": [demo_event.serialize() for demo_event in self.demo_events]
+            "demo_events": [
+                demo_event.serialize() for demo_event in self.demo_events
+            ]
         }
 
 
 class DemoEvent(Base):
     __tablename__ = "demo_event"
     id: Mapped[int] = mapped_column(primary_key=True)
-    event_date: Mapped[Date] = mapped_column(Date)
+    event_date: Mapped[datetime.date] = mapped_column(Date)
     additional_information: Mapped[str] = mapped_column(String)
     demos: Mapped[List["Demo"]] = relationship(
         back_populates="demo_event",

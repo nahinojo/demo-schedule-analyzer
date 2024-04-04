@@ -98,41 +98,56 @@ def dissect_description(description: str):
             ):
                 idx_additional_info_title = idx_description_line
                 additional_info = description_lines[idx_additional_info_title]
-                if len(additional_info[0]) > len("Additional Information:") + 5:
-                    # Case 1: Additional information content is on the same line as "Additional Information" Title
-                    idx_additional_info_title_end = additional_info.find(":") + 1
+                if (
+                        len(additional_info[0])
+                        > len("Additional Information:") + 5
+                ):
+                    # Case 1: Additional information content is on the same
+                    # line as "Additional Information" Title
+                    idx_additional_info_title_end = (
+                            additional_info.find(":")
+                            + 1
+                    )
                     if not idx_additional_info_title_end:
                         idx_additional_info_title_end = (
                                 additional_info[18:].find("on") + 2
                         )
-                    additional_info = additional_info[idx_additional_info_title_end:]
+                    additional_info = additional_info[
+                                      idx_additional_info_title_end:
+                                      ]
                     break
                 elif idx_description_line < len(description_lines) - 1:
-                    # Case 2: Additional information content in the lines following "Additional Information:" Title
+                    # Case 2: Additional information content in the lines
+                    # following "Additional Information:" Title
                     idx_additional_info = idx_description_line + 1
-                    additional_info_first_line = description_lines[idx_additional_info]
-                    loop_debug_counter = -1  # Debug variable, completely delete after debug.
+                    additional_info_first_line = description_lines[
+                        idx_additional_info
+                    ]
                     while is_similar_strings(
                         additional_info_first_line,
                         "Additional Information:",
                         threshold=0.6,
                     ):
-                        loop_debug_counter += 1
-                        if loop_debug_counter > 10:
-                            break
                         # This while loops runs forever. How to resolve?
                         if len(description_lines) - 1 > idx_additional_info:
                             idx_additional_info += 1
-                            additional_info_first_line = description_lines[idx_additional_info]
+                            additional_info_first_line = description_lines[
+                                idx_additional_info
+                            ]
                         else:
                             additional_info = ''
                     if idx_additional_info == len(description_lines) - 1:
                         additional_info = additional_info_first_line
                     else:
-                        additional_info_list = description_lines[idx_additional_info:]
+                        additional_info_list = description_lines[
+                                               idx_additional_info:
+                                               ]
                         additional_info = ""
-                        for idx, additional_info_line in enumerate(additional_info_list):
-                            additional_info_line = additional_info_line.strip(". ")
+                        for idx, additional_info_line in enumerate(
+                                additional_info_list
+                        ):
+                            additional_info_line = (additional_info_line
+                                                    .strip(". "))
                             if not idx:
                                 additional_info += additional_info_line
                             else:
@@ -168,7 +183,7 @@ def dissect_description(description: str):
             i = 0
         else:
             i += 1
-    if additional_info == '':
+    if additional_info != '':
         additional_info = additional_info.replace("&nbsp;", "")
         additional_info.strip(". ")
         if additional_info[-1] not in {".", "\""}:

@@ -6,8 +6,11 @@ def generate_schedule_test():
     """
     Tests generate_schedule function. The following cases are tested:
     - A schedule sheet can be created for each course.
-    - Every cell has a value and is colored, or, every cell has no value and is not colored.
+    - Every cell has a value and is colored, or, every cell has no value and is
+      not colored.
     """
+    from typing import cast
+
     from app import PATH_TO_SCHEDULE
     from app.database import Session
     from app.models import Course
@@ -24,14 +27,14 @@ def generate_schedule_test():
         assert num_courses < 1000
     for i in range(1, num_courses + 1):
         generate_schedule([i])
-        wb: Workbook = load_workbook(PATH_TO_SCHEDULE)
+        wb = cast(Workbook, load_workbook(PATH_TO_SCHEDULE))
         assert len(wb.sheetnames) == 1
-        ws: Worksheet = wb[wb.sheetnames[0]]
+        ws = cast(Worksheet, wb[wb.sheetnames[0]])
         for col in ["A", "B", "C", "D", "E"]:
             row_idx = 1
-            cell: Cell = ws[f"{col}{row_idx}"]
+            cell = cast(Cell, ws[f"{col}{row_idx}"])
             cell_value = cell.value
-            cell_fg_color: Color = cell.fill.fgColor.value
+            cell_fg_color = cast(Color, cell.fill.fgColor.value)
             is_cell_colored = cell_fg_color != "00000000"
             is_value_and_color = cell_value and is_cell_colored
             is_not_value_and_color = not cell_value and not is_cell_colored

@@ -3,10 +3,23 @@
 
 ## Features
 
+### Dockerize
+
+### CICD
+- ESLint
+- Webpack (COMPLETE)
+- Docker
+  - Needs Docker to be setup first
+- Python Linting
+
 ### Refresh Database
 Automatically refresh the database when changes are made to the calendar.
 
 ## Chores
 
 ## Considerations
+
+### Table for Single Course
+A dedicated page demonstrating a table for a specified course
+The download button will still be where it usuall is.
 

@@ -1,4 +1,5 @@
 from datetime import date
+from typing import List
 
 from app import CURRENT_YEAR
 from app.models import Course, DemoEvent
@@ -14,7 +15,8 @@ def extract_courses_from_calendar(
         earliest_year: int = CURRENT_YEAR - 5
 ) -> list[Course]:
     """
-    Requests the demo calendar from Google and parses the events. It constructs Course objects from the events,
+    Requests the demo calendar from Google and parses the events.
+    It constructs Course objects from the events,
     and returns them in one large list.
 
     Parameters
@@ -28,7 +30,7 @@ def extract_courses_from_calendar(
         List of all extracted courses from the demo calendar.
     """
     calendar = request_calendar()
-    courses = []
+    courses: List[Course] = []
     for calendar_event in calendar.walk("VEVENT"):
         summary = str(calendar_event.get("SUMMARY"))
         demo_datetime = calendar_event.get("DTSTART").dt
@@ -47,7 +49,6 @@ def extract_courses_from_calendar(
         term = get_course_term(demo_date)
         description = str(calendar_event.get("DESCRIPTION"))
         demos, additional_information = dissect_description(description)
-        demo = demos or []
         additional_information = additional_information or ""
 
         is_no_instructor = any(char.isdigit() for char in instructor)
@@ -78,8 +79,9 @@ def extract_courses_from_calendar(
                     and year == course.year
                     and term == course.term
             )
-            # Calendar events are inherently sorted by creation date, not occurrence date.
-            # This ensures Courses.demo_events are sorted by occurrence date.
+            # Calendar events are inherently sorted by creation date, not
+            # occurrence date. This ensures Courses.demo_events are sorted by
+            # occurrence date.
             if is_demo_event_in_existing_course:
                 demo_event_list = course.demo_events
                 latest_demo_event_date = course.demo_events[-1].event_date
@@ -88,9 +90,12 @@ def extract_courses_from_calendar(
                     demo_event_list.append(new_demo_event)
                     break
                 else:
-                    for curr_demo_idx, curr_demo_event in enumerate(demo_event_list):
+                    for curr_demo_idx, curr_demo_event in enumerate(
+                            demo_event_list
+                    ):
                         if new_demo_event_date < curr_demo_event.event_date:
-                            demo_event_list.insert(curr_demo_idx, new_demo_event)
+                            (demo_event_list
+                             .insert(curr_demo_idx, new_demo_event))
                             break
                     break
         if not is_demo_event_in_existing_course:

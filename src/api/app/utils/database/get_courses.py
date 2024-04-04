@@ -1,5 +1,3 @@
-from datetime import date
-
 from app.database import Session
 from app.models import Course
 from sqlalchemy import select

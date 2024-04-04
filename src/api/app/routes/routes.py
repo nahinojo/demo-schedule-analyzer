@@ -26,7 +26,10 @@ def generate_schedule_route(course_ids):
         message = {"status": "error", "message": str(e)}
         response = make_response(message, 500)
     else:
-        message = {"status": "success", "message": "Schedule generated successfully."}
+        message = {
+            "status": "success",
+            "message": "Schedule generated successfully."
+        }
         response = make_response(message, 200)
     return response
 
@@ -42,6 +45,10 @@ def get_course_table_route():
         message = {"status": "error", "message": str(e)}
         response = make_response(message, 500)
     else:
-        message = {"status": "success", "message": "Course table retrieved successfully.", "data": course_table}
+        message = {
+            "status": "success",
+            "message": "Course table retrieved successfully.",
+            "data": course_table
+        }
         response = make_response(message, 200)
     return response

@@ -5,8 +5,9 @@ def is_broken_event(event_date, instructor):
     """
     Checks if the calendar event is broken event.
 
-    Some calendar events are "broken" such that they are extraneous yet cannot be removed. They exist within the .ical
-    file but cannot be located using the Google Calendar App.
+    Some calendar events are "broken" such that they are extraneous yet cannot
+    be removed. They exist within the .ical file but cannot be located using
+    the Google Calendar App.
 
     Parameters
     ----------
@@ -31,6 +32,9 @@ def is_broken_event(event_date, instructor):
         },
     ]  # More may exist. Add as needed.
     for broken_event in broken_event_list:
-        if event_date == broken_event["date"] and instructor == broken_event["instructor"]:
+        if (
+                event_date == broken_event["date"]
+                and instructor == broken_event["instructor"]
+        ):
             return True
     return False

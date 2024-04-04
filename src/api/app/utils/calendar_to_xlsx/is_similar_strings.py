@@ -9,7 +9,8 @@ def is_similar_strings(string_1, string_2, threshold=0.6):
     string_2: str
         The second string.
     threshold: float, default=0.6
-        The threshold for similarity. It's the decimal representation of the percentage of characters that must match.
+        The threshold for similarity. It's the decimal representation of the
+        percentage of characters that must match.
 
     Returns
     -------

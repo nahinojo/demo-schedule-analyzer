@@ -1,4 +1,5 @@
-from typing import List
+from datetime import date
+from typing import List, Literal, cast
 
 from app import PATH_TO_SCHEDULE
 from app.database import Session
@@ -23,7 +24,8 @@ def _create_worksheet_title(course_code, instructor, term, year):
 
 def generate_schedule(course_ids: List[int]) -> None:
     """
-    Writes a demo schedule file with each sheet corresponding to a specific course.
+    Writes a demo schedule file with each sheet corresponding to a specific
+    course.
 
     Parameters
     ----------
@@ -31,7 +33,7 @@ def generate_schedule(course_ids: List[int]) -> None:
         The list of course ids.
     """
     wb = Workbook()
-    ws: Worksheet = wb.active
+    ws = cast(Worksheet, wb.active)
     demo_count_list = []
     with Session() as session:
         stmt = select(Course).filter(Course.id.in_(course_ids))
@@ -72,11 +74,10 @@ def generate_schedule(course_ids: List[int]) -> None:
             ws["D4"] = "Term"
             ws["E4"] = course.term
             ws["D5"] = "Year"
-            ws["E5"] = course.year
+            ws["E5"] = str(course.year)
 
-            course_demos_list = []
             row_idx = 2
-            first_demo_event_date = course.demo_events[0].event_date
+            first_demo_event_date: date = course.demo_events[0].event_date
             demo_event_week = int(
                 first_demo_event_date.month != 9
                 or first_demo_event_date.weekday() < 3
@@ -85,7 +86,9 @@ def generate_schedule(course_ids: List[int]) -> None:
             for demo_event_idx, demo_event in enumerate(course.demo_events):
                 if demo_event_idx > 0:
                     demo_event_week += date_difference_school_weeks(
-                        prev_date=course.demo_events[demo_event_idx - 1].event_date,
+                        prev_date=course.demo_events[
+                            demo_event_idx - 1
+                        ].event_date,
                         next_date=demo_event.event_date
                     )
                 demo_event_date = demo_event.event_date
@@ -104,7 +107,7 @@ def generate_schedule(course_ids: List[int]) -> None:
             demo_count_list.append(demo_count)
             if course_idx < len(courses) - 1:
                 wb.create_sheet("next")
-                ws = wb["next"]
+                ws = cast(Worksheet, wb["next"])
 
     # Styling from here onwards.
     default_font_name = "Arial"
@@ -112,7 +115,7 @@ def generate_schedule(course_ids: List[int]) -> None:
     default_indent = 1
     default_vertical = "center"
     default_horizontal = "left"
-    default_fill_type = "solid"
+    default_fill_type = cast(Literal["solid"], "solid")
     dark_blue = "0D47A1"
     light_blue = "DAE3F3"
     dark_green = "004D40"
@@ -123,9 +126,6 @@ def generate_schedule(course_ids: List[int]) -> None:
     )
     top_border = Border(
         top=default_side
-    )
-    bottom_border = Border(
-        bottom=default_side
     )
     outline_border = Border(
         top=default_side,
@@ -185,7 +185,8 @@ def generate_schedule(course_ids: List[int]) -> None:
     )
 
     for sheet_idx, sheet in enumerate(wb.worksheets):
-        sheet.row_dimensions[1].height = 45
+        sheet = cast(Worksheet, sheet)
+        sheet.row_dimensions["1"].height = 45
         sheet.column_dimensions["A"].width = 20
         sheet.column_dimensions["B"].width = 45
         sheet.column_dimensions["C"].width = 30
@@ -202,11 +203,14 @@ def generate_schedule(course_ids: List[int]) -> None:
         )):
             row_idx = row_idx_0 + 1  # 1-index conversion for Sheet.
             if row_idx > 1:
-                sheet.row_dimensions[row_idx].height = 40
+                sheet.row_dimensions[str(row_idx)].height = 40
             weekday_cell = row[0]
             is_empty_weekday_cell = weekday_cell.value is None
             is_new_date = not is_empty_weekday_cell
-            is_leave_demo_events_empty = is_empty_weekday_cell and type(weekday_cell) is not MergedCell
+            is_leave_demo_events_empty = (
+                    is_empty_weekday_cell
+                    and type(weekday_cell) is not MergedCell
+            )
             for col_idx_0, cell in enumerate(row):
                 col_idx = col_idx_0 + 1  # 1-index conversion for Sheet.
                 is_title = row_idx == 1
@@ -216,7 +220,6 @@ def generate_schedule(course_ids: List[int]) -> None:
                 is_additonal_information = col_idx == 3
                 is_course_information = col_idx >= 4 and row_idx <= 5
                 is_course_information_label = col_idx == 4
-                is_course_information_data = col_idx == 5
                 if is_title:
                     cell.alignment = absolute_center_alignment
                     cell.font = title_font
