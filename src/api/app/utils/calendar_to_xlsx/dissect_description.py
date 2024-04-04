@@ -82,7 +82,7 @@ def dissect_description(description: str):
                 elif line_is_addtional_info:
                     break
         description_lines = description_lines[1:]
-        idx_description_line_additional_info_title = 0
+        idx_additional_info_title = 0
         idx_description_line = 0
         # Scanning for 'Additional Information'
         while idx_description_line < len(description_lines):
@@ -96,10 +96,10 @@ def dissect_description(description: str):
                     "Additional Information:",
                     threshold=0.6,
             ):
-                idx_description_line_additional_info_title = idx_description_line
-                additional_info = description_lines[idx_description_line]
+                idx_additional_info_title = idx_description_line
+                additional_info = description_lines[idx_additional_info_title]
                 if len(additional_info[0]) > len("Additional Information:") + 5:
-                    # Case 1: Additional information is on the same line as "Additional Information" Title
+                    # Case 1: Additional information content is on the same line as "Additional Information" Title
                     idx_additional_info_title_end = additional_info.find(":") + 1
                     if not idx_additional_info_title_end:
                         idx_additional_info_title_end = (
@@ -108,10 +108,19 @@ def dissect_description(description: str):
                     additional_info = additional_info[idx_additional_info_title_end:]
                     break
                 elif idx_description_line < len(description_lines) - 1:
-                    # Case 2: Additional Information in the lines following "Additional Information" Title
+                    # Case 2: Additional information content in the lines following "Additional Information:" Title
                     idx_additional_info = idx_description_line + 1
                     additional_info_first_line = description_lines[idx_additional_info]
-                    while len(additional_info_first_line) < 5:
+                    loop_debug_counter = -1  # Debug variable, completely delete after debug.
+                    while is_similar_strings(
+                        additional_info_first_line,
+                        "Additional Information:",
+                        threshold=0.6,
+                    ):
+                        loop_debug_counter += 1
+                        if loop_debug_counter > 10:
+                            break
+                        # This while loops runs forever. How to resolve?
                         if len(description_lines) - 1 > idx_additional_info:
                             idx_additional_info += 1
                             additional_info_first_line = description_lines[idx_additional_info]
@@ -135,10 +144,10 @@ def dissect_description(description: str):
                     break
             idx_description_line += 1
         if has_demos:
-            if idx_description_line_additional_info_title == 0:
+            if idx_additional_info_title == 0:
                 demo_names = description_lines
             else:
-                demo_names = description_lines[:idx_description_line_additional_info_title]
+                demo_names = description_lines[:idx_additional_info_title]
 
     i = 0
     while i < len(demo_names):
