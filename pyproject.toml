@@ -40,3 +40,7 @@ lint-style = "flake8"
 lint-type = "mypy ."
 lint = ["lint-import", "lint-type", "lint-style"]
 test = "python -m pytest"
+
+[virtualenvs]
+create = true
+in-project = true
