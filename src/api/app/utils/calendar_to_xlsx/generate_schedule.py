@@ -186,7 +186,13 @@ def generate_schedule(course_ids: List[int]) -> None:
 
     for sheet_idx, sheet in enumerate(wb.worksheets):
         sheet = cast(Worksheet, sheet)
-        sheet.row_dimensions["1"].height = 45
+        """
+        Key for .row_dimensions is cast as 'str' while actually 'int' due to
+        improper typesetting in openpyxl. Use 'int' in all cases.
+
+        See .../openpyxl-stubs/worksheet/dimensions.py:106 for more details.
+        """
+        sheet.row_dimensions[cast(str, 1)].height = 45
         sheet.column_dimensions["A"].width = 20
         sheet.column_dimensions["B"].width = 45
         sheet.column_dimensions["C"].width = 30
@@ -203,7 +209,7 @@ def generate_schedule(course_ids: List[int]) -> None:
         )):
             row_idx = row_idx_0 + 1  # 1-index conversion for Sheet.
             if row_idx > 1:
-                sheet.row_dimensions[str(row_idx)].height = 40
+                sheet.row_dimensions[cast(str, row_idx)].height = 40
             weekday_cell = row[0]
             is_empty_weekday_cell = weekday_cell.value is None
             is_new_date = not is_empty_weekday_cell
