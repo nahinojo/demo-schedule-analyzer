@@ -37,10 +37,10 @@ jobs:
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
         run: poetry install
-      - name: DEBUG - List poetry configuration
-        run: poetry config --list
+#      - name: DEBUG - List poetry configuration
+#        run: poetry config --list
       - name: Test
         run: poetry run poe test
 # Linting is currently not working, isort occurs on everything
-#      - name: Lint
-#        run: poetry run poe lint
+      - name: Lint
+        run: poetry run poe lint
