@@ -5,14 +5,16 @@ on:
     branches: [ "master" ]
     paths:
       - "src/client/**"
-      - "*.js"
+      - "*.{js,ts,jsx,tsx}"
       - "*package*.json"
+      - "*eslint.rc"
   pull_request:
     branches: [ "master" ]
     paths: 
       - "src/client/**"
-      - "*.js"
+      - "*.{js,ts,jsx,tsx}"
       - "*package*.json"
+      - "*eslint.rc"
   workflow_dispatch:
 
 jobs:
