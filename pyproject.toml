@@ -29,7 +29,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
-skip = "node_modules"
+skip = ["node_modules","site-packages"]
 
 [tool.mypy]
 ignore_missing_imports = true
