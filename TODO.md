@@ -6,7 +6,6 @@
 ### Dockerize
 
 ### CICD
-- ESLint
 - Docker
   - Needs Docker to be setup first
 
