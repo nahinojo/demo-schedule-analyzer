@@ -5,14 +5,16 @@ on:
     branches: [ "master" ]
     paths:
       - "src/app/**"
-      - "*.py"
-      - "py*"
+      - "**/**/py**"
+      - "poetry**"
+      - ".flake8"
   pull_request:
     branches: [ "master" ]
     paths:
       - "src/app/**"
-      - "*.py"
       - "py*"
+      - "poetry*"
+      - ".flake8"
   workflow_dispatch:
 
 jobs:
