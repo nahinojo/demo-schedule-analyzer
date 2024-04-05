@@ -9,6 +9,9 @@
 - Docker
   - Needs Docker to be setup first
 
+Also, the categorization (or lack thereof) of jobs seems odd. See if it can be changed just that build, lint, and test
+are their own jobs that run sequentially.
+
 ### Refresh Database
 Automatically refresh the database when changes are made to the calendar.
 
