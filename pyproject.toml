@@ -29,7 +29,11 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
-skip = ["node_modules","site-packages"]
+skip = [
+    "node_modules",
+    "site-packages",
+    "bin"
+]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -38,7 +42,11 @@ ignore_missing_imports = true
 lint-import = "isort ."
 lint-style = "flake8"
 lint-type = "mypy ."
-lint = ["lint-import", "lint-type", "lint-style"]
+lint = [
+    "lint-import",
+    "lint-type",
+    "lint-style"
+]
 test = "python -m pytest"
 
 [virtualenvs]
