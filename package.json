@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --stats-children",
-    "build:watch": "webpack --watch --stats-children"
+    "build:watch": "webpack --watch --stats-children",
+    "lint": "npx eslint ./src/client/**/**",
+    "lint:fix": "npx eslint ./src/client/**/** --fix"
   },
   "author": "",
   "license": "ISC",

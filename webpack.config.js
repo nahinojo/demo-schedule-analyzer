@@ -31,12 +31,6 @@ module.exports = {
     maxAssetSize: 512000,
     maxEntrypointSize: 512000
   },
-  // plugins: [
-  //   new HtmlWebpackPlugin({
-  //     filename: 'index.html',
-  //     template: './src/templates/index.html'
-  //   })
-  // ],
   resolve: {
     aliasFields: ['browser'],
     extensions: ['.tsx', '.ts', '.js']

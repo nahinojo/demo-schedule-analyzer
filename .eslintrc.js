@@ -9,11 +9,13 @@ module.exports = {
     'plugin:react/recommended',
     'standard-with-typescript'
   ],
-  ignorePatterns: ['src/static/*'],
-  overrides: [{
-    files: ['*.js'],
-    parser: 'espree'
-  }],
+  ignorePatterns: ['src/static/**'],
+  overrides: [
+    {
+      files: ['*.js'],
+      parser: 'espree'
+    }
+],
   parserOptions: {
     ecmaVersion: 'latest',
     project: 'tsconfig.json',
