@@ -7,10 +7,8 @@
 
 ### CICD
 - ESLint
-- Webpack (COMPLETE)
 - Docker
   - Needs Docker to be setup first
-- Python Linting
 
 ### Refresh Database
 Automatically refresh the database when changes are made to the calendar.
