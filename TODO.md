@@ -4,6 +4,10 @@
 ## Features
 
 ### Dockerize
+- Poetry
+    - How to execute main.py from the terminal?
+    - How to build the poetry env?
+
 
 ### CICD
 - Docker
