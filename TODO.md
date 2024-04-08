@@ -4,10 +4,10 @@
 ## Features
 
 ### Dockerize
-Poetry Setup
-    - How to execute main.py from the terminal?
-    - How to build the poetry env?
-    - https://stackoverflow.com/questions/53835198/integrating-python-poetry-with-docker
+Poetry Setup:
+- How to execute main.py from the terminal?
+- How to build the poetry env?
+- https://stackoverflow.com/questions/53835198/integrating-python-poetry-with-docker
 
 
 ### CICD
