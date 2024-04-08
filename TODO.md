@@ -1,24 +1,21 @@
 # TODO
 ## Issues
 
-### CICD
-The categorization (or lack thereof) of jobs seems odd. See if it can be changed just that build, lint, and test
-are their own jobs that run sequentially.
-
-Poetry doesn't install properly for python.yaml
-
 ## Features
 
 ### Dockerize
 
 ### CICD
 - Docker
-  - Needs Docker to be setup first
 
 ### Refresh Database
 Automatically refresh the database when changes are made to the calendar.
 
 ## Chores
+
+### Splitting up Workflows
+Not certain if placing the building, testing, and linting under the same job is a good practice.
+Consider breaking up the workflows into smaller sequential jobs, however that works.
 
 ## Considerations
 
