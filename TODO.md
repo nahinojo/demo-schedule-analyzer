@@ -7,7 +7,7 @@
 Poetry Setup:
 - How to execute main.py from the terminal?
 - How to build the poetry env?
-- https://stackoverflow.com/questions/53835198/integrating-python-poetry-with-docker
+- https://stackoverflow.com/questions/62432972/getting-connection-reset-when-accessing-running-docker-container
 
 
 ### CICD
