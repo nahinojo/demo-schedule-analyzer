@@ -2,8 +2,9 @@
 .idea/
 
 # Automatic file generation and retrieval
-temp/
+temp/**
 *bundle*
+npm-debug.log
 
 # Cache
 *.db
