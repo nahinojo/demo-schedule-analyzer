@@ -39,7 +39,7 @@ skip = [
 ignore_missing_imports = true
 
 [tool.poe.tasks]
-main = "python ./src/api/run.py"
+main = "python run.py"
 lint-import = "isort ."
 lint-style = "flake8"
 lint-type = "mypy ."

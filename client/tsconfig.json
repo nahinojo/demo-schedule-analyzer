@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "outDir": "./src/api/app/static/",
+      "outDir": "./api/app/static/",
       "noImplicitAny": true,
       "module": "es6",
       "target": "es6",

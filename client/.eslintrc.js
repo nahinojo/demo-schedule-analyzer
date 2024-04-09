@@ -9,7 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'standard-with-typescript'
   ],
-  ignorePatterns: ['src/static/**'],
+  ignorePatterns: ['static/**'],
   overrides: [
     {
       files: ['*.js'],

@@ -4,14 +4,14 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - "src/client/**"
+      - "client/**"
       - "*.{js,ts,jsx,tsx}"
       - "*package*.json"
       - "*eslint.rc"
   pull_request:
     branches: [ "master" ]
     paths: 
-      - "src/client/**"
+      - "client/**"
       - "*.{js,ts,jsx,tsx}"
       - "*package*.json"
       - "*eslint.rc"

@@ -4,14 +4,14 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - "src/app/**"
+      - "/api/app/**"
       - "**/**/py**"
       - "poetry**"
       - ".flake8"
   pull_request:
     branches: [ "master" ]
     paths:
-      - "src/app/**"
+      - "/api/app/**"
       - "py*"
       - "poetry**"
       - ".flake8"

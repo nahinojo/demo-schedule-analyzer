@@ -5,7 +5,7 @@ module.exports = {
   entry: {
     main: {
       filename: 'bundle.js',
-      import: './src/client/index.tsx'
+      import: './index.tsx'
     }
   },
   mode: 'production',
@@ -24,7 +24,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(
-      __dirname, 'src/api/app/static/'
+      __dirname, 'api/app/static/'
     )
   },
   performance: {
