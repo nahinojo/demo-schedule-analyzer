@@ -17,16 +17,15 @@ ENV YOUR_ENV=${YOUR_ENV} \
   POETRY_VERSION=1.8.2
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN poetry -V
+COPY /api /api
 WORKDIR /api
-COPY poetry.lock pyproject.toml /api/
 
 # Project initialization:
 RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-interaction --no-ansi
 
 # Creating folders, and files for a project:
-COPY . .
 
 EXPOSE 5000
 
-CMD python ./api/run.py
+WORKDIR ..
+CMD python /api/run.py

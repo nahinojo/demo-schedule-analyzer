@@ -22,4 +22,4 @@ def homepage():
     return render_template('index.html')
 
 
-app.run(host='0.0.0.0')
+app.run(host='0.0.0.0')  # 0.0.0.0 necessary to access docker container
