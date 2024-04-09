@@ -1,20 +1,7 @@
 # NOTES
 
-## Logical Order
-### Initial Setup
-1. Initialize empty DB
-2. Populate with data.
-   - This is useful for specifying before generating an Excel file.
-3. Setup Flask App
-
-### Parameterizing Schedule
-Permit users to specify instructor(s), course_code(s), etc.
-For every parameter change, update every other parameter to permissible/possible values
-
-
-### Generate Schedule
-1. Extract data from DB.
-2. Generate Excel
+## Docker Networking
+https://pythonspeed.com/articles/docker-connection-refused/
 
 ## Different ways to retrieve data
 
