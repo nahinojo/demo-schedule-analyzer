@@ -12,7 +12,7 @@ npm-debug.log
 *.pytest_cache
 
 # Packages
-/node_modules
+**/node_modules
 
 # Playground Development
 *sandbox*
