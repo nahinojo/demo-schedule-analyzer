@@ -3,12 +3,6 @@
 
 ## Features
 
-### Dockerize
-Poetry Setup:
-- How to execute main.py from the terminal?
-- How to build the poetry env?
-- https://stackoverflow.com/questions/62432972/getting-connection-reset-when-accessing-running-docker-container
-
 
 ### CICD
 - Docker
@@ -18,13 +12,46 @@ Automatically refresh the database when changes are made to the calendar.
 
 ## Chores
 
+### API hosts on two addresses
+When solving the Docker issue, note how the API is hosting on two separate addresses.
+- Is this normal?
+- If redundant, how can this be solved?
+
+### Remove /src and move /src/api and /src/client to root
+This is going to be a bit problematic, so it's designated as its own chore.
+Also, consider moving the config files into their related folders (client or app).
+
+### Expanding Docker
+The current system of Docker works, yet there are a couple composition issues regarding file management:
+- Needs to bundle to client.
+- Needs to make changes to the database, and save it when complete.
+- The production server should not be using any files in the client, nor be copying any test files.
+- (there are probably more)
+
 ### Splitting up Workflows
 Not certain if placing the building, testing, and linting under the same job is a good practice.
 Consider breaking up the workflows into smaller sequential jobs, however that works.
 
+### Overhaul Backend
+Backend should be more object-oriented for simplicity's sake. And, it should be more modular where large chunks of code
+is split into separate files.
+
+Why:
+- Improves separation of concerns and easier to follow flow of logic.
+- Easier to test when code is in more digestible chunks.
+- Underutilization of SQL Alchemy ORM. See example relating to Course method.
+
+Examples: 
+- The generation of a single sheet schedule should be a method of the Course object.
+- The coloring and styling of sheets should be within its own method, considering how unwieldy the class is.
+
 ## Considerations
 
-### Table for Single Course
-A dedicated page demonstrating a table for a specified course
-The download button will still be where it usuall is.
+### Chore: Investigate Docker Networking
+Merely learn more, at least for your own sake.
+
+### Feature: Table for Single Course
+A dedicated page demonstrating a table for a specified course.
+The download button will still be where it usuall is. 
+However, each entry will have a 'view' button
 
