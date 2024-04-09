@@ -12,6 +12,9 @@ Automatically refresh the database when changes are made to the calendar.
 
 ## Chores
 
+### Setting up Flask development vs production server.
+Current setup presumes development.
+
 ### API hosts on two addresses
 When solving the Docker issue, note how the API is hosting on two separate addresses.
 - Is this normal?
@@ -44,6 +47,9 @@ Why:
 Examples: 
 - The generation of a single sheet schedule should be a method of the Course object.
 - The coloring and styling of sheets should be within its own method, considering how unwieldy the class is.
+
+Things to consider:
+- Think about differing architectural patterns in this re-work. Now would be a good time to employ them.
 
 ## Considerations
 
