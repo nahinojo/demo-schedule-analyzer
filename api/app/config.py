@@ -4,7 +4,7 @@ import os
 class Config:
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_PATH = f"{os.getcwd()}/app/database/main.db"
+    SQLALCHEMY_DATABASE_PATH = f"{os.getcwd()}api/app/database/main.db"
     SQLALCHEMY_DATABASE_URI = f"sqlite:////{SQLALCHEMY_DATABASE_PATH}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
