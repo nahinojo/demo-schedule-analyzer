@@ -6,8 +6,10 @@ Fix workflows to account for refactored directories
 
 ## Features
 
-### CICD
-- Docker
+### Docker
+
+### Testing
+ - client. 
 
 ### Listen for Calendar Changes
 Automatically refresh the database and client when changes are made to the calendar.

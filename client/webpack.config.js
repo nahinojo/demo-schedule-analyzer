@@ -1,6 +1,16 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const buildPath = () => {
+  apiStaticDir = '/api/app/static/'
+  endDir = __dirname.split(path.sep).at(-1)
+  if (endDir === 'client') {
+    return path.resolve(__dirname, `../${apiStaticDir}`)
+  } else {
+    return path.resolve(__dirname, `./${apiStaticDir}`)
+  }
+}
+
 module.exports = {
   entry: {
     main: {
@@ -23,9 +33,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.resolve(
-      __dirname, 'api/app/static/'
-    )
+    path: buildPath()
   },
   performance: {
     maxAssetSize: 512000,
