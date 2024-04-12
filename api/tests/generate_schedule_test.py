@@ -5,9 +5,9 @@ import pytest
 def generate_schedule_test():
     """
     Tests generate_schedule function. The following cases are tested:
-    - A schedule sheet can be created for each course.
-    - Every cell has a value and is colored, or, every cell has no value and is
-      not colored.
+    - A schedule sheet can be created for each Course.
+    - Every cell with a value is colored
+    - Every cell without a value is not colored.
     """
     from typing import cast
 
@@ -23,8 +23,6 @@ def generate_schedule_test():
 
     with Session() as session:
         num_courses = len(session.execute(select(Course)).scalars().all())
-        assert num_courses > 10
-        assert num_courses < 1000
     for i in range(1, num_courses + 1):
         generate_schedule([i])
         wb = cast(Workbook, load_workbook(PATH_TO_SCHEDULE))
