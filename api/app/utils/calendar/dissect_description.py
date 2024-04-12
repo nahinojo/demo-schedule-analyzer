@@ -1,6 +1,6 @@
 from app.models import Demo
 
-from .is_similar_strings import is_similar_strings
+from app.utils import is_similar_strings
 from .remove_html import remove_html
 
 

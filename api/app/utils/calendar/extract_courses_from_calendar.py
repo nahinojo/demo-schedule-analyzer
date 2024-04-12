@@ -7,7 +7,7 @@ from app.models import Course, DemoEvent
 from .dissect_description import dissect_description
 from .get_course_term import get_course_term
 from .is_broken_event import is_broken_event
-from .is_similar_strings import is_similar_strings
+from app.utils import is_similar_strings
 from .request_calendar import request_calendar
 
 

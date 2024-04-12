@@ -3,7 +3,7 @@ from app.models import Course
 from sqlalchemy import select
 
 
-def get_courses():
+def get_all_courses():
     """
     Retrieves the list of all courses from the database.
 

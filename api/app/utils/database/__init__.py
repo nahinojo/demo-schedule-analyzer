@@ -1,1 +1,1 @@
-from .get_courses import get_courses
+from .get_all_courses import get_all_courses

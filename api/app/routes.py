@@ -1,4 +1,4 @@
-from app.utils import generate_schedule, get_courses
+from app.utils import generate_schedule, get_all_courses
 from flask import Blueprint, make_response
 
 api_blueprint = Blueprint('api', __name__)
@@ -40,7 +40,7 @@ def get_course_table_route():
     Gets the list of all courses from the database for display.
     """
     try:
-        course_table = get_courses()
+        course_table = get_all_courses()
     except Exception as e:
         message = {"status": "error", "message": str(e)}
         response = make_response(message, 500)
