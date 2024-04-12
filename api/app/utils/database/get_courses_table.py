@@ -3,19 +3,19 @@ from app.models import Course
 from sqlalchemy import select
 
 
-def get_all_courses():
+def get_courses_table():
     """
-    Retrieves the list of all courses from the database.
+    Retrieves all courses from the database as a dictionary.
 
     Returns
     -------
-    course_table: dict
+    courses_table: dict
         The dictionary of all courses.
     """
     with Session() as session:
         stmt = select(Course)
         courses = session.execute(stmt).scalars().all()
-        course_table = {
+        courses_table = {
             course.id: {
                 "courseCode": course.course_code,
                 "instructor": course.instructor,
@@ -24,4 +24,4 @@ def get_all_courses():
                 "numDemoEvents": len(course.demo_events)
             } for course in courses
         }
-    return course_table
+    return courses_table
