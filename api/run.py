@@ -1,9 +1,9 @@
 from app import PATH_TO_SCHEDULE, app
-from app.database.setup import setup
+from app.database.make_db import make_db
 from app.routes import api_blueprint
 from flask import render_template, send_file
 
-setup()
+make_db()
 app.register_blueprint(api_blueprint, url_prefix='/api')
 
 

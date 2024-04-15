@@ -19,15 +19,11 @@ Automatically refresh the database and client when changes are made to the calen
 ### Setting up Flask development vs production server.
 Current setup presumes development.
 
-### API hosts on two addresses
-When solving the Docker issue, note how the API is hosting on two separate addresses.
-- Is this normal?
-- If redundant, how can this be solved?
+### Flask Related
+- Current setup presumes development.
 
-### Expanding Docker
-The current system of Docker works, yet there are a couple composition issues regarding file management:
-- Needs to bundle to client.
-- Needs to make changes to the database, and save it when complete.
+### Docker Related
+- Prevent duplication of db when building.
 
 ### Splitting up Workflows
 Not certain if placing the building, testing, and linting under the same job is a good practice.

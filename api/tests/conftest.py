@@ -72,10 +72,10 @@ def app_context_with_real_data(app_context):
     Setups the database with data from the demo calendar.
     """
     from app.database import Session
-    from app.database.setup import setup
+    from app.database.make_db import make_db
     from app.models import Course
     from sqlalchemy import select
-    setup()
+    make_db()
     yield
     with Session() as session:
         all_courses = session.scalars(select(Course)).all()
