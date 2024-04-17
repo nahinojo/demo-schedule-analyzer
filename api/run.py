@@ -1,3 +1,6 @@
+import os
+from waitress import serve
+
 from app import PATH_TO_SCHEDULE, app
 from app.database.make_db import make_db
 from app.routes import api_blueprint
@@ -22,4 +25,9 @@ def homepage():
     return render_template('index.html')
 
 
-app.run(host='0.0.0.0')  # 0.0.0.0 necessary to access docker container
+if __name__ == '__main__':
+    environment = os.environ.get('FLASK_ENV', 'default')
+    if environment == 'production':
+        serve(app, host='0.0.0.0', port=5000)
+    else:
+        app.run(host='0.0.0.0')  # 0.0.0.0 necessary to access docker container

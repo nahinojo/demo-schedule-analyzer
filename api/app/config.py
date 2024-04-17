@@ -2,7 +2,6 @@ import os
 
 
 class Config:
-    DEBUG = False
     TESTING = False
     # Database path differs between docker container and local development
     CWD = os.getcwd()
@@ -14,5 +13,13 @@ class Config:
     else:
         SQLALCHEMY_DATABASE_PATH = f"{CWD}/app/database/main.db"
     SQLALCHEMY_DATABASE_URI = f"sqlite:////{SQLALCHEMY_DATABASE_PATH}"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
