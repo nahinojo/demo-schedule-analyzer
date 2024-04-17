@@ -19,6 +19,7 @@ on:
 
 jobs:
   build:
+    name: Build Client
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,6 +31,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
+      working-directory: client
       run: npm install
     - name: Lint Client
+      working-directory: client
       run: npm run lint
+    - name: Build Client
+      working-directory: client
+      run: npm run build
