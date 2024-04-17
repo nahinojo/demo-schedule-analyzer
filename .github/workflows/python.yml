@@ -18,7 +18,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  build:
+    name: Test and Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,8 +37,11 @@ jobs:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install Dependencies
+        working-directory: api
         run: poetry install
       - name: Test
+        working-directory: api
         run: poetry run poe test
       - name: Lint
+        working-directory: api
         run: poetry run poe lint
