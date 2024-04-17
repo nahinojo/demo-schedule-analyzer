@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --stats-children",
     "build:watch": "webpack --watch --stats-children",
-    "lint": "npx eslint ./client/**/**",
-    "lint:fix": "npx eslint ./client/**/** --fix"
+    "lint": "npx eslint .**/**",
+    "lint:fix": "npx eslint .**/** --fix"
   },
   "author": "",
   "license": "ISC",
