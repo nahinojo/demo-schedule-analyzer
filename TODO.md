@@ -6,24 +6,15 @@ Fix workflows to account for refactored directories
 
 ## Features
 
-### Docker
-
-### Testing
- - client. 
+### Client Testing
 
 ### Listen for Calendar Changes
 Automatically refresh the database and client when changes are made to the calendar.
 
 ## Chores
 
-### Setting up Flask development vs production server.
-Current setup presumes development.
-
-### Flask Related
-- Current setup presumes development.
-
-### Docker Related
-- Prevent duplication of db when building.
+### Docker
+Prevent duplication of db when building. Try not to copy database over.
 
 ### Splitting up Workflows
 Not certain if placing the building, testing, and linting under the same job is a good practice.
