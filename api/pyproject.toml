@@ -3,7 +3,6 @@ name = "demo-schedule-analyzer"
 version = "0.1.0"
 description = ""
 authors = ["Noah Hinojos <noah.hinojos@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
