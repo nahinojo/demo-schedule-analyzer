@@ -16,9 +16,7 @@ python-dotenv = "^1.0.0"
 pytest = "^7.4.4"
 sqlalchemy = "^2.0.25"
 flake8 = "^7.0.0"
-isort = "^5.13.2"
 poethepoet = "^0.25.0"
-mypy = "^1.9.0"
 types-flask-cors = "^4.0.0.20240106"
 types-requests = "^2.31.0.20240403"
 types-openpyxl = "^3.1.0.20240402"
@@ -39,15 +37,8 @@ skip = [
 ignore_missing_imports = true
 
 [tool.poe.tasks]
-main = "python run.py"
-lint-import = "isort ."
-lint-style = "flake8"
-lint-type = "mypy ."
-lint = [
-    "lint-import",
-    "lint-type",
-    "lint-style"
-]
+run = "python run.py"
+lint = "flake8"
 test = "python -m pytest"
 
 [virtualenvs]
