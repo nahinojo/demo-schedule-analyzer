@@ -26,13 +26,13 @@ interface APIResponse {
 }
 
 let courses: Course[] = []
-axios.get('/api/get_course_table')
+axios.get('/api/get_courses_table')
   .then(
     (response: APIResponse) => {
       courses = Object.values(response.data.data)
     },
     error => {
-      console.error('Failed to call get_course_table API')
+      console.error('Failed to call get_courses_table API')
       console.error(error)
     }
   )

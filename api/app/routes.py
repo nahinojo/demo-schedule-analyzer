@@ -34,8 +34,8 @@ def generate_schedule_route(course_ids):
     return response
 
 
-@api_blueprint.route('/get_course_table', methods=['GET'])
-def get_course_table_route():
+@api_blueprint.route('/get_courses_table', methods=['GET'])
+def get_courses_table_route():
     """
     Gets the list of all courses from the database for display.
     """

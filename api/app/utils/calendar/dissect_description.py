@@ -6,7 +6,7 @@ from .remove_html import remove_html
 
 def dissect_description(description: str):
     """
-    Dissects description string into demos and additional information.
+    Decomposes calendar description into demos and additional information.
 
     Parameters
     ----------
