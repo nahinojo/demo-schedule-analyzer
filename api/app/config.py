@@ -1,7 +1,14 @@
+"""
+Configuration for the Flask app.
+"""
+
 import os
 
 
 class Config:
+    """
+    Configuration for the Flask app.
+    """
     TESTING = False
     # Database path differs between docker container and local development
     CWD = os.getcwd()
@@ -16,10 +23,16 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    """
+    Configuration for the development environment.
+    """
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
+    """
+    Configuration for the production environment.
+    """
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
