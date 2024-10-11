@@ -1,3 +1,8 @@
+"""
+The database models.
+
+"""
+
 import datetime
 from typing import List
 
@@ -41,3 +46,5 @@ class Demo(Base):
     name: Mapped[str] = mapped_column(String)
     demo_event_id = mapped_column(ForeignKey("demo_event.id"))
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
+
+# TODO: Figure out a sandbox testing schema.

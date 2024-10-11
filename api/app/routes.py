@@ -1,3 +1,7 @@
+"""
+Routes for the API.
+
+"""
 from app.utils import generate_schedule, get_courses_table
 from flask import Blueprint, make_response
 
@@ -52,3 +56,13 @@ def get_courses_table_route():
         }
         response = make_response(message, 200)
     return response
+
+
+@api_blueprint.route('/sandbox', methods=['GET'])
+def sandbox():
+    """
+    Sandbox route.
+    """
+    status_code = 200
+
+    return "Sandbox route successful!"
