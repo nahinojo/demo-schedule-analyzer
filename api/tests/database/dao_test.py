@@ -10,7 +10,7 @@ def course_dao_test():
     """
     Course retrieval.
     """
-    from app.database import Database
+    from app.database import database
     from app.daos import CourseDAO
 
     with Database.Session() as session:
@@ -24,7 +24,7 @@ def demo_event_dao_test():
     """
     DemoEvent retrieval.
     """
-    from app.database import Database
+    from app.database import database
     from app.daos import DemoEventDAO
 
     with Database.Session() as session:
@@ -38,7 +38,7 @@ def demo_dao_test():
     """
     Demo retrieval,
     """
-    from app.database import Database
+    from app.database import database
     from app.daos import DemoDAO
 
     with Database.Session() as session:

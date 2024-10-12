@@ -1,10 +1,18 @@
 """
 Initializes the API.
 """
+import os
 from flask import Flask
 from flask_cors import CORS
 
-from app.config import Config  # Must be first import.
+from app.config import (
+    Config,
+    DevelopmentConfig,
+    ProductionConfig,
+    TestingConfig
+)
+
+from app.database import init_db
 
 
 def create_app():
@@ -12,6 +20,14 @@ def create_app():
     Creates the Flask app.
     """
     app = Flask(__name__)
-    app.config.from_object(Config.get_config())
+    app_env = os.environ.get('APP_ENV', 'development')
+    configs = {
+        'development': DevelopmentConfig,
+        'production': ProductionConfig,
+        'testing': TestingConfig
+    }
+    app.config.from_object(configs[app_env])
+    init_db(app)
     CORS(app)
+
     return app

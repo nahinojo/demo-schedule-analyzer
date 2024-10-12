@@ -1,17 +1,33 @@
+"""
+The database module.
+"""
 import os
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from flask import Flask
 
-from app.config import Config
+from app.models import Base
+from .database import Database
 
 
-database_path = Config.SQLALCHEMY_DATABASE_PATH
-if os.path.isfile(database_path):
-    os.remove(database_path)
-with open(database_path, "w+") as f:
-    f.write("")
+def init_db(app: Flask) -> None:
+    """
+    Initializes the database.
 
-engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
-Session = sessionmaker(engine)
-Base.metadata.create_all(engine)
+    Parameters
+    ----------
+    app: Flask
+        The Flask application.
+
+    Returns
+    -------
+    None
+    """
+    db_path = app.config["DATABASE_PATH"]
+    if os.path.isfile(db_path):
+        os.remove(db_path)
+    with open(db_path, "w+") as f:
+        f.write("")
+    engine = create_engine(app.config["DATABASE_URI"])
+    Base.metadata.create_all(engine)
+    Database.init(engine)

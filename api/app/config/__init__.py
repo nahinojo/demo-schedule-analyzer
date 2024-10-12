@@ -1,5 +1,6 @@
 """
-Access to the environment configuration.
+The configuration module.
+
+Configuration should not change during runtime.
 """
-from .config import Config
-from .config_manager import ConfigManager
+from .config import Config, DevelopmentConfig, TestingConfig, ProductionConfig

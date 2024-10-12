@@ -12,47 +12,49 @@ from datetime import date
 class Config:
     """
     Configuration for the application.
+    
+    See Flask docs on configuratiuon for more information.
     """
-    __instance = None
-    __isInitialized = False
+    TESTING = False
+    CURRENT_YEAR = date.today().year
 
-    @classmethod
-    def __new__(cls, *args, **kwargs):
-        if not cls.__instance:
-            print("Creating Config instance")
-            cls.__instance = super(Config, cls).__new__(cls)
-            print("Config instance created")
-        return cls.__instance
+    # Database path differs between docker container and local
+    CWD = os.getcwd()
+    CWD = CWD
+    if "api" not in CWD[-4:]:
+        if CWD[-1] == "/":
+            DATABASE_PATH = \
+                f"{CWD}api/app/database/main.db"
+        else:
+            DATABASE_PATH = \
+                f"{CWD}/api/app/database/main.db"
+    else:
+        DATABASE_PATH = f"{CWD}/app/database/main.db"
+    DATABASE_URI = f"sqlite:////{DATABASE_PATH}"
+    TEMP_PATH = f"{CWD}/temp"
+    CALENDAR_PATH = f"{TEMP_PATH}/demo-calendar.ics"
+    SCHEDULE_XLSX_PATH = f"{TEMP_PATH}/demo-schedule.xlsx"
 
-    def __init__(self):
-        """
-        Configuration for the Flask app. Paths are specified relative to the
-        current working directory.
-        """
 
-        if not self.__isInitialized:
-            print("Initializing Config instance")
-            self.testing = False
-            self.current_year = date.today().year
+class DevelopmentConfig(Config):
+    """
+    Configuration for the development environment.
+    """
+    DEBUG = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
-            # Database path differs between docker container and local
-            cwd = os.getcwd()
-            self.cwd = cwd
-            if "api" not in cwd[-4:]:
-                if cwd[-1] == "/":
-                    self.db_path = \
-                        f"{cwd}api/app/database/main.db"
-                else:
-                    self.db_path = \
-                        f"{cwd}/api/app/database/main.db"
-            else:
-                self.db_path = f"{cwd}/app/database/main.db"
-            self.db_uri = f"sqlite:////{self.db_path}"
-            self.temp_path = \
-                f"{cwd}/temp"  # Let's see if simplifying this works...
-            # f"{os.path.dirname(os.path.realpath(__file__))}/temp"
-            self.calendar_path = f"{self.temp_path}/demo-calendar.ics"
-            self.schedule_xlsx_path = f"{self.temp_path}/demo-schedule.xlsx"
 
-            self.__isInitialized = True
-            print("Config instance initialized")
+class ProductionConfig(Config):
+    """
+    Configuration for the production environment.
+    """
+    DEBUG = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestingConfig(Config):
+    """
+    Configuration for the testing environment.
+    """
+    TESTING = True
+    DATABASE_URI = 'sqlite:///:memory:'

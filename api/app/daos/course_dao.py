@@ -1,7 +1,7 @@
 """
 Course Data Access Object (DAO).
 """
-from app.database import Session
+from app.database import Database
 from app.models import Course
 from sqlalchemy import select
 
@@ -10,16 +10,11 @@ class CourseDAO:
     """
     Course Data Access Object (DAO).
     """
-    def __init__(self, session: Session):
+    def __init__():
         """
         Initializes the DAO.
-
-        Parameters
-        ----------
-        session: Session
-            The session to use for database operations.
         """
-        self.session = session
+        self.session = Database.Session()
 
     def get(self, course_id):
         """
@@ -38,3 +33,35 @@ class CourseDAO:
         return self.session.execute(
             select(Course).where(Course.id == course_id)
         ).scalar_one_or_none()
+
+    def get_all(self):
+        """
+        Retrieves all courses from the database.
+
+        Returns
+        -------
+        courses: List[Course]
+            The list of retrieved courses.
+        """
+        return self.session.execute(
+            select(Course)
+        ).scalars().all()
+
+    def create(course: Course) -> Course:
+        """
+        Creates a course in the database.
+
+        Parameters
+        ----------
+        course: Course
+            The course to create.
+
+        Returns
+        -------
+        Course
+            The created course.
+        """
+        with Database.Session() as session:
+            session.add(course)
+            session.commit()
+        return course
