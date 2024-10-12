@@ -36,3 +36,10 @@ class ProductionConfig(Config):
     """
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestingConfig(Config):
+    """
+    Configuration for the testing environment.
+    """
+    TESTING = True

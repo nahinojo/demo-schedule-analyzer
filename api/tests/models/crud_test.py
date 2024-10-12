@@ -1,3 +1,6 @@
+"""
+Tests the CRUD operations for the models in the app.
+"""
 import pytest
 
 
@@ -33,7 +36,6 @@ def crud_demo_event_test():
     Tests CRUD operations for DemoEvent model.
     """
     import datetime
-
     from app.database import Session
     from app.models import Course, Demo, DemoEvent
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO_EVENT")

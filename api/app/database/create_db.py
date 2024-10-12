@@ -2,7 +2,7 @@ from app.database import Session
 from app.utils import extract_courses_from_calendar
 
 
-def make_db():
+def create_db():
     """
     Initializes the database with data from the demo calendar.
     """
