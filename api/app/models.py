@@ -47,13 +47,6 @@ class Demo(Base):
     demo_event_id = mapped_column(ForeignKey("demo_event.id"))
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
 
-    def __str__(self) -> str:
-        return \
-            f"Demo(id={self.id},)" \
-            f" name={self.name}," \
-            f" demo_event_id={self.demo_event_id}," \
-            f" demo_event={self.demo_event}"
-
 
 # class Schedule(Base):
 #     __tablename__ = "schedule"
