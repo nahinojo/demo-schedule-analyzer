@@ -1,5 +1,7 @@
+"""
+Fixtures for testing.
+"""
 import pytest
-from typing import cast
 
 
 @pytest.fixture()
@@ -29,7 +31,6 @@ def app_context_with_test_data(app_context):
     from datetime import date
     from app.database import Session
     from app.models import Course, Demo, DemoEvent
-    from sqlalchemy import select
     today = date.today()
     new_course = Course(
         course_code="TEST_COURSE_CODE",
@@ -47,11 +48,8 @@ def app_context_with_test_data(app_context):
         ]
     )
     with Session() as session:
-        stmt = select(Course).filter_by(id=1)
-        try:
-            preexisting_items = session.scalars(stmt).first()
-        except:
-            pass
+        # stmt = select(Course).filter_by(id=1)
+        # TODO: Check if stmt has an item.
         session.add(new_course)
         session.commit()
         only_course = session.get(Course, 1)
@@ -79,15 +77,9 @@ def app_context_with_real_data(app_context):
     """
     Setups the database with data from the demo calendar.
     """
-    from app.database import Session
-    from app.database.create_db import create_db
-    from app.models import Course
-    from sqlalchemy import select
-    create_db()
+    from app.database.fill_db_from_calendar import fill_db_from_calendar
+    from app.database.clear_db import clear_db
+    fill_db_from_calendar()
     yield
-    with Session() as session:
-        all_courses = session.scalars(select(Course)).all()
-        for course in all_courses:
-            session.delete(course)
-        session.commit()
+    clear_db()
     return

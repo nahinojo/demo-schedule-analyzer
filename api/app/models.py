@@ -47,4 +47,16 @@ class Demo(Base):
     demo_event_id = mapped_column(ForeignKey("demo_event.id"))
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
 
-# TODO: Figure out a sandbox testing schema.
+    def __str__(self) -> str:
+        return \
+            f"Demo(id={self.id},)" \
+            f" name={self.name}," \
+            f" demo_event_id={self.demo_event_id}," \
+            f" demo_event={self.demo_event}"
+
+
+# class Schedule(Base):
+#     __tablename__ = "schedule"
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     course_id = mapped_column(ForeignKey("course.id"))
+#     course: Mapped["Course"] = relationship(back_populates="schedule")

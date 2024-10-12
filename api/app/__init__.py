@@ -1,15 +1,19 @@
+"""
+Initializes the API.
+"""
 import os
 from datetime import date
 
 from flask import Flask
 from flask_cors import CORS
 
-from .config import DevelopmentConfig, ProductionConfig
+from .config import DevelopmentConfig, ProductionConfig, TestingConfig
 
 app = Flask(__name__)
 configurations = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
+    'testing': TestingConfig
 }
 environment = os.environ.get('FLASK_ENV', 'development')
 configuration = configurations[environment]

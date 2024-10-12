@@ -1,19 +1,14 @@
 """
-Tests the creation of the database.
+Tests the initialization of the database.
 """
 import pytest
 
 
-@pytest.mark.usefixtures("app_context")
+@pytest.mark.usefixtures("app_context_with_real_data")
 def create_db_test():
     """
-    Tests setup_db function.
+    Tests the creation of the database and if it can be populated with real
+    data.
     """
-
-    from app.database import Base, Session
-    from app.database.create_db import create_db
-    create_db()
-    with Session() as session:
-        for table in reversed(Base.metadata.sorted_tables):
-            session.execute(table.delete())
-        session.commit()
+    # TODO: Test if there is indeed real data inside the database.
+    return

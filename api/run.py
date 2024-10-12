@@ -2,11 +2,11 @@ import os
 from waitress import serve
 
 from app import PATH_TO_SCHEDULE, app
-from app.database.create_db import create_db
+from app.database.fill_db_from_calendar import fill_db_from_calendar
 from app.routes import api_blueprint
 from flask import render_template, send_file
 
-create_db()
+fill_db_from_calendar()
 app.register_blueprint(api_blueprint, url_prefix='/api')
 
 

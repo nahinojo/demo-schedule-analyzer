@@ -84,3 +84,4 @@ def crud_demo_test():
         session.delete(new_demo)
         session.commit()
         assert session.get(Demo, 2) is None
+
