@@ -11,25 +11,31 @@ class Database:
     The database class.
     """
 
-    def __init__(self):
-        self.engine = engine
-        self.Session = Session
+    @classmethod
+    def init(cls):
+        """
+        Initializes the database.
+        """
+        cls.engine = engine
+        cls.Session = Session
 
-    def clear_all(self):
+    @classmethod
+    def clear_all(cls):
         """
         Removes all entries in the database without deleting the tables.
         """
-        with self.Session() as session:
+        with cls.Session() as session:
             for table in reversed(Base.metadata.sorted_tables):
                 session.execute(table.delete())
             session.commit()
 
-    def fill_from_calendar(self):
+    @classmethod
+    def fill_from_calendar(cls):
         """
         Updates the database with current demo calendar data.
         """
-        self.clear_all()
-        with self.Session() as session:
+        cls.clear_all()
+        with cls.Session() as session:
             all_courses = extract_courses_from_calendar()
             for course in all_courses:
                 session.add(course)

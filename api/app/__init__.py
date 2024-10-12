@@ -1,26 +1,17 @@
 """
 Initializes the API.
 """
-import os
-from datetime import date
-
 from flask import Flask
 from flask_cors import CORS
 
-from .config import DevelopmentConfig, ProductionConfig, TestingConfig
+from app.config import Config  # Must be first import.
 
-app = Flask(__name__)
-configurations = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-    'testing': TestingConfig
-}
-environment = os.environ.get('FLASK_ENV', 'development')
-configuration = configurations[environment]
-app.config.from_object(configuration)
-CORS(app)
 
-PATH_TO_TEMP = os.path.dirname(os.path.realpath(__file__)) + '/temp'
-PATH_TO_CALENDAR = PATH_TO_TEMP + '/demo-calendar.ics'
-PATH_TO_SCHEDULE = PATH_TO_TEMP + '/demo-schedule.xlsx'
-CURRENT_YEAR = date.today().year
+def create_app():
+    """
+    Creates the Flask app.
+    """
+    app = Flask(__name__)
+    app.config.from_object(Config.get_config())
+    CORS(app)
+    return app

@@ -1,11 +1,12 @@
 import os
 
-from app import app
-from app.models import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-database_path = app.config["SQLALCHEMY_DATABASE_PATH"]
+from app.config import Config
+
+
+database_path = Config.SQLALCHEMY_DATABASE_PATH
 if os.path.isfile(database_path):
     os.remove(database_path)
 with open(database_path, "w+") as f:
