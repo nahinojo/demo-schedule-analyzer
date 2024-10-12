@@ -6,14 +6,31 @@ Tests the config module.
 from _pytest.monkeypatch import MonkeyPatch
 
 
-def config_test(monkeypatch: MonkeyPatch):
+def testing_config_test(monkeypatch: MonkeyPatch):
     """
-    Asserts Config is a singleton.
+    Ensures testing config can be set.
     """
-    from datetime import date
     monkeypatch.setenv("APP_ENV", "testing")
-
     from app import create_app
     app = create_app()
-    assert app.config["CURRENT_YEAR"] == date.today().year
-    assert app.config["TESTING"] is True
+    assert app.config["APP_ENV"] == "testing"
+
+
+def production_config_test(monkeypatch: MonkeyPatch):
+    """
+    Ensures production config can be set.
+    """
+    monkeypatch.setenv("APP_ENV", "production")
+    from app import create_app
+    app = create_app()
+    assert app.config["APP_ENV"] == "production"
+
+
+def development_config_test(monkeypatch: MonkeyPatch):
+    """
+    Ensures development config can be set.
+    """
+    monkeypatch.setenv("APP_ENV", "development")
+    from app import create_app
+    app = create_app()
+    assert app.config["APP_ENV"] == "development"

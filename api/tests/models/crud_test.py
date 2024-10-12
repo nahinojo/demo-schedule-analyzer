@@ -16,14 +16,14 @@ def crud_course_test():
     from app.database import Session
     from app.models import Course
     with Session() as session:
-        course = session.get(Course, 1)
+        course = session.get_course_by_id(Course, 1)
         course.course_code = "TEST_COURSE_CODE_UPDATE"
         course.instructor = "TEST_INSTRUCTOR_UPDATE"
         course.term = "TEST_TERM_UPDATE"
         course.year = 2020
         session.commit()
-        assert session.get(Course, 1)
-        db_course = session.get(Course, 1)
+        assert session.get_course_by_id(Course, 1)
+        db_course = session.get_course_by_id(Course, 1)
         assert db_course.course_code == "TEST_COURSE_CODE_UPDATE"
         assert db_course.instructor == "TEST_INSTRUCTOR_UPDATE"
         assert db_course.term == "TEST_TERM_UPDATE"
@@ -47,12 +47,12 @@ def crud_demo_event_test():
     )
     with Session() as session:
         session.add(new_demo_event)
-        course = session.get(Course, 1)
+        course = session.get_course_by_id(Course, 1)
         course.demo_events.append(new_demo_event)
         session.add(course)
         session.commit()
-        assert session.get(DemoEvent, 2)
-        db_new_demo_event = session.get(DemoEvent, 2)
+        assert session.get_course_by_id(DemoEvent, 2)
+        db_new_demo_event = session.get_course_by_id(DemoEvent, 2)
         assert db_new_demo_event.event_date == yesterday
         assert (
                 db_new_demo_event.additional_information
@@ -62,7 +62,7 @@ def crud_demo_event_test():
         session.delete(new_demo_event)
         session.delete(new_demo)
         session.commit()
-        assert session.get(DemoEvent, 2) is None
+        assert session.get_course_by_id(DemoEvent, 2) is None
 
 
 @pytest.mark.usefixtures("app_context_with_test_data")
@@ -75,13 +75,13 @@ def crud_demo_test():
     new_demo = Demo(name="DEMO_NAME_CRUD_DEMO")
     with Session() as session:
         session.add(new_demo)
-        course = session.get(Course, 1)
+        course = session.get_course_by_id(Course, 1)
         course.demo_events[0].demos.append(new_demo)
         session.commit()
-        assert session.get(Demo, 1)
-        db_new_demo = session.get(Demo, 2)
+        assert session.get_course_by_id(Demo, 1)
+        db_new_demo = session.get_course_by_id(Demo, 2)
         assert db_new_demo.name == "DEMO_NAME_CRUD_DEMO"
         session.delete(new_demo)
         session.commit()
-        assert session.get(Demo, 2) is None
+        assert session.get_course_by_id(Demo, 2) is None
 

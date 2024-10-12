@@ -10,13 +10,9 @@ class CourseDAO:
     """
     Course Data Access Object (DAO).
     """
-    def __init__():
-        """
-        Initializes the DAO.
-        """
-        self.session = Database.Session()
 
-    def get(self, course_id):
+    @staticmethod
+    def get_course_by_id(course_id):
         """
         Retrieves a course from the database.
 
@@ -30,7 +26,8 @@ class CourseDAO:
         Course
             The retrieved course, or None if not found.
         """
-        return self.session.execute(
+        session = Database.get_session()
+        return session.execute(
             select(Course).where(Course.id == course_id)
         ).scalar_one_or_none()
 

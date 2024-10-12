@@ -1,6 +1,12 @@
+"""
+This function checks if two strings are similar.
+"""
+
+
 def is_similar_strings(string_1, string_2, threshold=0.6):
     """
-    Checks if two strings are similar.
+    Checks if two strings are similar. Similarity threshold is 0.6, or rather
+    60% match, by default.
 
     Parameters
     ----------

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import axios from 'axios'
 
-axios.get('http://127.0.0.1:5000/test')
+axios.get_course_by_id('http://127.0.0.1:5000/test')
   .then(response => {
     console.log(response)
   })

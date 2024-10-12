@@ -5,9 +5,9 @@ https://pythonspeed.com/articles/docker-connection-refused/
 
 ## Different ways to retrieve data
 
-### 1: Using `session.get(Object, Index)`:
+### 1: Using `session.get_course_by_id(Object, Index)`:
 ```
-    course = session.get(Course, 1)
+    course = session.get_course_by_id(Course, 1)
 ```
 ### 2: Using `select()` and `session.execute()` along with appropriate queries. 
 ```

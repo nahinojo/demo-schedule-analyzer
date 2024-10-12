@@ -26,7 +26,7 @@ interface APIResponse {
 }
 
 let courses: Course[] = []
-axios.get('/api/get_courses_table')
+axios.get_course_by_id('/api/get_courses_table')
   .then(
     (response: APIResponse) => {
       courses = Object.values(response.data.data)

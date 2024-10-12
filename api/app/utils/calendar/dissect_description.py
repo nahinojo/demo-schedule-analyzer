@@ -1,3 +1,7 @@
+"""
+This function decomposes the description of a calendar event into demos and
+additional information.
+"""
 from app.models import Demo
 
 from app.utils import is_similar_strings

@@ -49,13 +49,12 @@ def app_context_with_test_data(app_context):
             )
         ]
     )
-    CourseDAO.`
     # with Session() as session:
     #     # stmt = select(Course).filter_by(id=1)
     #     # TODO: Check if stmt has an item.
     #     session.add(new_course)
     #     session.commit()
-    #     only_course = session.get(Course, 1)
+    #     only_course = session.get_course_by_id(Course, 1)
     #     assert only_course
     #     assert only_course.course_code == "TEST_COURSE_CODE"
     #     assert only_course.instructor == "TEST_INSTRUCTOR"
@@ -69,10 +68,10 @@ def app_context_with_test_data(app_context):
     #     assert only_course.demo_events[0].demos[0].name == "TEST_DEMO_NAME"
     #     del only_course
     #     yield
-    #     only_course = session.get(Course, 1)
+    #     only_course = session.get_course_by_id(Course, 1)
     #     session.delete(only_course)
     #     session.commit()
-    #     assert session.get(Course, 1) is None
+    #     assert session.get_course_by_id(Course, 1) is None
 
 
 @pytest.fixture()

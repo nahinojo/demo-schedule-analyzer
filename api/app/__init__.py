@@ -12,7 +12,9 @@ from app.config import (
     TestingConfig
 )
 
-from app.database import init_db
+from app.database import init_db, Database
+from app.lifecycle import register_lifecycle_hooks
+from app.database.utils import update_from_calendar
 
 
 def create_app():
@@ -27,7 +29,11 @@ def create_app():
         'testing': TestingConfig
     }
     app.config.from_object(configs[app_env])
+    app.config["APP_ENV"] = app_env
     init_db(app)
+    register_lifecycle_hooks(app)
     CORS(app)
 
+    if app_env != 'testing':
+        update_from_calendar(app)
     return app

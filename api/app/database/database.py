@@ -1,21 +1,29 @@
 """
 The database class.
 """
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
 from app.models import Base
 
 
 class Database:
     """
-    The database class.
+    The database controller class.
     """
     _engine = None
+    _Session = None
 
     @classmethod
-    def init(cls, engine):
+    def init(cls, db_url):
         """
-        Initializes the database.
+        Initializes the database controller class. Must be called before using
+        the database.
         """
-        cls._engine = engine
+        if cls._engine is None:
+            cls._engine = create_engine(db_url)
+            # Ensure all sessions are scoped to local
+            cls._Session = scoped_session(sessionmaker(bind=cls._engine))
 
     @classmethod
     def get_engine(cls):
@@ -30,7 +38,7 @@ class Database:
         return cls._engine
 
     @classmethod
-    def Session(cls):
+    def get_session(cls):
         """
         Returns the database session.
 
@@ -39,29 +47,28 @@ class Database:
         Session
             The database session.
         """
-        from sqlalchemy.orm import sessionmaker
-        engine = cls.get_engine()
-        return sessionmaker(bind=engine)
+        if cls._Session is None:
+            raise Exception("Database not initialized")
+        return cls._Session
 
     @classmethod
-    def clear_all(cls):
+    def commit_session(cls):
         """
-        Removes all entries in the database without deleting the tables.
+        Commits the database session.
         """
-        with cls.Session() as session:
-            for table in reversed(Base.metadata.sorted_tables):
-                session.execute(table.delete())
+        session = cls.get_session()
+        try:
             session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
 
     @classmethod
-    def fill_from_calendar(cls):
+    def remove_session(cls):
         """
-        Updates the database with current demo calendar data.
+        Removes the database session.
         """
-        from app.utils.calendar import extract_courses_from_calendar
-        cls.clear_all()
-        with cls.Session() as session:
-            all_courses = extract_courses_from_calendar()
-            for course in all_courses:
-                session.add(course)
-            session.commit()
+        session = cls.get_session()
+        session.remove()

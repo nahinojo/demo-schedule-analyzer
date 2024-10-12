@@ -3,10 +3,8 @@ The database module.
 """
 import os
 
-from sqlalchemy import create_engine
 from flask import Flask
 
-from app.models import Base
 from .database import Database
 
 
@@ -28,6 +26,6 @@ def init_db(app: Flask) -> None:
         os.remove(db_path)
     with open(db_path, "w+") as f:
         f.write("")
-    engine = create_engine(app.config["DATABASE_URI"])
-    Base.metadata.create_all(engine)
-    Database.init(engine)
+    from app.models import Base
+    Database.init(db_url=app.config["DATABASE_URI"])
+    Base.metadata.create_all(Database.get_engine())
