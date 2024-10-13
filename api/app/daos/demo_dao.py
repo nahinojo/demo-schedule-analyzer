@@ -1,34 +1,28 @@
 """
 Demo DAO.
 """
-from app.database import Session
+from sqlalchemy.orm import Session
 from app.models import Demo
+from ._base_dao import _BaseDAO
 
-from sqlalchemy import select
 
-
-class DemoDAO:
+class DemoDAO(_BaseDAO):
     """
     Demo Data Access Object (DAO).
     """
 
-    def __init__(self, session: Session):
-        """
-        Initializes the DAO.
-
-        Parameters
-        ----------
-        session: Session
-            The session to use for database operations.
-        """
-        self.session = session
-
-    def get(self, demo_id) -> Demo:
+    @staticmethod
+    def get_by_id(session: Session,
+                  demo_id: int,
+                  **kwargs
+                  ) -> Demo | None:
         """
         Retrieves a demo from the database.
 
         Parameters
         ----------
+        session: Session
+            The database session.
         demo_id: int
             The ID of the demo to retrieve.
 
@@ -37,6 +31,39 @@ class DemoDAO:
         Demo
             The retrieved demo, or None if not found.
         """
-        return self.session.execute(
-            select(Demo).where(Demo.id == demo_id)
-        ).scalar_one_or_none()
+        return _BaseDAO.get_by_id(session, Demo, demo_id)
+
+    @staticmethod
+    def get_all(session: Session,
+                **kwargs
+                ) -> Demo | None:
+        """
+        Retrieves a demo from the database.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+
+        Returns
+        -------
+        Demo
+            The retrieved demo, or None if not found.
+        """
+        return _BaseDAO.get_all(session, Demo)
+
+    @staticmethod
+    def add(session: Session,
+            demo: Demo
+            ) -> None:
+        """
+        Adds a demo to the database.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+        demo: Demo
+            The demo to add.
+        """
+        _BaseDAO.add(session, demo)

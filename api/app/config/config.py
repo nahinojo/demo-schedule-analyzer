@@ -31,7 +31,7 @@ class Config:
     else:
         DATABASE_PATH = f"{CWD}/app/database/main.db"
     DATABASE_URI = f"sqlite:////{DATABASE_PATH}"
-    TEMP_PATH = f"{CWD}/temp"
+    TEMP_PATH = f"{CWD}/app/temp"
     CALENDAR_PATH = f"{TEMP_PATH}/demo-calendar.ics"
     SCHEDULE_XLSX_PATH = f"{TEMP_PATH}/demo-schedule.xlsx"
 

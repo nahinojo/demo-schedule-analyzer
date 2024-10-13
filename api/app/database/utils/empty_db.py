@@ -5,7 +5,7 @@ from .session_scope import session_scope
 from app.models import Base
 
 
-def clear_all():
+def empty_db():
     """
     Removes all entries in the database without deleting the tables.
     """
