@@ -33,7 +33,5 @@ def create_app():
     init_db(app)
     register_lifecycle_hooks(app)
     CORS(app)
-
-    if app_env != 'testing':
-        update_db_from_calendar(app)
+    update_db_from_calendar(app)
     return app

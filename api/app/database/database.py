@@ -1,12 +1,11 @@
 """
 The database class.
 """
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 from sqlalchemy.engine import Engine
 from app.models import Base
-from app.exceptions import DatabaseIsNotInitializedException
+from app.exceptions import DatabaseNotInitializedException
 
 
 class Database:
@@ -15,20 +14,17 @@ class Database:
     """
     _engine = None
     _Session = None
-    _db_uri = None
-    _db_path = None
 
     @classmethod
-    def init(cls, db_uri, db_path) -> None:
+    def init(cls, db_uri: str) -> None:
         """
         Initializes the database controller class. Must be called before using
         the database.
         """
         if cls._engine is None:
             cls._db_uri = db_uri
-            cls._db_path = db_path
-            cls._engine = create_engine(cls._db_uri)
-            # Ensure all sessions are scoped to local
+            cls._engine = create_engine(cls.get_db_uri())
+            # Ensure all sessions are scoped to local thread.
             cls._Session = scoped_session(sessionmaker(bind=cls._engine))
         return
 
@@ -65,7 +61,7 @@ class Database:
             The database session.
         """
         if cls._Session is None:
-            raise DatabaseIsNotInitializedException(
+            raise DatabaseNotInitializedException(
                 "Database must be initialized before using the session"
             )
         return cls._Session
@@ -104,31 +100,3 @@ class Database:
             The database URI.
         """
         return cls._db_uri
-
-    @classmethod
-    def get_db_path(cls) -> str:
-        """
-        Returns the database path.
-
-        Returns
-        -------
-        str
-            The database path.
-        """
-        return cls._db_path
-
-    @classmethod
-    def end(cls) -> None:
-        """
-        Closes the database session and engine. Effectively resets
-        the Database class
-        """
-        if cls._engine is None:
-            raise DatabaseIsNotInitializedException(
-                "Database must be initialized before using the session"
-            )
-        cls._end_session()
-        cls._end_engine()
-        os.remove(cls._db_path)
-        cls._db_path = None
-        cls._db_uri = None

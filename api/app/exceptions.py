@@ -3,14 +3,14 @@ Custom exceptions.
 """
 
 
-class DatabaseIsInitializedException(Exception):
+class DatabaseStillInitializedException(Exception):
     """
     Database is initialized.
     """
     pass
 
 
-class DatabaseIsNotInitializedException(Exception):
+class DatabaseNotInitializedException(Exception):
     """
     Database is not initialized.
     """

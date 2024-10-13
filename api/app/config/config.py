@@ -57,4 +57,5 @@ class TestingConfig(Config):
     Configuration for the testing environment.
     """
     TESTING = True
+    DATABASE_PATH = None
     DATABASE_URI = 'sqlite:///:memory:'
