@@ -27,5 +27,8 @@ def init_db(app: Flask) -> None:
     with open(db_path, "w+") as f:
         f.write("")
     from app.models import Base
-    Database.init(db_url=app.config["DATABASE_URI"])
+    Database.init(
+        db_uri=app.config["DATABASE_URI"],
+        db_path=db_path
+    )
     Base.metadata.create_all(Database.get_engine())

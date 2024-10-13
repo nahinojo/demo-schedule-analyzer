@@ -1,41 +1,18 @@
 """
-Tests the config module.
-
+Tests application under all configurations.
 """
+import os
 import pytest
-from _pytest.monkeypatch import MonkeyPatch
-
-from tests.conftest import cleanup
-
-@pytest.mark.usefixtures("cleanup")
-def testing_config_test(monkeypatch: MonkeyPatch):
-    """
-    Ensures testing config can be set.
-    """
-    monkeypatch.setenv("APP_ENV", "testing")
-    from app import create_app
-    app = create_app()
-    x = True
-    assert app.config["APP_ENV"] == "testing"
 
 
-@pytest.mark.usefixtures("cleanup")
-def production_config_test(monkeypatch: MonkeyPatch):
+@pytest.mark.parametrize("env", [
+    'testing',
+    'production',
+    'development'
+])
+def config_test(app, env):
     """
-    Ensures production config can be set.
+    Parametrized test to validate app config in different environments.
     """
-    monkeypatch.setenv("APP_ENV", "production")
-    from app import create_app
-    app = create_app()
-    assert app.config["APP_ENV"] == "production"
-
-
-@pytest.mark.usefixtures("cleanup")
-def development_config_test(monkeypatch: MonkeyPatch):
-    """
-    Ensures development config can be set.
-    """
-    monkeypatch.setenv("APP_ENV", "development")
-    from app import create_app
-    app = create_app()
-    assert app.config["APP_ENV"] == "development"
+    flask_app = app(env)
+    assert flask_app.config['APP_ENV'] == env
