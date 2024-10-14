@@ -53,6 +53,25 @@ class DemoEventDAO(_BaseDAO):
         return _BaseDAO.get_all(session, DemoEvent)
 
     @staticmethod
+    def get_count(session: Session,
+                  **kwargs
+                  ) -> int:
+        """
+        Retrieves the count of all demo events from the database.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+
+        Returns
+        -------
+        int
+            The count of retrieved demo events.
+        """
+        return _BaseDAO.get_count(session, DemoEvent)
+
+    @staticmethod
     def add(session: Session,
             demo_event: DemoEvent,
             **kwargs

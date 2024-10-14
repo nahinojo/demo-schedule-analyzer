@@ -53,6 +53,25 @@ class DemoDAO(_BaseDAO):
         return _BaseDAO.get_all(session, Demo)
 
     @staticmethod
+    def get_count(session: Session,
+                  **kwargs
+                  ) -> int:
+        """
+        Retrieves the number of Demos in the database.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+
+        Returns
+        -------
+        int
+            The number of Demos in the database.
+        """
+        return _BaseDAO.get_count(session, Demo)
+
+    @staticmethod
     def add(session: Session,
             demo: Demo
             ) -> None:

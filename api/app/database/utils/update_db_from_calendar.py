@@ -5,7 +5,6 @@ from flask import Flask
 
 from . import session_scope
 from . import empty_db
-from app.models import Base
 from app.utils.calendar import extract_courses_from_calendar
 
 

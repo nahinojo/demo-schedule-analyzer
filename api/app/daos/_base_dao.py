@@ -57,7 +57,28 @@ class _BaseDAO:
         List[ModelType]
             The list of retrieved models.
         """
-        return session.execute(select(ModelType)).scalars().all()
+        return session.execute(select(model)).scalars().all()
+
+    @staticmethod
+    def get_count(session: Session,
+                  model: ModelType
+                  ) -> int:
+        """
+        Retrieves the count of all models from the database.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+        model: ModelType
+            The model class to retrieve.
+
+        Returns
+        -------
+        int
+            The count of retrieved models.
+        """
+        return len(_BaseDAO.get_all(session, model))
 
     @staticmethod
     def add(session: Session,
