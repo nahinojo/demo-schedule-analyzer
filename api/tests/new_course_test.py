@@ -1,5 +1,7 @@
 """
-Testing for Course model.
+Tests the following:
+    - Creation of the Course model.
+    - Adding a Course to the database.
 """
 from datetime import datetime
 from flask import Flask
@@ -9,12 +11,12 @@ from app.models import DemoEvent, Course
 from app.daos import CourseDAO
 
 
-def course_test(app: Flask,
-                course: Course,
-                demo_event: DemoEvent
-                ) -> None:
+def create_course_test(app: Flask,
+                       course: Course,
+                       demo_event: DemoEvent
+                       ) -> None:
     """
-    Tests the creation of the course model.
+    Tests the creation of the Course model, and associated child models.
     """
     with app.app_context():
         assert course.course_code == "COURSE_CODE_TEST"
@@ -28,7 +30,7 @@ def add_course_to_db_test(db_session: Session,
                           course: Course
                           ) -> None:
     """
-    Tests the adding of a course to the database.
+    Adds a course to the database.
     """
     with db_session.begin():
         count = CourseDAO.get_count(db_session)

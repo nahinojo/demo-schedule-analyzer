@@ -2,10 +2,9 @@
 Utility function for managing database sessions.
 """
 from contextlib import contextmanager
-
 from sqlalchemy.orm import Session
 
-from app.database.database import Database
+from app.database import Database
 
 
 @contextmanager

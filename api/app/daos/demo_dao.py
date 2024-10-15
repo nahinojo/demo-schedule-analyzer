@@ -57,7 +57,7 @@ class DemoDAO(_BaseDAO):
                   **kwargs
                   ) -> int:
         """
-        Retrieves the number of Demos in the database.
+        Counts the total number of demos in the database.
 
         Parameters
         ----------
@@ -69,7 +69,10 @@ class DemoDAO(_BaseDAO):
         int
             The number of Demos in the database.
         """
-        return _BaseDAO.get_count(session, Demo)
+        return _BaseDAO.get_count(
+            session=session,
+            model=Demo
+        )
 
     @staticmethod
     def add(session: Session,

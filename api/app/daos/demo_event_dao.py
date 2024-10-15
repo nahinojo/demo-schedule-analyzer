@@ -57,7 +57,7 @@ class DemoEventDAO(_BaseDAO):
                   **kwargs
                   ) -> int:
         """
-        Retrieves the count of all demo events from the database.
+        Counts the total number of demo events in the database.
 
         Parameters
         ----------

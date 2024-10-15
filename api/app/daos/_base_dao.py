@@ -78,6 +78,8 @@ class _BaseDAO:
         int
             The count of retrieved models.
         """
+        print("session: ", session)
+        print("model: ", model)
         return len(_BaseDAO.get_all(session, model))
 
     @staticmethod

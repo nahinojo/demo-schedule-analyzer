@@ -55,7 +55,7 @@ class CourseDAO(_BaseDAO):
     def get_count(session: Session,
                   **kwargs) -> int:
         """
-        Retrieves the count of all models from the database.
+        Counts the total number of courses in the database.
 
         Parameters
         ----------
@@ -66,7 +66,10 @@ class CourseDAO(_BaseDAO):
         int
             The count of retrieved models.
         """
-        return len(_BaseDAO.get_all(session, Course))
+        return _BaseDAO.get_count(
+            session=session,
+            model=Course
+        )
 
     @staticmethod
     def add(session: Session,
