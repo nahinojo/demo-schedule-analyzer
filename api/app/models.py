@@ -25,6 +25,10 @@ class Course(Base):
         back_populates="course",
         cascade="all, delete-orphan"
     )
+    schedule: Mapped[List["Schedule"]] = relationship(
+        back_populates="course",
+        cascade="all, delete-orphan"
+    )
 
 
 class DemoEvent(Base):
@@ -48,8 +52,8 @@ class Demo(Base):
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
 
 
-# class Schedule(Base):
-#     __tablename__ = "schedule"
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     course_id = mapped_column(ForeignKey("course.id"))
-#     course: Mapped["Course"] = relationship(back_populates="schedule")
+class Schedule(Base):
+    __tablename__ = "schedule"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    course_id = mapped_column(ForeignKey("course.id"))
+    course: Mapped["Course"] = relationship(back_populates="schedule")

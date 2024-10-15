@@ -4,6 +4,8 @@ The database class.
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 from sqlalchemy.engine import Engine
+from flask import current_app
+
 from app.models import Base
 from app.exceptions import DatabaseNotInitializedException
 
@@ -16,14 +18,14 @@ class Database:
     _Session = None
 
     @classmethod
-    def init(cls, db_uri: str) -> None:
+    def init(cls) -> None:
         """
         Initializes the database controller class. Must be called before using
         the database.
         """
         if cls._engine is None:
-            cls._db_uri = db_uri
-            cls._engine = create_engine(cls.get_db_uri())
+            db_uri = current_app.config["DATABASE_URI"]
+            cls._engine = create_engine(db_uri)
             # Ensure all sessions are scoped to local thread.
             cls._Session = scoped_session(sessionmaker(bind=cls._engine))
         return
@@ -88,15 +90,3 @@ class Database:
         _session = cls.get_session()
         _session.close()
         cls._Session = None
-
-    @classmethod
-    def get_db_uri(cls) -> str:
-        """
-        Returns the database URI.
-
-        Returns
-        -------
-        str
-            The database URI.
-        """
-        return cls._db_uri

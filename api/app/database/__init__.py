@@ -4,6 +4,7 @@ The database module.
 import os
 
 from flask import current_app
+from app.models import Base
 
 from .database import Database
 
@@ -22,6 +23,5 @@ def init_db() -> None:
             os.remove(db_path)
         with open(db_path, "w+") as f:
             f.write("")
-    from app.models import Base
-    Database.init(db_uri=current_app.config["DATABASE_URI"])
+    Database.init()
     Base.metadata.create_all(Database.get_engine())
