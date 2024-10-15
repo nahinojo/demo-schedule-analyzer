@@ -6,7 +6,6 @@ configurations (e.g., DevelopmentConfig, TestingConfig).
 Notice how it cannot have any app dependencies.
 """
 import os
-from datetime import date
 
 
 class Config:
@@ -16,7 +15,6 @@ class Config:
     See Flask docs on configuratiuon for more information.
     """
     TESTING = False
-    CURRENT_YEAR = date.today().year
 
     # Database path differs between docker container and local
     CWD = os.getcwd()

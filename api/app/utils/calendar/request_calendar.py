@@ -2,14 +2,13 @@
 Requests the calendar file from Google Calendar.
 """
 import os
-
 import requests
-
-from flask import Flask
 from icalendar import Calendar
 
+from flask import current_app
 
-def request_calendar(app: Flask) -> Calendar:
+
+def request_calendar() -> Calendar:
     """
     Requests the calendar file from Google Calendar.
 
@@ -22,7 +21,7 @@ def request_calendar(app: Flask) -> Calendar:
         "https://calendar.google.com/calendar/ical/7k8ivkgvm0pgtta67pfafecqmg%"
         "40group.calendar.google.com/public/basic.ics"
     )
-    calendar_file_path = app.config["CALENDAR_PATH"]
+    calendar_file_path = current_app.config["CALENDAR_PATH"]
     response = requests.get(calendar_url)
     os.makedirs(os.path.dirname(calendar_file_path), exist_ok=True)
     with open(calendar_file_path, "wb") as calendar_file:

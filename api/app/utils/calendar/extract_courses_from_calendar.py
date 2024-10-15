@@ -3,10 +3,8 @@ This function extracts courses from the demo calendar.
 """
 from datetime import date
 from typing import List
-from flask import Flask
 
 from app.models import Course, DemoEvent
-
 from .dissect_description import dissect_description
 from .get_course_term import get_course_term
 from .is_broken_event import is_broken_event
@@ -14,23 +12,18 @@ from app.utils import is_similar_strings
 from .request_calendar import request_calendar
 
 
-def extract_courses_from_calendar(app: Flask) -> list[Course]:
+def extract_courses_from_calendar() -> list[Course]:
     """
     Requests the demo calendar from Google and parses the events. It constructs
     Course objects from the events, and returns them all as one large list.
-
-    Parameters
-    ----------
-    app: Flask
-        The Flask app.
 
     Returns
     -------
     all_courses: List[Course]
         List of all extracted courses from the demo calendar.
     """
-    earliest_year = app.config["CURRENT_YEAR"] - 5
-    calendar = request_calendar(app)
+    earliest_year = date.today().year - 5
+    calendar = request_calendar()
     courses: List[Course] = []
     for calendar_event in calendar.walk("VEVENT"):
         summary = str(calendar_event.get("SUMMARY"))

@@ -30,8 +30,9 @@ def create_app():
     }
     app.config.from_object(configs[app_env])
     app.config["APP_ENV"] = app_env
-    init_db(app)
-    register_lifecycle_hooks(app)
-    CORS(app)
-    update_db_from_calendar(app)
+    with app.app_context():
+        init_db()
+        register_lifecycle_hooks()
+        update_db_from_calendar()
+        CORS(app)
     return app
