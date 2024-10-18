@@ -7,8 +7,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker, Session
 from sqlalchemy.engine import Engine
 from flask import current_app
 
-from app.models import Base
 from app.exceptions import DatabaseNotInitializedException
+from app.models import Base
 from app.utils.calendar import extract_courses_from_calendar
 
 
@@ -17,7 +17,7 @@ class Database:
     The database controller class.
     """
     _engine = None
-    _Session = None
+    _session_registry = None
 
     @classmethod
     def init(cls) -> None:
@@ -26,18 +26,20 @@ class Database:
         the database.
         """
         # Ensure new database file is created.
-        if current_app.config["APP_ENV"] != "testing":
+        if not current_app.config["TESTING"]:
             db_path = current_app.config["DATABASE_PATH"]
             if os.path.isfile(db_path):
                 os.remove(db_path)
             with open(db_path, "w+") as f:
                 f.write("")
+            if not current_app.config["IS_DATABASE_EMPTY"]:
+                cls.update_db_from_calendar()
 
         if cls._engine is None:
             db_uri = current_app.config["DATABASE_URI"]
             cls._engine = create_engine(db_uri)
         Base.metadata.create_all(Database.get_engine())
-        cls._Session = scoped_session(sessionmaker(bind=cls._engine))
+        cls._session_registry = scoped_session(sessionmaker(bind=cls._engine))
         return
 
     @classmethod
@@ -76,18 +78,18 @@ class Database:
         Session
             The database session.
         """
-        if cls._Session is None:
+        if cls._session_registry is None:
             raise DatabaseNotInitializedException(
                 "Database must be initialized before using the session"
             )
-        return cls._Session
+        return cls._session_registry()
 
     @classmethod
     def commit_session(cls) -> None:
         """
         Commits the database session.
         """
-        if cls._Session is None:
+        if cls._session_registry is None:
             raise DatabaseNotInitializedException(
                 "Database must be initialized before using the session"
             )

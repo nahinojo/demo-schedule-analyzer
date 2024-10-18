@@ -6,7 +6,7 @@ The database models.
 import datetime
 from typing import List, Optional
 
-from sqlalchemy import Date, ForeignKey, Integer, String
+from sqlalchemy import Date, ForeignKey, Integer, String, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -79,7 +79,7 @@ class Demo(Base):
 class Schedule(Base):
     __tablename__ = "schedules"
     id: Mapped[int] = mapped_column(primary_key=True)
-    # TODO: Add schedule-specific field(s).
+    schedule_data: Mapped[JSON] = mapped_column(JSON)
     course_id = mapped_column(
         ForeignKey("courses.id"),
         nullable=True,

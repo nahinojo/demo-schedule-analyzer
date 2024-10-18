@@ -1,9 +1,9 @@
+"""
+Generates xlsx schedule.
+
+"""
 from datetime import date
 from typing import List, Literal, cast
-
-from app import PATH_TO_SCHEDULE
-from app.database import Session
-from app.models import Course
 from openpyxl import Workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -11,6 +11,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 from sqlalchemy import select
 
 from .date_difference_school_weeks import date_difference_school_weeks
+from app.models import Course
 
 
 def _create_worksheet_title(course_code, instructor, term, year):

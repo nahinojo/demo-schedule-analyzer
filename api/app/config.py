@@ -11,8 +11,6 @@ import os
 class Config:
     """
     Configuration for the application.
-    
-    See Flask docs on configuratiuon for more information.
     """
     TESTING = False
 
@@ -32,6 +30,7 @@ class Config:
     TEMP_PATH = f"{CWD}/app/temp"
     CALENDAR_PATH = f"{TEMP_PATH}/demo-calendar.ics"
     SCHEDULE_XLSX_PATH = f"{TEMP_PATH}/demo-schedule.xlsx"
+    IS_DATABASE_EMPTY = False
 
 
 class DevelopmentConfig(Config):
@@ -55,5 +54,5 @@ class TestingConfig(Config):
     Configuration for the testing environment.
     """
     TESTING = True
-    DATABASE_PATH = None
     DATABASE_URI = 'sqlite:///:memory:'
+    IS_DATABASE_EMPTY = True  # Empty for most test cases, but not all.
