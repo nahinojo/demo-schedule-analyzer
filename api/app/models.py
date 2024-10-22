@@ -3,7 +3,7 @@ The database models.
 """
 
 import datetime
-from typing import List, Optional
+from typing import List
 
 from sqlalchemy import Date, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -24,11 +24,6 @@ class Course(Base):
         back_populates="course",
         cascade="all, delete-orphan"
         )
-    # schedule: Mapped[Optional["Schedule"]] = relationship(
-    #     back_populates="course",
-    #     cascade="all, delete-orphan",
-    #     uselist=False
-    #     )
 
     def __repr__(self):
         return (f"Course(id={self.id!r}, "
@@ -70,16 +65,3 @@ class Demo(Base):
         return (f"Demo(id={self.id!r}, "
                 f"name={self.name!r})"
                 )
-
-
-# class Schedule(Base):
-#     __tablename__ = "schedules"
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     schedule_data: Mapped[PickleType] = mapped_column(PickleType)
-#     course_id = mapped_column(ForeignKey("courses.id"), nullable=True)
-#     course: Mapped["Course"] = relationship(back_populates="schedule")
-#
-#     def __repr__(self):
-#         return (f"Schedule(id={self.id!r}, "
-#                 f"course_id={self.course_id!r})"
-#                 )

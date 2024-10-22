@@ -6,7 +6,6 @@ Tests the following:
 from datetime import datetime
 from flask import Flask
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 from app.models import DemoEvent, Course
 from app.daos import CourseDAO

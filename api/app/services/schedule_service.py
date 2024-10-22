@@ -1,13 +1,10 @@
 """
 Handles schedule data operations.
 """
-import json
 from sqlalchemy.orm import Session
-from sqlalchemy import JSON
 
-from app.models import Schedule
 from app.database import Database
-from app.daos import CourseDAO, ScheduleDAO
+from app.daos import CourseDAO
 
 
 class ScheduleService:
@@ -22,69 +19,53 @@ class ScheduleService:
     def __init__(self,
                  session: Session,
                  course_id: int
-                 ) -> None:
+                 ):
+        """
+        Initializes the ScheduleService class.
+
+        Parameters
+        ----------
+        session: Session
+            The database session.
+        course_id: int
+            The ID of the course to construct the schedule for.
+        """
         self._session = session
-        self._schedule_data = self._get_schedule_data_from_db(
-            course_id=course_id
-            )
+        self._course_id = course_id
+        self._schedule_dict = self._create_schedule()
 
     @property
-    def schedule_data(self) -> JSON:
+    def course_id(self) -> int:
         """
-        Returns the schedule_data.
+        Returns the course ID.
+        """
+        return self._course_id
 
-        Returns
-        -------
-        JSON
-            The schedule data.
+    @property
+    def schedule_dict(self) -> dict:
         """
-        return self._schedule_data
+        Returns the schedule dictionary.
+        """
+        return self._schedule_dict
 
-    def _get_schedule_data_from_db(self, course_id: int) -> JSON:
+    def _create_schedule(self) -> dict:
         """
-        Retrieves the schedule data from the database or creates it if it does
-        not exist.
+        Constructs the schedule dictionary from the course.
         """
         with Database.get_session() as session:
-            course = CourseDAO.get_by_id(session, 1)
-            if course.schedule:
-                schedule: Schedule = course.schedule
-                schedule_data = schedule.schedule_data
-            else:
-                schedule_data = self._create_schedule_data(
-                    course_id=course_id,
-                    session=session
-                    )
-                schedule = Schedule(
-                    course_id=course_id,
-                    schedule_data=schedule_data
-                    )
-                ScheduleDAO.add(session, schedule)
-                Database.commit_session()
-            return schedule_data
-
-    @staticmethod
-    def _create_schedule_data(course_id: int,
-                              session: Session
-                              ) -> JSON:
-        """
-        Creates the schedule data from scratch.
-        """
-        course = CourseDAO.get_by_id(session, course_id)
-        schedule_data_dict = {"course_code": course.course_code,
-                              "instructor": course.instructor,
-                              "term": course.term, "year": course.year,
-                              "events": [],
-                              }
+            course = CourseDAO.get_by_id(session, self.course_id)
+            session.expunge_all()
+        schedule = {"course_code": course.course_code,
+                    "instructor": course.instructor,
+                    "term": course.term, "year": course.year,
+                    "events": [],
+                    }
         for demo_event in course.demo_events:
-            schedule_data_dict["events"].append(
+            schedule["events"].append(
                 {
-                    # Change date to week number or some other string-based
-                    # format. Cannot add schedule to db as JSON otherwise.
-                    "date_isoformat": demo_event.event_date.isoformat(),
+                    "date": demo_event.event_date,
                     "demos": [demo.name for demo in demo_event.demos],
                     "additional_info": demo_event.additional_information
-                    }
-                )
-        schedule_data: JSON = json.dumps(schedule_data_dict)
-        return schedule_data
+                }
+            )
+        return schedule
