@@ -13,6 +13,10 @@ from app.daos import CourseDAO, ScheduleDAO
 class ScheduleService:
     """
     Handles schedule data operations.
+
+    Primary use case:
+    - Construct schedule data from course.
+    - Add schedule to database.
     """
 
     def __init__(self,
@@ -20,18 +24,25 @@ class ScheduleService:
                  course_id: int
                  ) -> None:
         self._session = session
-        self._schedule_data = self._get_schedule_data(course_id=course_id)
+        self._schedule_data = self._get_schedule_data_from_db(
+            course_id=course_id
+            )
 
     @property
     def schedule_data(self) -> JSON:
         """
         Returns the schedule_data.
+
+        Returns
+        -------
+        JSON
+            The schedule data.
         """
         return self._schedule_data
 
-    def _get_schedule_data(self, course_id: int) -> JSON:
+    def _get_schedule_data_from_db(self, course_id: int) -> JSON:
         """
-        Retrieves the schedule data from the database. Creates it if it does
+        Retrieves the schedule data from the database or creates it if it does
         not exist.
         """
         with Database.get_session() as session:
@@ -43,11 +54,11 @@ class ScheduleService:
                 schedule_data = self._create_schedule_data(
                     course_id=course_id,
                     session=session
-                )
+                    )
                 schedule = Schedule(
                     course_id=course_id,
                     schedule_data=schedule_data
-                )
+                    )
                 ScheduleDAO.add(session, schedule)
                 Database.commit_session()
             return schedule_data
@@ -59,29 +70,21 @@ class ScheduleService:
         """
         Creates the schedule data from scratch.
         """
-        schedule_data_dict = {
-            "course_code": None,
-            "instructor": None,
-            "term": None,
-            "year": None,
-            "events": []
-        }
         course = CourseDAO.get_by_id(session, course_id)
-        schedule_data_dict["course_code"] = course.course_code
-        schedule_data_dict["instructor"] = course.instructor
-        schedule_data_dict["term"] = course.term
-        schedule_data_dict["year"] = course.year
-        demo_events = course.demo_events
-        for demo_event in demo_events:
+        schedule_data_dict = {"course_code": course.course_code,
+                              "instructor": course.instructor,
+                              "term": course.term, "year": course.year,
+                              "events": [],
+                              }
+        for demo_event in course.demo_events:
             schedule_data_dict["events"].append(
                 {
                     # Change date to week number or some other string-based
                     # format. Cannot add schedule to db as JSON otherwise.
-                    "date": demo_event.event_date.isoformat(),
+                    "date_isoformat": demo_event.event_date.isoformat(),
                     "demos": [demo.name for demo in demo_event.demos],
                     "additional_info": demo_event.additional_information
-                }
-            )
-        print("schedule_data_dict: ", schedule_data_dict)
-        schedule_data = json.dumps(schedule_data_dict)
-        return schedule_data_dict
+                    }
+                )
+        schedule_data: JSON = json.dumps(schedule_data_dict)
+        return schedule_data

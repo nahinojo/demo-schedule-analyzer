@@ -1,20 +1,29 @@
 """
 Base Data Access Object (DAO).
 """
-from sqlalchemy.orm import Session
-from app.types import ModelType
+from abc import ABC
 from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.types import ModelType
 
 
-class _BaseDAO:
+class _BaseDAO(ABC):
     """
-    Base Data Access Object (DAO). Should not be used directly, only
-    inherited.
+    Base Data Access Object (DAO).
     """
+    _model_type = None
 
-    @staticmethod
-    def get_by_id(session: Session,
-                  model: ModelType,
+    @classmethod
+    def _get_model_type(cls) -> ModelType:
+        """
+        The model class for this DAO.
+        """
+        return cls._model_type
+
+    @classmethod
+    def get_by_id(cls,
+                  session: Session,
                   model_id: int
                   ) -> ModelType | None:
         """
@@ -24,8 +33,6 @@ class _BaseDAO:
         ----------
         session: Session
             The database session.
-        model: ModelType
-            The model class to retrieve.
         model_id: int
             The ID of the course to retrieve.
 
@@ -34,13 +41,14 @@ class _BaseDAO:
         ModelType
             The retrieved model, or None if not found.
         """
+        model_type = cls._get_model_type()
         return session.execute(
-            select(model).where(model.id == model_id)
-        ).scalar_one_or_none()
+            select(model_type).where(model_type.id == model_id)
+            ).scalar_one_or_none()
 
-    @staticmethod
-    def get_all(session: Session,
-                model: ModelType
+    @classmethod
+    def get_all(cls, 
+                session: Session,
                 ) -> list[ModelType]:
         """
         Retrieves all models from the database.
@@ -49,19 +57,18 @@ class _BaseDAO:
         ----------
         session: Session
             The database session.
-        model: ModelType
-            The model class to retrieve.
 
         Returns
         -------
         List[ModelType]
             The list of retrieved models.
         """
-        return session.execute(select(model)).scalars().all()
+        model_type = cls._get_model_type()
+        return session.execute(select(model_type)).scalars().all()
 
-    @staticmethod
-    def get_count(session: Session,
-                  model: ModelType
+    @classmethod
+    def get_count(cls,
+                  session: Session,
                   ) -> int:
         """
         Retrieves the count of all models from the database.
@@ -70,20 +77,17 @@ class _BaseDAO:
         ----------
         session: Session
             The database session.
-        model: ModelType
-            The model class to retrieve.
 
         Returns
         -------
         int
             The count of retrieved models.
         """
-        print("session: ", session)
-        print("model: ", model)
-        return len(_BaseDAO.get_all(session, model))
+        return len(cls.get_all(session))
 
-    @staticmethod
-    def add(session: Session,
+    @classmethod
+    def add(cls,
+            session: Session,
             model: ModelType
             ) -> None:
         """
@@ -94,6 +98,7 @@ class _BaseDAO:
         session: Session
             The database session.
         model: ModelType
-            The model to add.
+            The model to add to the database.
         """
         session.add(model)
+        return

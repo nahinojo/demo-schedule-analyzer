@@ -6,6 +6,7 @@ Tests the following:
 from datetime import datetime
 from flask import Flask
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 from app.models import DemoEvent, Course
 from app.daos import CourseDAO
@@ -35,7 +36,8 @@ def add_course_to_db_test(db_session: Session,
     """
     with db_session.begin():
         prior_count = CourseDAO.get_count(session=db_session)
-        CourseDAO.add(session=db_session, course=course)
+        db_session.add(course)
+        db_session.flush()
         post_count = CourseDAO.get_count(session=db_session)
         assert post_count == prior_count + 1
         db_session.rollback()

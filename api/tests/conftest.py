@@ -7,9 +7,9 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from app import create_app
 from app.daos import CourseDAO
-from app.models import Demo, DemoEvent, Course, Schedule
+from app.models import Demo, DemoEvent, Course
 from app.database import Database
-from app.services import ScheduleService
+# from app.services import ScheduleService
 
 
 # App
@@ -54,7 +54,7 @@ def demo_event(demo) -> DemoEvent:
         event_date=today,
         additional_information="ADDITIONAL_INFORMATION_TEST",
         demos=[demo]
-    )
+        )
 
 
 @pytest.fixture
@@ -68,27 +68,26 @@ def course(demo_event) -> Course:
         term="TERM_TEST",
         year=datetime.now().year,
         demo_events=[demo_event]
-    )
-
-
-@pytest.fixture
-def schedule(course,
-             db_session
-             ) -> Schedule:
-    """
-    Tests the creation of the schedule model.
-    """
-    with db_session.begin():
-        CourseDAO.add(session=db_session, course=course)
-        db_session.flush()
-        course_id = course.id
-        schedule_service = ScheduleService(
-            session=db_session,
-            course_id=course_id
         )
-        schedule_data = schedule_service.schedule_data
-        print("schedule_data: ", schedule_data)
-    yield Schedule(
-        course_id=course_id,
-        schedule_data=schedule_data
-    )
+
+
+# @pytest.fixture
+# def schedule(course,
+#              db_session
+#              ) -> Schedule:
+#     """
+#     Tests the creation of the schedule model.
+#     """
+#     with db_session.begin():
+#         CourseDAO.add(session=db_session, course=course)
+#         db_session.flush()
+#         course_id = course.id
+#         schedule_service = ScheduleService(
+#             session=db_session,
+#             course_id=course_id
+#             )
+#         schedule_data = schedule_service.schedule_data
+#     yield Schedule(
+#         course_id=course_id,
+#         schedule_data=schedule_data
+#         )

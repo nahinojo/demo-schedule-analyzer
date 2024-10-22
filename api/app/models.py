@@ -1,12 +1,11 @@
 """
 The database models.
-
 """
 
 import datetime
 from typing import List, Optional
 
-from sqlalchemy import Date, ForeignKey, Integer, String, JSON
+from sqlalchemy import Date, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -24,21 +23,20 @@ class Course(Base):
     demo_events: Mapped[List["DemoEvent"]] = relationship(
         back_populates="course",
         cascade="all, delete-orphan"
-    )
-    schedule: Mapped[Optional["Schedule"]] = relationship(
-        back_populates="course",
-        cascade="all, delete-orphan",
-        uselist=False
-    )
+        )
+    # schedule: Mapped[Optional["Schedule"]] = relationship(
+    #     back_populates="course",
+    #     cascade="all, delete-orphan",
+    #     uselist=False
+    #     )
 
     def __repr__(self):
-        return (
-            f"Course(id={self.id!r}, "
-            f"course_code={self.course_code!r}, "
-            f"instructor={self.instructor!r}, "
-            f"term={self.term!r}, "
-            f"year={self.year!r})"
-        )
+        return (f"Course(id={self.id!r}, "
+                f"course_code={self.course_code!r}, "
+                f"instructor={self.instructor!r}, "
+                f"term={self.term!r}, "
+                f"year={self.year!r})"
+                )
 
 
 class DemoEvent(Base):
@@ -50,16 +48,15 @@ class DemoEvent(Base):
         back_populates="demo_event",
         cascade="all, delete-orphan",
         uselist=True
-    )
+        )
     course_id = mapped_column(ForeignKey("courses.id"), nullable=False)
     course: Mapped["Course"] = relationship(back_populates="demo_events")
 
     def __repr__(self):
-        return (
-            f"DemoEvent(id={self.id!r}, "
-            f"event_date={self.event_date!r}, "
-            f"additional_information={self.additional_information!r})"
-        )
+        return (f"DemoEvent(id={self.id!r}, "
+                f"event_date={self.event_date!r}, "
+                f"additional_information={self.additional_information!r})"
+                )
 
 
 class Demo(Base):
@@ -70,24 +67,19 @@ class Demo(Base):
     demo_event: Mapped["DemoEvent"] = relationship(back_populates="demos")
 
     def __repr__(self):
-        return (
-            f"Demo(id={self.id!r}, "
-            f"name={self.name!r})"
-        )
+        return (f"Demo(id={self.id!r}, "
+                f"name={self.name!r})"
+                )
 
 
-class Schedule(Base):
-    __tablename__ = "schedules"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    schedule_data: Mapped[JSON] = mapped_column(JSON)
-    course_id = mapped_column(
-        ForeignKey("courses.id"),
-        nullable=True,
-    )
-    course: Mapped["Course"] = relationship(back_populates="schedule")
-
-    def __repr__(self):
-        return (
-            f"Schedule(id={self.id!r}, "
-            f"course_id={self.course_id!r})"
-        )
+# class Schedule(Base):
+#     __tablename__ = "schedules"
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     schedule_data: Mapped[PickleType] = mapped_column(PickleType)
+#     course_id = mapped_column(ForeignKey("courses.id"), nullable=True)
+#     course: Mapped["Course"] = relationship(back_populates="schedule")
+#
+#     def __repr__(self):
+#         return (f"Schedule(id={self.id!r}, "
+#                 f"course_id={self.course_id!r})"
+#                 )
