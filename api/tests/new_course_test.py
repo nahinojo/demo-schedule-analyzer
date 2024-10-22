@@ -34,9 +34,9 @@ def add_course_to_db_test(db_session: Session,
     """
     with db_session.begin():
         course_dao = CourseDAO(db_session)
-        prior_count = course_dao.get_count()
+        prior_count = course_dao.count()
         course_dao.add(course)
         db_session.flush()
-        post_count = course_dao.get_count()
+        post_count = course_dao.count()
         assert post_count == prior_count + 1
         db_session.rollback()

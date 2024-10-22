@@ -75,7 +75,7 @@ class _BaseDAO(ABC):
         model_type = self.model_type
         return self.session.execute(select(model_type)).scalars().all()
 
-    def get_count(self) -> int:
+    def count(self) -> int:
         """
         Retrieves the count of all models from the database.
 
