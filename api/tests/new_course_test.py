@@ -9,13 +9,12 @@ from sqlalchemy.orm import Session
 
 from app.models import DemoEvent, Course
 from app.daos import CourseDAO
-from tests.conftest import db_session
 
 
 def create_course_test(app: Flask,
+                       db_session: Session,
                        course: Course,
-                       demo_event: DemoEvent,
-                       db_session: Session
+                       demo_event: DemoEvent
                        ) -> None:
     """
     Tests the creation of the Course model, and associated child models.
@@ -34,9 +33,10 @@ def add_course_to_db_test(db_session: Session,
     Adds a course to the database.
     """
     with db_session.begin():
-        prior_count = CourseDAO.get_count(session=db_session)
-        db_session.add(course)
+        course_dao = CourseDAO(db_session)
+        prior_count = course_dao.get_count()
+        course_dao.add(course)
         db_session.flush()
-        post_count = CourseDAO.get_count(session=db_session)
+        post_count = course_dao.get_count()
         assert post_count == prior_count + 1
         db_session.rollback()

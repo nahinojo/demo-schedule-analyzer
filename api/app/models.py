@@ -1,7 +1,6 @@
 """
 The database models.
 """
-
 import datetime
 from typing import List
 
@@ -23,7 +22,7 @@ class Course(Base):
     demo_events: Mapped[List["DemoEvent"]] = relationship(
         back_populates="course",
         cascade="all, delete-orphan"
-        )
+    )
 
     def __repr__(self):
         return (f"Course(id={self.id!r}, "
@@ -43,7 +42,7 @@ class DemoEvent(Base):
         back_populates="demo_event",
         cascade="all, delete-orphan",
         uselist=True
-        )
+    )
     course_id = mapped_column(ForeignKey("courses.id"), nullable=False)
     course: Mapped["Course"] = relationship(back_populates="demo_events")
 

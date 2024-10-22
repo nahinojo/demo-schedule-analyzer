@@ -10,12 +10,7 @@ from app.daos import CourseDAO
 class ScheduleService:
     """
     Handles schedule data operations.
-
-    Primary use case:
-    - Construct schedule data from course.
-    - Add schedule to database.
     """
-
     def __init__(self,
                  session: Session,
                  course_id: int
@@ -45,27 +40,37 @@ class ScheduleService:
     def schedule_dict(self) -> dict:
         """
         Returns the schedule dictionary.
+
+        Returns
+        -------
+        dict
+            The schedule dictionary.
         """
         return self._schedule_dict
 
     def _create_schedule(self) -> dict:
         """
-        Constructs the schedule dictionary from the course.
+        Constructs a new schedule.
+
+        Returns
+        -------
+        schedule_dict: dict
+            The constructed schedule dictionary.
         """
         with Database.get_session() as session:
             course = CourseDAO.get_by_id(session, self.course_id)
             session.expunge_all()
-        schedule = {"course_code": course.course_code,
-                    "instructor": course.instructor,
-                    "term": course.term, "year": course.year,
-                    "events": [],
-                    }
+        schedule_dict = {"course_code": course.course_code,
+                         "instructor": course.instructor,
+                         "term": course.term, "year": course.year,
+                         "events": [],
+                         }
         for demo_event in course.demo_events:
-            schedule["events"].append(
+            schedule_dict["events"].append(
                 {
                     "date": demo_event.event_date,
                     "demos": [demo.name for demo in demo_event.demos],
                     "additional_info": demo_event.additional_information
                 }
             )
-        return schedule
+        return schedule_dict
