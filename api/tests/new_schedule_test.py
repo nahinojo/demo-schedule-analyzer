@@ -23,5 +23,5 @@ def create_schedule_test(app: Flask,
         db_session.flush()
         schedule_service = ScheduleService(session=db_session,
                                            course_id=course.id)
-        schedule_dict = schedule_service.schedule_dict
+        schedule_dict = schedule_service.get_schedule_dict
         assert schedule_dict

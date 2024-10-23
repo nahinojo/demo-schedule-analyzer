@@ -1,6 +1,4 @@
-"""
-Handles schedule data operations.
-"""
+import json
 from sqlalchemy.orm import Session
 
 from app.daos import CourseDAO
@@ -8,14 +6,24 @@ from app.daos import CourseDAO
 
 class ScheduleService:
     """
-    Handles schedule data operations.
+    Handles the construction of a course's schedule object.
+
+    Attributes
+    ----------
+    _session: Session
+        The database session.
+    _course_id: int
+        The ID of the course to construct the schedule for.
+    _schedule_dict: dict
+        The constructed schedule dictionary.
     """
+
     def __init__(self,
                  session: Session,
                  course_id: int
                  ):
         """
-        Initializes the ScheduleService class.
+        Initializes the ScheduleService class and constructs the schedule.
 
         Parameters
         ----------
@@ -26,13 +34,18 @@ class ScheduleService:
         """
         self._session = session
         self._course_id = course_id
-        self._schedule_dict = self._create_schedule()
+        self._schedule_dict = self._create_schedule_dict()
         return
 
     @property
     def session(self) -> Session:
         """
         Returns the database session.
+
+        Returns
+        -------
+        Session
+            The database session.
         """
         return self._session
 
@@ -40,11 +53,15 @@ class ScheduleService:
     def course_id(self) -> int:
         """
         Returns the course ID.
+
+        Returns
+        -------
+        int
+            The course ID.
         """
         return self._course_id
 
-    @property
-    def schedule_dict(self) -> dict:
+    def get_schedule_dict(self) -> dict:
         """
         Returns the schedule dictionary.
 
@@ -55,7 +72,18 @@ class ScheduleService:
         """
         return self._schedule_dict
 
-    def _create_schedule(self) -> dict:
+    def get_schedule_json(self) -> str:
+        """
+        Returns the schedule JSON.
+
+        Returns
+        -------
+        str
+            The schedule JSON.
+        """
+        return json.dumps(self._schedule_dict)
+
+    def _create_schedule_dict(self) -> dict:
         """
         Constructs a new schedule.
 

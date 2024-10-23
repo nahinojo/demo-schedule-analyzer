@@ -1,8 +1,6 @@
-"""
-Handles workbook data operations.
-"""
-
 from sqlalchemy.orm import Session
+from openpyxl import Workbook
+from openpyxl.worksheet.worksheet import Worksheet
 
 
 class WorkbookService:
@@ -11,19 +9,36 @@ class WorkbookService:
     """
 
     def __init__(self,
-                 session: Session,
-                 course_id: int
+                 session: Session
                  ):
         """
         Initializes the WorkbookService class.
-
-        Parameters
-        ----------
-        session: Session
-            The database session.
-        course_id: int
-            The ID of the course to construct the workbook for.
         """
-        self._session = session
-        self._course_id = course_id
-        self._workbook = self._create_workbook()
+        self._wb: Workbook = None  # TODO: Manage workbook object.
+        self._ws = self.wb.active
+
+    @property
+    def wb(self) -> Workbook:
+        pass
+
+    @property
+    def ws(self) -> Worksheet:
+        pass
+
+    def _create_wb(self):
+        pass
+
+    def add_schedule(self,
+                     schedule_dict: dict
+                     ) -> None:
+        pass
+
+    def _add_schedule_data(self):
+        pass
+
+    def _style_ws(self):
+        pass
+
+
+
+
