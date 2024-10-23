@@ -29,8 +29,7 @@ class Course(Base):
                 f"course_code={self.course_code!r}, "
                 f"instructor={self.instructor!r}, "
                 f"term={self.term!r}, "
-                f"year={self.year!r})"
-                )
+                f"year={self.year!r})")
 
 
 class DemoEvent(Base):
@@ -38,19 +37,16 @@ class DemoEvent(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     event_date: Mapped[datetime.date] = mapped_column(Date)
     additional_information: Mapped[str] = mapped_column(String)
-    demos: Mapped[List["Demo"]] = relationship(
-        back_populates="demo_event",
-        cascade="all, delete-orphan",
-        uselist=True
-    )
+    demos: Mapped[List["Demo"]] = relationship(back_populates="demo_event",
+                                               cascade="all, delete-orphan",
+                                               uselist=True)
     course_id = mapped_column(ForeignKey("courses.id"), nullable=False)
     course: Mapped["Course"] = relationship(back_populates="demo_events")
 
     def __repr__(self):
         return (f"DemoEvent(id={self.id!r}, "
                 f"event_date={self.event_date!r}, "
-                f"additional_information={self.additional_information!r})"
-                )
+                f"additional_information={self.additional_information!r})")
 
 
 class Demo(Base):
@@ -62,5 +58,4 @@ class Demo(Base):
 
     def __repr__(self):
         return (f"Demo(id={self.id!r}, "
-                f"name={self.name!r})"
-                )
+                f"name={self.name!r})")

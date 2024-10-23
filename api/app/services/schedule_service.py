@@ -58,19 +58,17 @@ class ScheduleService:
             The constructed schedule dictionary.
         """
         with Database.get_session() as session:
-            course = CourseDAO.get_by_id(session, self.course_id)
+            course_dao = CourseDAO(session=session)
+            course = course_dao.get_by_id(model_id=self._course_id)
             session.expunge_all()
         schedule_dict = {"course_code": course.course_code,
                          "instructor": course.instructor,
                          "term": course.term, "year": course.year,
-                         "events": [],
-                         }
+                         "events": []}
         for demo_event in course.demo_events:
             schedule_dict["events"].append(
-                {
-                    "date": demo_event.event_date,
-                    "demos": [demo.name for demo in demo_event.demos],
-                    "additional_info": demo_event.additional_information
-                }
+                {"date": demo_event.event_date,
+                 "demo_names": [demo.name for demo in demo_event.demos],
+                 "additional_info": demo_event.additional_information}
             )
         return schedule_dict
