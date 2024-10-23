@@ -7,7 +7,7 @@ from app.models import Course, DemoEvent, Demo
 
 def random_string(length=10,
                   chars=string.ascii_lowercase + string.digits
-                  ):
+                  ) -> str:
     """
     Generates a random string of the specified length.
 
@@ -105,16 +105,13 @@ def random_demo_event(event_date: date or None = None,
     """
     if demos and event_date and additional_information:
         raise ValueError(f"Cannot provide all arguments."
-                         f"Create DemoEvent manually instead."
-                         )
-
+                         f"Create DemoEvent manually instead.")
     event_date = event_date or random_date()
     additional_information = additional_information or random_string()
     demos = demos or [random_demo() for _ in range(random.randint(1, 6))]
     return DemoEvent(event_date=event_date,
                      additional_information=additional_information,
-                     demos=demos
-                     )
+                     demos=demos)
 
 
 def random_course(course_code: str or None = None,
@@ -146,9 +143,7 @@ def random_course(course_code: str or None = None,
     """
     if demo_events and course_code and instructor and term and year:
         raise ValueError(f"Cannot provide all arguments."
-                         f"Create Course manually instead."
-                         )
-
+                         f"Create Course manually instead.")
     course_code = course_code or randome_course_code()
     instructor = instructor or random_string()
     term = term or random_term()
