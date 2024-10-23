@@ -3,7 +3,6 @@ Handles schedule data operations.
 """
 from sqlalchemy.orm import Session
 
-from app.database import Database
 from app.daos import CourseDAO
 
 
@@ -28,6 +27,14 @@ class ScheduleService:
         self._session = session
         self._course_id = course_id
         self._schedule_dict = self._create_schedule()
+        return
+
+    @property
+    def session(self) -> Session:
+        """
+        Returns the database session.
+        """
+        return self._session
 
     @property
     def course_id(self) -> int:
@@ -57,7 +64,7 @@ class ScheduleService:
         schedule_dict: dict
             The constructed schedule dictionary.
         """
-        with Database.get_session() as session:
+        with self.session as session:
             course_dao = CourseDAO(session=session)
             course = course_dao.get_by_id(model_id=self._course_id)
             session.expunge_all()

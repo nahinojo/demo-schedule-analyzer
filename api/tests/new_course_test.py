@@ -18,7 +18,7 @@ def create_course_test(app: Flask,
                        demo: Demo
                        ) -> None:
     """
-    Tests the creation of the Course model and associated child models.
+    Tests the creation of the Course model and associated children.
 
     Parameters
     ----------
