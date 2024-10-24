@@ -19,11 +19,45 @@ class WorkbookService:
 
     @property
     def wb(self) -> Workbook:
-        pass
+        """
+        Returns the class's workbook.
+
+        Returns
+        -------
+        Workbook
+            The workbook.
+        """
+        return self._wb
 
     @property
     def ws(self) -> Worksheet:
-        pass
+        """
+        Returns the class's worksheet.
+
+        Returns
+        -------
+        Worksheet
+            The worksheet.
+        """
+        return self._ws
+
+    def _set_ws(self,
+                sheet_name: str,
+                ) -> None:
+        """
+        Sets the class's worksheet.
+
+        Parameters
+        ----------
+        sheet_name: str
+            The name of the worksheet.
+
+        Returns
+        -------
+        None
+        """
+        self._ws = self.wb.get_sheet_by_name(sheet_name)
+        return
 
     def _create_wb(self):
         pass
@@ -38,7 +72,3 @@ class WorkbookService:
 
     def _style_ws(self):
         pass
-
-
-
-
